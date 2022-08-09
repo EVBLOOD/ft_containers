@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 14:39:16 by sakllam           #+#    #+#             */
-/*   Updated: 2022/08/09 20:03:11 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/08/09 20:06:12 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,8 @@ namespace ft
         // int _size;
         // T   *all;
         // typedef ft_vector<T, alloc> * iterator;
-        public:
+        // public:
                                 // constracting and deconstracting
-
             explicit vector (const allocator_type& _alloc = allocator_type());  // default constra
             explicit vector (size_type n, const value_type& val = value_type(),
                  const allocator_type& _alloc = allocator_type()); // fill constra (comlicated types)
