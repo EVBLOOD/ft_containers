@@ -6,30 +6,43 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 14:39:16 by sakllam           #+#    #+#             */
-/*   Updated: 2022/08/06 13:59:29 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/08/09 18:35:09 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #pragma once
-#include <memory>
 
-template<class T, class alloc = std::allocator<T> >
-class ft_vector
+namespace ft
 {
-    int _size;
-    T   *all;
-    typedef ft_vector<T, alloc> * iterator;
-    public:
-        ft_vector(); // default
-        ~ft_vector(); // default
-        ft_vector(int nb_clnm, T def); // fill
-        ft_vector(ft_vector<T> &cpy); // cpy
-        // ft_vector(); // range (bigin iter | end iter)
-        iterator *begin();
-        iterator *end();
+    #include <memory>
+
+    template<class T, class alloc = std::allocator<T> >
+    class vector
+    {
+
+        typedef     alloc       allocator_type;
+        typedef     T           value_type;
+        typedef     size_t       size_type;
+        type
+        int _size;
+        T   *all;
+        // typedef ft_vector<T, alloc> * iterator;
+        public:
+                                // constracting and deconstracting
+
+            explicit vector (const allocator_type& alloc = allocator_type());  // default constra
+            explicit vector (size_type n, const value_type& val = value_type(),
+                 const allocator_type& alloc = allocator_type()); // fill constra
+            vector (const vector& x); // copy constra
+            // left one constract (range)
+            ~vector(); // deconstra
+
+            // iterator *begin();
+            // iterator *end();
 
 
 
 
-};
+    };
+}
