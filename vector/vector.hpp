@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 14:39:16 by sakllam           #+#    #+#             */
-/*   Updated: 2022/08/10 20:09:58 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/08/10 20:13:37 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -291,11 +291,8 @@ namespace ft
             }
             void pop_back() //Removes the last element
             {
-                if (_currSize)
-                {
-                    _alloc.destroy(&(my_vec[_currSize - 1]));
-                    _currSize--;
-                }
+                _currSize--;
+                _alloc.destroy(&(my_vec[_currSize - 1]));
             }
             // iterator insert (iterator position, const value_type& val);
             // void insert (iterator position, size_type n, const value_type& val);
