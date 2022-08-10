@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 14:39:16 by sakllam           #+#    #+#             */
-/*   Updated: 2022/08/10 18:55:23 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/08/10 20:09:58 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <memory>
 #include <exception>
 #include <iostream>
+#include <string.h>
 // namespace ft
 // {
 //     template<class T, class alloc = std::allocator<T> >
@@ -192,7 +193,7 @@ namespace ft
                 this->_currSize = x._currSize;
                 this->_capacity = x._capacity;
                 my_vec = _alloc.allocate(sizeof(value_type) * _capacity);
-                memccpy(my_vec, x.my_vec, sizeof(value_type) * _currSize);
+                memcpy(my_vec, x.my_vec, sizeof(value_type) * _currSize);
                 return this;
             }
             reference operator[] (size_type n) //operator[]
@@ -223,7 +224,7 @@ namespace ft
                 value_type   *new_vec;
                 new_vec = _alloc.allocate(sizeof(value_type) * n, 0);
                 memset(new_vec, 0, sizeof(value_type) * n);
-                memccpy(new_vec, my_vec, sizeof(value_type) * _currSize);
+                memcpy(new_vec, my_vec, sizeof(value_type) * _currSize);
                 _alloc.deallocate(my_vec);
                 my_vec = new_vec;
                 _capacity = n;
@@ -262,7 +263,7 @@ namespace ft
             // template <class InputIterator>
             // void assign (InputIterator first, InputIterator last);	
             // void assign (size_type n, const value_type& val);
-            void push_back (const value_type& val)
+            void push_back (const value_type& val) // add a new element
             {
                 if (_currSize == _capacity)
                 {
@@ -274,7 +275,7 @@ namespace ft
                     memset(nv, 0, sizeof(value_type) * _capacity);
                     if (my_vec)
                     {
-                        memccpy(nv, my_vec, sizeof(value_type) * _currSize);
+                        memcpy(nv, my_vec, sizeof(value_type) * _currSize);
                         int i = 0;
                         while (i < _currSize)
                         {
@@ -288,14 +289,37 @@ namespace ft
                 my_vec[_currSize] = val;
                 _currSize++;
             }
-            void pop_back();
+            void pop_back() //Removes the last element
+            {
+                if (_currSize)
+                {
+                    _alloc.destroy(&(my_vec[_currSize - 1]));
+                    _currSize--;
+                }
+            }
             // iterator insert (iterator position, const value_type& val);
             // void insert (iterator position, size_type n, const value_type& val);
             // template <class InputIterator>
             // void insert (iterator position, InputIterator first, InputIterator last);
             // iterator erase (iterator position);
             // iterator erase (iterator first, iterator last);
-            void swap (vector& x);
+            void swap (vector& x) //content is swapped with that of this container.
+            {
+                value_type *swapvec = my_vec;
+                size_type swapcapa = _capacity;
+                size_type swapsize = _currSize;
+                alloc swapaloc = _alloc;
+
+                my_vec = x.my_vec;
+                _capacity = x._capacity;
+                _currSize = x._currSize;
+                _alloc = x._alloc;
+
+                x.my_vec = swapvec;
+                x._capacity = swapcapa;
+                x._currSize = swapsize;
+                x._alloc = swapaloc;
+            }
             void clear();
                                 // Allocator
             allocator_type get_allocator() const;
