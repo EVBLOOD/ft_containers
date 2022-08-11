@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 14:39:16 by sakllam           #+#    #+#             */
-/*   Updated: 2022/08/11 12:40:41 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/08/11 14:16:05 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,9 +192,9 @@ namespace ft
                 }
                 this->_currSize = x._currSize;
                 this->_capacity = x._capacity;
-                my_vec = _alloc.allocate(sizeof(value_type) * _capacity);
-                memcpy(my_vec, x.my_vec, sizeof(value_type) * _currSize);
-                return this;
+                my_vec = _alloc.allocate(_capacity);
+                memcpy(my_vec, x.my_vec, _currSize  * sizeof(value_type));
+                return *this;
             }
             reference operator[] (size_type n) //operator[]
             {
@@ -222,14 +222,63 @@ namespace ft
                 if (n <= _capacity)
                     return ;
                 value_type   *new_vec;
-                new_vec = _alloc.allocate(sizeof(value_type) * n, 0);
-                memset(new_vec, 0, sizeof(value_type) * n);
-                memcpy(new_vec, my_vec, sizeof(value_type) * _currSize);
-                _alloc.deallocate(my_vec);
+                new_vec = _alloc.allocate(n, 0);
+                memset(new_vec, 0, n  * sizeof(value_type));
+                memcpy(new_vec, my_vec, _currSize  * sizeof(value_type));
+                _alloc.deallocate(my_vec, _capacity);
                 my_vec = new_vec;
                 _capacity = n;
             }
-            void resize (size_type n, value_type val = value_type());
+            void resize (size_type n, value_type val = value_type()) // TODO
+            {
+
+                if (n < _currSize)
+                {
+                    // the content is reduced to its first n elements, removing those beyond (and destroying them).
+                }
+                if (n > _currSize)
+                {
+                    /*
+                        the content is expanded by inserting at the end as many elements as needed to reach a size of n.
+                        If val is specified, the new elements are initialized as copies of val, otherwise, they are value-initialized.
+                    */
+                }
+                if (n > _capacity)
+                {
+                    /*
+                    an automatic reallocation of the allocated storage space takes place.
+                    */
+                }
+                // Notice that this function changes the actual content of the container by inserting or erasing elements from it.
+
+
+
+
+
+                // value_type *nv;
+
+                // nv = my_vec;
+                // if (n > _capacity)
+                //     nv = _alloc.allocate(n);
+                // int i = 0;
+                // while (i < n && i < _currSize)
+                // {
+                //     _alloc.destroy(&(my_vec[i]));
+                //     i++;
+                // }
+                // if (n > _capacity)
+                //     _alloc.deallocate(my_vec, _capacity);
+                // i = 0;
+                // while (i < n)
+                // {
+                //     nv[i] = val;
+                //     i++;
+                // }
+                // _currSize = n;
+                // if (n > _capacity)
+                //     _capacity = _currSize;
+                // my_vec = nv;
+            }
                                 // access elements
             reference at (size_type n)
             {
@@ -268,44 +317,47 @@ namespace ft
 
                 nv = my_vec;
                 if (n > _capacity)
-                {
-                    nv = _alloc.allocate(sizeof(value_type) * n);
-                    int i = 0;
-                    while (i < n)
-                    {
-                        nv[i] = val;
-                        i++;
-                    }
-                }
+                    nv = _alloc.allocate(n);
                 int i = 0;
                 while (i < n && i < _currSize)
                 {
-                    _alloc.destroy(my_vec);
+                    _alloc.destroy(&(my_vec[i]));
                     i++;
                 }
-                _alloc.deallocate(my_vec);
+                if (n > _capacity)
+                    _alloc.deallocate(my_vec, _capacity);
+                i = 0;
+                while (i < n)
+                {
+                    nv[i] = val;
+                    i++;
+                }
+                _currSize = n;
+                if (n > _capacity)
+                    _capacity = _currSize;
                 my_vec = nv;
             }
             void push_back (const value_type& val) // add a new element
             {
                 if (_currSize == _capacity)
                 {
+                    size_type oldcp = _capacity;
                     if (_capacity == 0 || _capacity == 1)
                         _capacity++;
                     else
                         _capacity = _capacity * 2;
-                    value_type *nv = _alloc.allocate(sizeof(value_type) * _capacity);
-                    memset(nv, 0, sizeof(value_type) * _capacity);
+                    value_type *nv = _alloc.allocate(_capacity);
+                    memset(nv, 0, _capacity * sizeof(value_type));
                     if (my_vec)
                     {
-                        memcpy(nv, my_vec, sizeof(value_type) * _currSize);
+                        memcpy(nv, my_vec, _currSize  * sizeof(value_type));
                         int i = 0;
                         while (i < _currSize)
                         {
                             _alloc.destroy(&(my_vec[i]));
                             i++;
                         }
-                        _alloc.deallocate(my_vec);
+                        _alloc.deallocate(my_vec, oldcp);
                     }
                     my_vec = nv;
                 }
@@ -319,12 +371,17 @@ namespace ft
                     return;
                 _alloc.destroy(&(my_vec[_currSize - 1]));
             }
+
+            // start : TODO
             // iterator insert (iterator position, const value_type& val);
             // void insert (iterator position, size_type n, const value_type& val);
             // template <class InputIterator>
             // void insert (iterator position, InputIterator first, InputIterator last);
             // iterator erase (iterator position);
             // iterator erase (iterator first, iterator last);
+            // end : TODO
+
+
             void swap (vector& x) //content is swapped with that of this container.
             {
                 value_type *swapvec = my_vec;
@@ -342,10 +399,22 @@ namespace ft
                 x._currSize = swapsize;
                 x._alloc = swapaloc;
             }
-            void clear();
+            void clear()
+            {
+                int i = 0;
+                while (i < _currSize)
+                {
+                    _alloc.destroy(&(my_vec[i]));
+                    i++;
+                }
+                _currSize = 0;
+            }
                                 // Allocator
-            allocator_type get_allocator() const;
-                                // Iterators
+            allocator_type get_allocator() const
+            {
+                return (_alloc);
+            }
+                                // Iterators  : TODO
             /*
             iterator begin();
             const_iterator begin() const;
