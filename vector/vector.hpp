@@ -6,12 +6,13 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 14:39:16 by sakllam           #+#    #+#             */
-/*   Updated: 2022/08/11 14:16:05 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/08/11 15:42:01 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #pragma once
+#include <cstring>
 #include <memory>
 #include <exception>
 #include <iostream>
@@ -205,6 +206,10 @@ namespace ft
                 return my_vec[n];
             }
                                 // capacity
+            size_type max_size() const
+            {
+                return _alloc.max_size();
+            }
             size_type size() const // vector current size
             {
                 return (_currSize);
@@ -229,55 +234,43 @@ namespace ft
                 my_vec = new_vec;
                 _capacity = n;
             }
-            void resize (size_type n, value_type val = value_type()) // TODO
+            size_type max_size() const;
+            void resize (size_type n, value_type val = value_type())
             {
 
                 if (n < _currSize)
                 {
-                    // the content is reduced to its first n elements, removing those beyond (and destroying them).
-                }
-                if (n > _currSize)
-                {
-                    /*
-                        the content is expanded by inserting at the end as many elements as needed to reach a size of n.
-                        If val is specified, the new elements are initialized as copies of val, otherwise, they are value-initialized.
-                    */
+                    int i = 0;
+                    while (i < n)
+                    {
+                        _alloc.destroy(&(my_vec[i]));
+                        i++;
+                    }
+                    return ;
                 }
                 if (n > _capacity)
                 {
-                    /*
-                    an automatic reallocation of the allocated storage space takes place.
-                    */
+                    value_type *nv = _alloc.allocate(n);
+                    memcpy(nv, my_vec, sizeof(value_type) * _currSize);
+                    int i = _currSize;
+                    while (i < n)
+                    {
+                        nv[i] = val;
+                        i++;
+                    }
+                    _capacity = n;
+                    return ;
                 }
-                // Notice that this function changes the actual content of the container by inserting or erasing elements from it.
-
-
-
-
-
-                // value_type *nv;
-
-                // nv = my_vec;
-                // if (n > _capacity)
-                //     nv = _alloc.allocate(n);
-                // int i = 0;
-                // while (i < n && i < _currSize)
-                // {
-                //     _alloc.destroy(&(my_vec[i]));
-                //     i++;
-                // }
-                // if (n > _capacity)
-                //     _alloc.deallocate(my_vec, _capacity);
-                // i = 0;
-                // while (i < n)
-                // {
-                //     nv[i] = val;
-                //     i++;
-                // }
-                // _currSize = n;
-                // if (n > _capacity)
-                //     _capacity = _currSize;
-                // my_vec = nv;
+                if (n > _currSize)
+                {
+                    int i = _currSize;
+                    while (i < n)
+                    {
+                        my_vec[i] = val;
+                        i++;
+                    }
+                    return;
+                }
             }
                                 // access elements
             reference at (size_type n)
@@ -309,7 +302,7 @@ namespace ft
                 return (my_vec[_currSize - 1]);
             }
                                 //  Modifiers
-            // template <class InputIterator>
+            // template <class InputIterator> // TODO
             // void assign (InputIterator first, InputIterator last);	
             void assign (size_type n, const value_type& val)
             {
