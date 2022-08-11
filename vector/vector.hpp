@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 14:39:16 by sakllam           #+#    #+#             */
-/*   Updated: 2022/08/10 20:13:37 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/08/11 12:40:41 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -262,7 +262,30 @@ namespace ft
                                 //  Modifiers
             // template <class InputIterator>
             // void assign (InputIterator first, InputIterator last);	
-            // void assign (size_type n, const value_type& val);
+            void assign (size_type n, const value_type& val)
+            {
+                value_type *nv;
+
+                nv = my_vec;
+                if (n > _capacity)
+                {
+                    nv = _alloc.allocate(sizeof(value_type) * n);
+                    int i = 0;
+                    while (i < n)
+                    {
+                        nv[i] = val;
+                        i++;
+                    }
+                }
+                int i = 0;
+                while (i < n && i < _currSize)
+                {
+                    _alloc.destroy(my_vec);
+                    i++;
+                }
+                _alloc.deallocate(my_vec);
+                my_vec = nv;
+            }
             void push_back (const value_type& val) // add a new element
             {
                 if (_currSize == _capacity)
@@ -292,6 +315,8 @@ namespace ft
             void pop_back() //Removes the last element
             {
                 _currSize--;
+                if (my_vec == NULL)
+                    return;
                 _alloc.destroy(&(my_vec[_currSize - 1]));
             }
             // iterator insert (iterator position, const value_type& val);
