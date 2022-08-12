@@ -6,17 +6,23 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 14:39:16 by sakllam           #+#    #+#             */
-/*   Updated: 2022/08/11 15:42:01 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/08/12 20:19:07 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #pragma once
+#include <cstddef>
 #include <cstring>
 #include <memory>
 #include <exception>
 #include <iostream>
-#include <string.h>
+#include <type_traits>
+#include "../additional/iterators_traits.hpp"
+#include "../additional/enable_if.hpp"
+// #include ""
+// #include <string.h>
+// #include <type_traits>
 // namespace ft
 // {
 //     template<class T, class alloc = std::allocator<T> >
@@ -107,6 +113,9 @@ namespace ft
         typedef     size_t       size_type;
         typedef typename allocator_type::const_reference const_reference;
         typedef typename allocator_type::reference reference;
+		typedef typename ft::My_Iter<T> iterator;
+		typedef const iterator const_iterator;
+        // typedef typename iterator_traits<T> ;
         // typedef ft_vector<T, alloc> * iterator;
                                 // well we found something to handle the error!
         static_assert(std::is_same<typename allocator_type::value_type, value_type>::value, "Error in types: the allocater and the value");
@@ -177,7 +186,17 @@ namespace ft
                     _alloc.deallocate(my_vec, _capacity);
                 }
             }
-            // left one constract (range)
+            template <class InputIterator>
+        	vector (typename ft::enable_if<std::is_class< InputIterator>::value, InputIterator>::type first, InputIterator last,
+                			const allocator_type& ac = allocator_type())
+								: _currSize(0), _capacity(0), my_vec(NULL), _alloc(ac)
+			{
+				while (first != last)
+				{
+					push_back(*first);
+					first++;
+				}
+			}
                                 // operators
             vector& operator= (const vector& x) //operator=
             {
@@ -208,6 +227,8 @@ namespace ft
                                 // capacity
             size_type max_size() const
             {
+                if (std::is_same<value_type, char>::value)
+                    return _alloc.max_size() / 2;
                 return _alloc.max_size();
             }
             size_type size() const // vector current size
@@ -234,7 +255,6 @@ namespace ft
                 my_vec = new_vec;
                 _capacity = n;
             }
-            size_type max_size() const;
             void resize (size_type n, value_type val = value_type())
             {
 
@@ -408,11 +428,23 @@ namespace ft
                 return (_alloc);
             }
                                 // Iterators  : TODO
+            iterator begin()
+			{
+				return iterator(my_vec);
+			}
+            iterator end()
+			{
+				return iterator(my_vec + _currSize);
+			}
+            const_iterator begin() const
+			{
+				return const_iterator(my_vec);
+			}
+			const_iterator end() const
+			{
+				return const_iterator(my_vec + _currSize);
+			}
             /*
-            iterator begin();
-            const_iterator begin() const;
-            iterator end();
-            const_iterator end() const;
             reverse_iterator rbegin();
             const_reverse_iterator rbegin() const;
             reverse_iterator rend();

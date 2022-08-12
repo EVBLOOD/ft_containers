@@ -102,6 +102,7 @@
 
 #include "vector.hpp"
 #include <iostream>
+#include <vector>
 
 using std::cout;
 
@@ -387,4 +388,10 @@ int main() {
 
   std::cerr << "all passed\n";
   system("leaks a.out");
+
+  std::vector<int> s1;
+  std::vector<char> s2;
+
+  cout << s1.max_size() << "\n";
+  cout << s2.max_size() << std::endl;
 }
