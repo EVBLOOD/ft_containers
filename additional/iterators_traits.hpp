@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 18:27:17 by sakllam           #+#    #+#             */
-/*   Updated: 2022/08/12 19:59:37 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/08/12 21:24:49 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,23 +85,23 @@ namespace ft {
             {
                 return *data;
             }
-            My_Iter& operator++() const
+            My_Iter& operator++()
             {
                 ++data;
                 return *this;
             }
-            My_Iter& operator++(int) const
+            My_Iter operator++(int)
             {
                 My_Iter<T> temp(data);
                 ++data;
                 return temp;
             }
-            My_Iter &operator--() const
+            My_Iter &operator--()
             {
                 --data;
                 return *this;
             }
-            My_Iter &operator--(int) const
+            My_Iter operator--(int)
             {
                 My_Iter<T> temp(data);
                 --data;
@@ -135,13 +135,13 @@ namespace ft {
             {
                 return data >= cmp.data;
             }
-            My_Iter &operator+(difference_type x)
+            My_Iter operator+(difference_type x)
             {
-                return nv(data + x);
+                return My_Iter<T>(data + x);
             }
-            My_Iter &operator-(difference_type x)
+            My_Iter operator-(difference_type x)
             {
-                return nv(data - x);
+                return My_Iter(data - x);
             }
             void operator+=(difference_type x)
             {
@@ -153,7 +153,7 @@ namespace ft {
             }
             reference operator[](difference_type x)
             {
-                return data + x;
+                return *(data + x);
             }
             // My_Iter operator+(difference_type x)
             // {

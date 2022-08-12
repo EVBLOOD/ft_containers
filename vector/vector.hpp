@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 14:39:16 by sakllam           #+#    #+#             */
-/*   Updated: 2022/08/12 20:19:07 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/08/12 20:26:11 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ namespace ft
     template<class T, class alloc = std::allocator<T> >
     class vector
     {
-
+		public:
         typedef     alloc       allocator_type;
         typedef     T           value_type;
         typedef     size_t       size_type;
