@@ -792,6 +792,37 @@ int main() {
     std::cout << "testing operator++ post overloading in vectorIterator :: pass\n";
     std::cout << "testing operator-- post overloading in vectorIterator :: pass\n";
   }
+  {
+    ft::vector<int> x(10, 11);
+    std::vector<int> y(10, 11);
+    x.insert(x.begin(), 0);
+    y.insert(y.begin(), 0);
+    assert(x[0] == y[0]);
+    std::cout << "testing a normal test with insert\n";
+  }
+  { //seg in both
+    ft::vector<int> x;
+    std::vector<int> y;
+    x.insert(x.begin(), 0);
+    y.insert(y.begin(), 0);
+    assert(x[0] == y[0]);
+    std::cout << "an exteam test with insert\n";
+  }
+  // {
+  //   ft::vector<int> x(10, 11);
+  //   std::vector<int> y(10, 11);
+  //   ft::My_Iter<int> v =  x.begin() + 13;
+  //   std::vector<int>::iterator z = y.begin() + 13;
+  //   cout << x._capacity << " | " << y.capacity() << "\n";
+  //   x.insert(x.end(), 1);
+  //   // y.insert(y.end(), 1);
+  //   // x.insert(v, 0);
+  //   // y.insert(z, 0);
+  //   cout << x._capacity << " | " << y.capacity() << "\n";
+  //   assert(x[10] == y[10]);
+  //   assert(x[10] == 1);
+  //   std::cout << "an exteam test with insert\n";
+  // }
   std::cerr << "all passed\n";
   system("leaks a.out");
 }

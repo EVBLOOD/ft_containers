@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 14:39:16 by sakllam           #+#    #+#             */
-/*   Updated: 2022/08/13 11:38:07 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/08/13 16:57:05 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -397,10 +397,81 @@ namespace ft
             }
 
             // start : TODO
-            // iterator insert (iterator position, const value_type& val);
-            // void insert (iterator position, size_type n, const value_type& val);
-            // template <class InputIterator>
-            // void insert (iterator position, InputIterator first, InputIterator last);
+            iterator insert (iterator position, const value_type& val)
+            {
+                std::cout << "start\n";
+                // how many one to find the pos
+                iterator start = this->begin();
+                iterator end = this->end();
+                int counter = 0;
+                while (start != position && start != end) // seg?
+                {
+                    start++;
+                    counter++;
+                }
+                std::cout << "end\n";
+
+                if (_currSize == _capacity) // allocaing if it's nessecry
+                {
+                    size_type oldcp = _capacity;
+                    if (_capacity == 0 || _capacity == 1)
+                        _capacity++;
+                    else
+                        _capacity = _capacity * 2;
+                    value_type *nv = _alloc.allocate(_capacity);
+                    memset(nv, 0, _capacity * sizeof(value_type));
+                    if (my_vec)
+                    {
+                        memcpy(nv, my_vec, _currSize  * sizeof(value_type));
+                        int i = 0;
+                        while (i < _currSize)
+                        {
+                            _alloc.destroy(&(my_vec[i]));
+                            i++;
+                        }
+                        _alloc.deallocate(my_vec, oldcp);
+                    }
+                    my_vec = nv;
+                }
+                start = this->begin() + counter;
+                end = this->end();
+                value_type tmp = start[0];
+                start[0] = val;
+                while (1)
+                {
+                    if (start == end)
+                        break;
+                    start++;
+                    if (start == end)
+                        break;
+                    *start = tmp;
+                    if (start + 1 == end)
+                        break;
+                    tmp = *(start + 1);
+                }
+                _currSize++;
+                return position;
+            }
+            void insert (iterator position, size_type n, const value_type& val)
+            {
+                int i = 0;
+                while (i < n)
+                {
+                    insert(position, val);
+                    position++;
+                    i++;
+                }
+            }
+            template <class InputIterator>
+            void insert (iterator position, typename ft::enable_if<std::is_class< InputIterator>::value, InputIterator>::type first, InputIterator last)
+            {
+                while (first != last)
+                {
+                    insert(position, *first);
+                    position++;
+                    first++;
+                }
+            }
             // iterator erase (iterator position);
             // iterator erase (iterator first, iterator last);
             // end : TODO
