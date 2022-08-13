@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 14:39:16 by sakllam           #+#    #+#             */
-/*   Updated: 2022/08/12 20:26:11 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/08/13 11:35:08 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ namespace ft
         // typedef typename iterator_traits<T> ;
         // typedef ft_vector<T, alloc> * iterator;
                                 // well we found something to handle the error!
-        static_assert(std::is_same<typename allocator_type::value_type, value_type>::value, "Error in types: the allocater and the value");
+        // static_assert(std::is_same<typename allocator_type::value_type, value_type>::value, "Error in types: the allocater and the value");
                                 // attributes
         value_type   *my_vec;
         size_t      _capacity;
@@ -266,6 +266,7 @@ namespace ft
                         _alloc.destroy(&(my_vec[i]));
                         i++;
                     }
+                    _currSize = n;
                     return ;
                 }
                 if (n > _capacity)
@@ -278,7 +279,16 @@ namespace ft
                         nv[i] = val;
                         i++;
                     }
+                    // i = 0;
+                    // while (i < _currSize)
+                    // {
+                    //     alloc.destroy((&));
+                    //     i++;
+                    // }
+                    _alloc.deallocate(my_vec, _capacity);
+                    my_vec = nv;
                     _capacity = n;
+                    _currSize = n;
                     return ;
                 }
                 if (n > _currSize)
@@ -289,6 +299,7 @@ namespace ft
                         my_vec[i] = val;
                         i++;
                     }
+                    _currSize = n;
                     return;
                 }
             }
