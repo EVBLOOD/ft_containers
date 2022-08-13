@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 14:39:16 by sakllam           #+#    #+#             */
-/*   Updated: 2022/08/13 16:57:05 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/08/13 21:19:32 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,8 +113,8 @@ namespace ft
         typedef     size_t       size_type;
         typedef typename allocator_type::const_reference const_reference;
         typedef typename allocator_type::reference reference;
-		typedef typename ft::My_Iter<T> iterator;
-		typedef const iterator const_iterator;
+		typedef ft::My_Iter<T> iterator;
+		typedef ft::My_Iter<const T> const_iterator;
         // typedef typename iterator_traits<T> ;
         // typedef ft_vector<T, alloc> * iterator;
                                 // well we found something to handle the error!
@@ -124,7 +124,7 @@ namespace ft
         size_t      _capacity;
         size_t      _currSize;
         allocator_type  _alloc;
-        public:
+        // public:
                                 // constracting and deconstracting
             explicit vector (const allocator_type& _alloc = allocator_type())  // default constra
             {
@@ -137,7 +137,7 @@ namespace ft
             {
                 try
                 {
-                    my_vec = _alloc.allocate(n * sizeof(value_type));
+                    my_vec = _alloc.allocate(n);
                     _capacity = n;
                     _currSize = n;
                     // fill with the vals
@@ -397,7 +397,7 @@ namespace ft
             }
 
             // start : TODO
-            iterator insert (iterator position, const value_type& val)
+            iterator insert (iterator position, const value_type& val) // return to fix
             {
                 std::cout << "start\n";
                 // how many one to find the pos
@@ -410,7 +410,6 @@ namespace ft
                     counter++;
                 }
                 std::cout << "end\n";
-
                 if (_currSize == _capacity) // allocaing if it's nessecry
                 {
                     size_type oldcp = _capacity;
@@ -454,26 +453,61 @@ namespace ft
             }
             void insert (iterator position, size_type n, const value_type& val)
             {
+                iterator j = this->begin();
+                int counter = 0;
+                while (j != position && j != this->end())
+                {
+                    j++;
+                    counter++;
+                }
                 int i = 0;
                 while (i < n)
                 {
-                    insert(position, val);
+                    iterator x = this->begin() + counter;
+                    insert(x, val);
                     position++;
+                    counter++;
                     i++;
                 }
             }
-            template <class InputIterator>
-            void insert (iterator position, typename ft::enable_if<std::is_class< InputIterator>::value, InputIterator>::type first, InputIterator last)
-            {
-                while (first != last)
-                {
-                    insert(position, *first);
-                    position++;
-                    first++;
-                }
-            }
-            // iterator erase (iterator position);
-            // iterator erase (iterator first, iterator last);
+            // template <class InputIterator>
+            // void insert (iterator position, typename ft::enable_if<std::is_class< InputIterator>::value, InputIterator>::type first, InputIterator last)
+            // {
+            //     iterator j = this->begin();
+            //     int i = 0;
+            //     while (j != position && j != this->end())
+            //     {
+            //         j++;
+            //         i++;
+            //     }
+            //     iterator x = this->begin();
+            //     while (first != last)
+            //     {
+            //         iterator x = this->begin() + i;
+            //         insert(x, *first);
+            //         i++;
+            //         first++;
+            //     }
+            // }
+            // iterator erase (iterator position)
+            // {
+            //     iterator tmp = position;
+            //     iterator en = this->end();
+            //     _alloc.destroy(&position);
+            //     while (position + 1 != en)
+            //     {
+            //         *position = *(position + 1);
+            //         position++;
+            //     }
+            //     return tmp;
+            // }
+            // iterator erase (iterator first, iterator last)
+            // {
+            //     int counter = 0;
+            //     iterator bg = this->begin();
+            //     while (bg != this->end() && bg != first)
+            //         bg++;
+            // }
             // end : TODO
 
 
