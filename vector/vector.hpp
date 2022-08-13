@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 14:39:16 by sakllam           #+#    #+#             */
-/*   Updated: 2022/08/13 11:35:08 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/08/13 11:38:07 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ namespace ft
         // typedef typename iterator_traits<T> ;
         // typedef ft_vector<T, alloc> * iterator;
                                 // well we found something to handle the error!
-        // static_assert(std::is_same<typename allocator_type::value_type, value_type>::value, "Error in types: the allocater and the value");
+        static_assert((std::is_same<typename allocator_type::value_type, value_type>::value), "Error in types: the allocater and the value");
                                 // attributes
         value_type   *my_vec;
         size_t      _capacity;
