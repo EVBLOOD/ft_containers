@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 14:39:16 by sakllam           #+#    #+#             */
-/*   Updated: 2022/08/14 13:43:27 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/08/14 16:03:47 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <memory>
 #include <exception>
 #include <iostream>
+#include <sys/_types/_size_t.h>
 #include <type_traits>
 #include "../additional/iterators_traits.hpp"
 #include "../additional/enable_if.hpp"
@@ -29,7 +30,7 @@ namespace ft
 		public:
         typedef     alloc       allocator_type;
         typedef     T           value_type;
-        typedef     size_t       size_type;
+        typedef     ptrdiff_t       size_type;
         typedef typename allocator_type::const_reference const_reference;
         typedef typename allocator_type::reference reference;
 		typedef ft::My_Iter<T> iterator;
@@ -40,8 +41,8 @@ namespace ft
         static_assert((std::is_same<typename allocator_type::value_type, value_type>::value), "Error in types: the allocater and the value");
                                 // attributes
         value_type   *my_vec;
-        size_t      _capacity;
-        size_t      _currSize;
+        size_type      _capacity;
+        size_type      _currSize;
         allocator_type  _alloc;
         // public:
                                 // constracting and deconstracting

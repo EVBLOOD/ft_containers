@@ -1525,6 +1525,7 @@
 // }
 
 #include "vector.hpp"
+#include <cstddef>
 #include <iostream>
 #include <list>
 #include <string>
@@ -1867,11 +1868,12 @@ int main() {
     assert(lst.back() == vec2[0]);
     std::cout << "testing range constructor :: pass\n";
   }
-  // {
-  //   ft::vector<std::string> vec;
-  //   assert(vec.begin() == NULL);
-  //   assert(vec.end() == NULL);
-  // }
+  {
+    ft::vector<std::string> vec;
+    assert(vec.begin() == NULL);
+    assert(vec.end() == NULL);
+    std::string *my_vec = NULL;
+  }
   {
     ft::vector<int> vec;
     vec.push_back(5);

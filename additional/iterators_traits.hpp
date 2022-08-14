@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 18:27:17 by sakllam           #+#    #+#             */
-/*   Updated: 2022/08/14 11:53:09 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/08/14 16:34:24 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ namespace ft {
     template<class T>
     class My_Iter // : public iterator_traits<T> <why????????>
     {
+        private:
+            My_Iter(const long x) {};
         public:
         // members ! I may change this one later!
         //      using thw iterator and trait_iterator to work on it in generic
@@ -68,12 +70,16 @@ namespace ft {
         // atributes
         T *data;
                             // constra && deconstra
-            My_Iter() : data(NULL) {}; // don't need it for the momnt
+            explicit My_Iter() : data(NULL) {}; // don't need it for the momnt
              
-            template<class type>
-            My_Iter(const type &x) : data(&*x){};
+            template<class iter>
+            explicit My_Iter(const iter &x)
+            {
+                data = &*x;
+            };
+            explicit My_Iter(T *ptr) : data(ptr) {};
             
-            My_Iter(T *ptr) : data(ptr) {};
+            
             ~My_Iter() {};
                             // operators :
             template<class iter>
@@ -83,6 +89,7 @@ namespace ft {
                     data = x.data;
                 return *this;
             }
+            
             reference operator*() const
             {
                 return *data;
@@ -121,13 +128,13 @@ namespace ft {
                 --data;
                 return temp;
             }
-            bool operator==(const My_Iter& cmp)
+            bool operator==(const pointer cmp) const
             {
-                return data == cmp.data;
+                return data == cmp;
             }
-            bool operator!=(const My_Iter& cmp)
+            bool operator!=(const pointer cmp)
             {
-                return data != cmp.data;
+                return data != cmp;
             }
             // reference   operator->() const
             // {
