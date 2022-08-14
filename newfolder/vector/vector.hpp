@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 17:02:04 by sakllam           #+#    #+#             */
-/*   Updated: 2022/08/14 19:23:06 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/08/14 23:43:38 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ namespace ft
         typedef typename allocator_type::reference reference;
 		typedef ft::My_Iter<value_type> iterator;
 		typedef ft::My_Iter<const value_type> const_iterator;
+        typedef typename ft::my_Reviter<value_type> reverse_iterator;
+        typedef typename ft::my_Reviter<const value_type> const_reverse_iterator;
         static_assert((std::is_same<typename allocator_type::value_type, value_type>::value), "Error in types: the allocater and the value");
         value_type   *my_vec;
         size_type      _capacity;
@@ -441,15 +443,21 @@ namespace ft
 		{
 			return const_iterator(my_vec + _currSize);
 		}
-            /*
-            reverse_iterator rbegin();
-            const_reverse_iterator rbegin() const;
-            reverse_iterator rend();
-            const_reverse_iterator rend() const;
-            */
-
-
-
-
+        reverse_iterator rbegin()
+		{
+			return reverse_iterator(my_vec);
+		}
+        reverse_iterator rend()
+		{
+			return reverse_iterator(my_vec + _currSize);
+		}
+        const_reverse_iterator rbegin() const
+		{
+			return const_reverse_iterator(my_vec);
+		}
+		const_reverse_iterator rend() const
+		{
+			return const_reverse_iterator(my_vec + _currSize);
+		}
     };
 }
