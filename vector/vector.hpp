@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 14:39:16 by sakllam           #+#    #+#             */
-/*   Updated: 2022/08/13 21:19:32 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/08/14 13:43:27 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,87 +20,6 @@
 #include <type_traits>
 #include "../additional/iterators_traits.hpp"
 #include "../additional/enable_if.hpp"
-// #include ""
-// #include <string.h>
-// #include <type_traits>
-// namespace ft
-// {
-//     template<class T, class alloc = std::allocator<T> >
-//     class vector
-//     {
-
-//         typedef     alloc       allocator_type;
-//         typedef     T           value_type;
-//         typedef     size_t       size_type;
-//         typedef typename allocator_type::const_reference const_reference;
-//         typedef typename allocator_type::reference reference;
-//         // well we found something!
-//             static_assert(std::is_same<typename allocator_type::value_type, value_type>::value, "Error in types: the allocater and the value");
-//                                 // attributes
-//         value_type   *my_vec;
-//         size_t      _capacity;
-//         size_t      _currSize;
-
-//         // typedef ft_vector<T, alloc> * iterator;
-//         // public:
-//                                 // constracting and deconstracting
-//             explicit vector (const allocator_type& _alloc = allocator_type());  // default constra
-//             explicit vector (size_type n, const value_type& val = value_type(),
-//                  const allocator_type& _alloc = allocator_type()); // fill constra (comlicated types)
-//             vector (const vector& x); // copy constra
-//             // left one constract (range)
-//             ~vector(); // deconstra
-//                                 // operators
-//             vector& operator= (const vector& x); //operator=
-//             reference operator[] (size_type n); //operator[]
-//             const_reference operator[] (size_type n) const; //operator[] const return
-//                                 // capacity
-//             size_type size() const;
-//             size_type max_size() const;
-//             void resize (size_type n, value_type val = value_type());
-//             size_type capacity() const;
-//             bool empty() const;
-//             void reserve (size_type n);
-//                                 // access elements
-//             reference at (size_type n);
-//             const_reference at (size_type n) const;
-//             reference front();
-//             const_reference front() const;
-//             reference back();
-//             const_reference back() const;
-//                                 //  Modifiers
-//             // template <class InputIterator>
-//             // void assign (InputIterator first, InputIterator last);	
-//             // void assign (size_type n, const value_type& val);
-//             void push_back (const value_type& val);
-//             void pop_back();
-//             // iterator insert (iterator position, const value_type& val);
-//             // void insert (iterator position, size_type n, const value_type& val);
-//             // template <class InputIterator>
-//             // void insert (iterator position, InputIterator first, InputIterator last);
-//             // iterator erase (iterator position);
-//             // iterator erase (iterator first, iterator last);
-//             void swap (vector& x);
-//             void clear();
-//                                 // Allocator
-//             allocator_type get_allocator() const;
-//                                 // Iterators
-//             /*
-//             iterator begin();
-//             const_iterator begin() const;
-//             iterator end();
-//             const_iterator end() const;
-//             reverse_iterator rbegin();
-//             const_reverse_iterator rbegin() const;
-//             reverse_iterator rend();
-//             const_reverse_iterator rend() const;
-//             */
-
-
-
-
-//     };
-// }
 
 namespace ft
 {
@@ -333,8 +252,25 @@ namespace ft
                 return (my_vec[_currSize - 1]);
             }
                                 //  Modifiers
-            // template <class InputIterator> // TODO
-            // void assign (InputIterator first, InputIterator last);	
+            template <class InputIterator> // TODO
+            void assign (typename ft::enable_if<std::is_class< InputIterator>::value, InputIterator>::type first, InputIterator last)
+            {
+                InputIterator tmp = first;
+                int x = 0;
+                while (tmp != last)
+                {
+                    x++;
+                    tmp++;
+                }
+                this->assign(x, *first);
+                first++;
+                x = 1;
+                while (first != last)
+                {
+                    my_vec[x] = *first;
+                    first++;
+                }
+            }
             void assign (size_type n, const value_type& val)
             {
                 value_type *nv;
@@ -399,17 +335,8 @@ namespace ft
             // start : TODO
             iterator insert (iterator position, const value_type& val) // return to fix
             {
-                std::cout << "start\n";
                 // how many one to find the pos
-                iterator start = this->begin();
-                iterator end = this->end();
-                int counter = 0;
-                while (start != position && start != end) // seg?
-                {
-                    start++;
-                    counter++;
-                }
-                std::cout << "end\n";
+                int counter = &*position - my_vec;
                 if (_currSize == _capacity) // allocaing if it's nessecry
                 {
                     size_type oldcp = _capacity;
@@ -432,23 +359,15 @@ namespace ft
                     }
                     my_vec = nv;
                 }
-                start = this->begin() + counter;
-                end = this->end();
-                value_type tmp = start[0];
-                start[0] = val;
-                while (1)
-                {
-                    if (start == end)
-                        break;
-                    start++;
-                    if (start == end)
-                        break;
-                    *start = tmp;
-                    if (start + 1 == end)
-                        break;
-                    tmp = *(start + 1);
-                }
                 _currSize++;
+                value_type *start = my_vec + counter;
+                value_type *end = my_vec + _currSize;
+                while (start != end)
+                {
+                    end--;
+                    *end = *(end - 1);
+                }
+                *start = val;
                 return position;
             }
             void insert (iterator position, size_type n, const value_type& val)
@@ -470,44 +389,48 @@ namespace ft
                     i++;
                 }
             }
-            // template <class InputIterator>
-            // void insert (iterator position, typename ft::enable_if<std::is_class< InputIterator>::value, InputIterator>::type first, InputIterator last)
-            // {
-            //     iterator j = this->begin();
-            //     int i = 0;
-            //     while (j != position && j != this->end())
-            //     {
-            //         j++;
-            //         i++;
-            //     }
-            //     iterator x = this->begin();
-            //     while (first != last)
-            //     {
-            //         iterator x = this->begin() + i;
-            //         insert(x, *first);
-            //         i++;
-            //         first++;
-            //     }
-            // }
-            // iterator erase (iterator position)
-            // {
-            //     iterator tmp = position;
-            //     iterator en = this->end();
-            //     _alloc.destroy(&position);
-            //     while (position + 1 != en)
-            //     {
-            //         *position = *(position + 1);
-            //         position++;
-            //     }
-            //     return tmp;
-            // }
-            // iterator erase (iterator first, iterator last)
-            // {
-            //     int counter = 0;
-            //     iterator bg = this->begin();
-            //     while (bg != this->end() && bg != first)
-            //         bg++;
-            // }
+            template <class InputIterator>
+            void insert (iterator position, typename ft::enable_if<std::is_class< InputIterator>::value, InputIterator>::type first, InputIterator last)
+            {
+                iterator j = this->begin();
+                int i = 0;
+                while (j != position && j != this->end())
+                {
+                    j++;
+                    i++;
+                }
+                iterator x = this->begin();
+                while (first != last)
+                {
+                    iterator x = this->begin() + i;
+                    insert(x, *first);
+                    i++;
+                    first++;
+                }
+            }
+            iterator erase (iterator position)
+            {
+                iterator tmp = position;
+                iterator en = this->end();
+                _alloc.destroy(&*position);
+                while (position + 1 != en)
+                {
+                    *position = *(position + 1);
+                    position++;
+                }
+                _currSize--;
+                return tmp;
+            }
+            iterator erase (iterator first, iterator last)
+            {
+                iterator bg = first;
+                while (bg != last)
+                {
+                    erase(first);
+                    bg++;
+                }
+                return first;
+            }
             // end : TODO
 
 

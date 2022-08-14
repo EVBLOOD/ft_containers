@@ -6,14 +6,15 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 18:27:17 by sakllam           #+#    #+#             */
-/*   Updated: 2022/08/12 21:24:49 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/08/14 11:53:09 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include <cstddef>
 #include <iterator>
-
+#include "../additional/enable_if.hpp"
+#include <type_traits>
 namespace ft {
     template <class Category, class T, class Distance = ptrdiff_t,
           class Pointer = T*, class Reference = T&>
@@ -26,7 +27,7 @@ namespace ft {
             typedef Category  iterator_category;
         };
     template <class Iterator>
-    class iterator_traits
+    struct iterator_traits
     {
         typedef typename  Iterator::value_type          value_type;
         typedef typename  Iterator::difference_type     difference_type;
@@ -35,7 +36,7 @@ namespace ft {
         typedef typename  Iterator::iterator_category   iterator_category;
     };
     template <class T>
-    class iterator_traits<T*>
+    struct iterator_traits<T*>
     {
         typedef T                               value_type;
         typedef ptrdiff_t                       difference_type;
@@ -44,36 +45,41 @@ namespace ft {
         typedef std::random_access_iterator_tag iterator_category;
     };
     template <class T>
-        class iterator_traits<const T*>
-    {
-        
+        struct iterator_traits<const T*>
+    { 
         typedef T                               value_type;
         typedef ptrdiff_t                       difference_type;
         typedef const T*                        pointer;
         typedef const T&                        reference;
         typedef std::random_access_iterator_tag iterator_category;
     };
+    
     template<class T>
     class My_Iter // : public iterator_traits<T> <why????????>
     {
+        public:
         // members ! I may change this one later!
         //      using thw iterator and trait_iterator to work on it in generic
-        typedef T                               value_type;
-        typedef ptrdiff_t                       difference_type;
-        typedef const T*                        pointer;
-        typedef const T&                        reference;
-        typedef std::random_access_iterator_tag iterator_category;
+        typedef typename iterator_traits<T *>::value_type           value_type;
+        typedef typename iterator_traits<T *>::difference_type      difference_type;
+        typedef typename iterator_traits<T *>::pointer              pointer;
+        typedef typename iterator_traits<T *>::reference            reference;
+        typedef typename iterator_traits<T *>::iterator_category    iterator_category;
         // atributes
         T *data;
                             // constra && deconstra
-            My_Iter() : data(NULL) {} // don't need it for the momnt 
-        public:
-            My_Iter(T *ptr) : data(ptr) {}
-            ~My_Iter() {}
+            My_Iter() : data(NULL) {}; // don't need it for the momnt
+             
+            template<class type>
+            My_Iter(const type &x) : data(&*x){};
+            
+            My_Iter(T *ptr) : data(ptr) {};
+            ~My_Iter() {};
                             // operators :
-            My_Iter &operator=(My_Iter &x)
+            template<class iter>
+            iter &operator=(iter const &x)
             {
-                if (x != this)
+                if (&x != this)
                     data = x.data;
                 return *this;
             }
@@ -81,10 +87,18 @@ namespace ft {
             {
                 return *data;
             }
-            pointer operator->() const
+            // const reference operator*() const
+            // {
+            //     return *data;
+            // }
+            reference operator->() const
             {
                 return *data;
             }
+            // const  reference operator->() const
+            // {
+            //     return *data;
+            // }
             My_Iter& operator++()
             {
                 ++data;
@@ -107,7 +121,7 @@ namespace ft {
                 --data;
                 return temp;
             }
-            bool operator==(const My_Iter& cmp) const
+            bool operator==(const My_Iter& cmp)
             {
                 return data == cmp.data;
             }
@@ -115,10 +129,10 @@ namespace ft {
             {
                 return data != cmp.data;
             }
-            reference   operator->()
-            {
-                return *data;
-            }
+            // reference   operator->() const
+            // {
+            //     return *data;
+            // }
             bool operator<(const My_Iter &cmp)
             {
                 return cmp.data > data;
