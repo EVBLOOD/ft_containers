@@ -926,15 +926,49 @@ int main() {
   }
   std::cerr << "all passed\n";
   system("leaks a.out");
-{
-  ft::pair<int,char> foo (10,'z');
-  ft::pair<int,char> bar (90,'a');
+// {
+//   ft::pair<int,char> foo (10,'z');
+//   ft::pair<int,char> bar (90,'a');
 
-  if (foo==bar) std::cout << "foo and bar are equal\n";
-  if (foo!=bar) std::cout << "foo and bar are not equal\n";
-  if (foo< bar) std::cout << "foo is less than bar\n";
-  if (foo> bar) std::cout << "foo is greater than bar\n";
-  if (foo<=bar) std::cout << "foo is less than or equal to bar\n";
-  if (foo>=bar) std::cout << "foo is greater than or equal to bar\n";
+//   if (foo==bar) std::cout << "foo and bar are equal\n";
+//   if (foo!=bar) std::cout << "foo and bar are not equal\n";
+//   if (foo< bar) std::cout << "foo is less than bar\n";
+//   if (foo> bar) std::cout << "foo is greater than bar\n";
+//   if (foo<=bar) std::cout << "foo is less than or equal to bar\n";
+//   if (foo>=bar) std::cout << "foo is greater than or equal to bar\n";
+// }
+// {
+//   ft::vector<int> foo (3,100);   // three ints with a value of 100
+//   ft::vector<int> bar (2,200);   // two ints with a value of 200
+
+//   if (foo==bar) std::cout << "foo and bar are equal\n";
+//   if (foo!=bar) std::cout << "foo and bar are not equal\n";
+//   if (foo< bar) std::cout << "foo is less than bar\n";
+//   if (foo> bar) std::cout << "foo is greater than bar\n";
+//   if (foo<=bar) std::cout << "foo is less than or equal to bar\n";
+//   if (foo>=bar) std::cout << "foo is greater than or equal to bar\n";
+// }
+{
+  unsigned int i;
+  std::vector<int> foo (3,100);   // three ints with a value of 100
+  std::vector<int> bar (5,200);   // five ints with a value of 200
+
+  foo.swap(bar);
+
+  std::cout << "foo contains:";
+  for (std::vector<int>::iterator it = foo.begin(); it!=foo.end(); ++it)
+    std::cout << ' ' << *it;
+  std::cout << '\n';
+
+  std::cout << "bar contains:";
+  for (std::vector<int>::iterator it = bar.begin(); it!=bar.end(); ++it)
+    std::cout << ' ' << *it;
+  std::cout << '\n';
+
 }
+
 }
+/*
+foo contains: 200 200 200 200 200
+bar contains: 100 100 100
+*/

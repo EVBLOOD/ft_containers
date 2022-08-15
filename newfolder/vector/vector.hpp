@@ -6,11 +6,12 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 17:02:04 by sakllam           #+#    #+#             */
-/*   Updated: 2022/08/15 13:12:18 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/08/15 19:04:20 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
+#include <algorithm>
 #include <cstddef>
 #include <cstring>
 #include <memory>
@@ -21,6 +22,7 @@
 #include "../additional/iterators_traits.hpp"
 #include "../additional/enable_if.hpp"
 #include "../additional/my_vector_iters.hpp"
+#include "../additional/lexicographical_compare.hpp"
 
 namespace ft
 {
@@ -31,12 +33,13 @@ namespace ft
         typedef     alloc       allocator_type;
         typedef     T           value_type;
         typedef     ptrdiff_t       size_type;
-        typedef typename allocator_type::const_reference const_reference;
-        typedef typename allocator_type::reference reference;
+        typedef const value_type& const_reference;
+        typedef value_type& reference;
 		typedef ft::My_Iter<value_type> iterator;
 		typedef ft::My_Iter<const value_type> const_iterator;
         typedef typename ft::my_Reviter<value_type> reverse_iterator;
         typedef typename ft::my_Reviter<const value_type> const_reverse_iterator;
+
         static_assert((std::is_same<typename allocator_type::value_type, value_type>::value), "Error in types: the allocater and the value");
         value_type   *my_vec;
         size_type      _capacity;
@@ -461,5 +464,52 @@ namespace ft
 			return const_reverse_iterator(my_vec);
 		}
     };
-    // TODO: vector operators
+    template <class T, class Alloc>
+        bool operator==(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+    {
+        if (lhs.size() != rhs.size())
+            return false;
+        int i = 0;
+        // I geuss I can use the equal function! I just don't know how so far
+        while (lhs.size() > i)
+        {
+            if (lhs[i] != rhs[i])
+                return false;
+            i++;
+        }
+        return true;
+    }
+    template <class T, class Alloc>
+      bool operator!=(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+    {
+        return !(lhs == rhs);
+    }
+    template <class T, class Alloc>
+      bool operator<(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+    {
+        return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+    }
+    template <class T, class Alloc>
+      bool operator>(const vector<T,Alloc>& rhs, const vector<T,Alloc>& lhs)
+    {
+        return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+    }
+    template <class T, class Alloc>
+      bool operator<=(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+    {
+        return !(rhs < lhs);
+    }
+    template <class T, class Alloc>
+      bool operator>=(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+    {
+        return !(lhs < rhs);
+    }
+    template <class T, class Alloc>
+        void swap (vector<T, Alloc>& x, vector<T, Alloc>& y)
+    {
+        vector<T, Alloc> tmp(x);
+        x.swap(y);
+        y.swap(tmp);
+        tmp.clear();
+    }
 }
