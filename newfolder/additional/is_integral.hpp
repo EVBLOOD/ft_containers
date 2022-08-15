@@ -1,27 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   enable_if.hpp                                      :+:      :+:    :+:   */
+/*   is_integral.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/12 12:18:44 by sakllam           #+#    #+#             */
-/*   Updated: 2022/08/12 12:51:38 by sakllam          ###   ########.fr       */
+/*   Created: 2022/08/15 19:40:37 by sakllam           #+#    #+#             */
+/*   Updated: 2022/08/15 19:48:45 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+// #pragma once
+// no idea for the moment
+// namespace ft
+// {
 
-
-#pragma once
-
-namespace ft
-{
-    template <bool Cond, class T = void> struct enable_if
-    {
-        typedef T type;
-    };
-    template <class T> struct enable_if<false, T>
-    {
+//     template <class T, T v>
+//     struct integral_constant
+//     {
         
-    };
-}
+//     };
+
+//     template <class T>
+//         struct is_integral
+//     {
+        
+//     };
+// }

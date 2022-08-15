@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 13:03:13 by sakllam           #+#    #+#             */
-/*   Updated: 2022/08/15 13:39:18 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/08/15 19:39:04 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,16 +55,16 @@ namespace ft
     template <class t1, class t2>
         bool operator<= (const pair<t1,t2>& lhs, const pair<t1,t2>& rhs)
         {
-            return !(rhs<lhs);
+            return !(rhs < lhs);
         }
     template <class t1, class t2>
         bool operator>  (const pair<t1,t2>& lhs, const pair<t1,t2>& rhs)
         {
-            return rhs<lhs;
+            return rhs < lhs;
         }
     template <class t1, class t2>
         bool operator>= (const pair<t1,t2>& lhs, const pair<t1,t2>& rhs)
         {
-            return !(lhs<rhs);
+            return !(lhs < rhs);
         }
 }
