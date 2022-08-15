@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 16:41:42 by sakllam           #+#    #+#             */
-/*   Updated: 2022/08/14 23:36:13 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/08/15 12:58:17 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,74 +141,111 @@ namespace ft
             }
     };
 
-    template<class T>
-    class my_Reviter : public My_Iter<T>
+    template<class T, class I = My_Iter<T> >
+    class my_Reviter
     {
-        
-        typedef typename ft::My_Iter<T>::value_type           value_type;
-        typedef typename ft::My_Iter<T>::difference_type      difference_type;
-        typedef typename ft::My_Iter<T>::pointer              pointer;
-        typedef typename ft::My_Iter<T>::reference            reference;
-        typedef typename ft::My_Iter<T>::iterator_category    iterator_category;
-        
-        template<class iter>
-            my_Reviter(const iter &x) : My_Iter<T>(x) {};
-        my_Reviter(T *ptr) : My_Iter<T>(ptr) {};
-        my_Reviter() : My_Iter<T>() {};
-        ~my_Reviter() {};
-        my_Reviter base()
-        {
-            return this->data;
-        }
+        private:
 
-        reference operator[](difference_type x) const
-        {
-            return *(base() + x);
-        }
+            I iter;
+            my_Reviter(const long x) {};
 
-        void operator-=(difference_type x)
-        {
-            base() += x;
-        }
+        public:
 
-        my_Reviter operator-(difference_type x) const
-        {
-            return my_Reviter(base() + x);
-        }
-        
-        my_Reviter operator+(difference_type x) const
-        {
-            return my_Reviter(base() - x);
-        }
-        my_Reviter &operator++()
-        {
-            --base();
-            return *this;
-        }
-        my_Reviter operator++(int)
-        {
-            my_Reviter temp(base());
-            --base();
-            return temp;
-        }
-        void operator+=(difference_type x)
-        {
-            base() -= x;
-        }
-        reference operator*() const
-        {
-            return *base();
-        }
-        my_Reviter &operator--()
-        {
-            ++base();
-            return *this;
-        }
-        my_Reviter operator--(int)
-        {
-            my_Reviter temp(base());
-            ++base();
-            return temp;
-        }
+            typedef typename I::value_type           value_type;
+            typedef typename I::difference_type      difference_type;
+            typedef typename I::pointer              pointer;
+            typedef typename I::reference            reference;
+            typedef typename I::iterator_category    iterator_category;
+            
+            template<class iter>
+                my_Reviter(const iter &x) : iter(x) {};
+            my_Reviter(T *ptr) : iter(ptr) {};
+            my_Reviter() : iter() {};
+            ~my_Reviter() {};
+            My_Iter<T> base()
+            {
+                return (iter);;
+            }
+            template<class itr>
+                my_Reviter &operator=(const my_Reviter &x)
+            {
+                return (iter = x.iter);
+            }
+
+            reference operator*() const
+            {
+                return *(iter - 1);
+            }
+            reference operator->() const
+            {
+                return *(iter - 1);
+            }
+            
+            my_Reviter &operator++()
+            {
+                --iter;
+                return *this;
+            }
+            my_Reviter operator++(int)
+            {
+                my_Reviter temp(iter);
+                --iter;
+                return temp;
+            }
+            my_Reviter &operator--()
+            {
+                ++iter;
+                return *this;
+            }
+            my_Reviter operator--(int)
+            {
+                my_Reviter temp(iter);
+                ++iter;
+                return temp;
+            }
+            bool operator==(const my_Reviter cmp) const
+            {
+                return iter != cmp;
+            }
+            bool operator!=(const my_Reviter cmp) const
+            {
+                return iter == cmp;
+            }
+            bool operator<(const my_Reviter &cmp) const
+            {
+                return cmp.iter < iter;
+            }
+            bool operator>(const my_Reviter &cmp) const
+            {
+                return iter < cmp.iter;
+            }
+            bool operator<=(const my_Reviter &cmp) const
+            {
+                return cmp.iter <= iter;
+            }
+            bool operator>=(const my_Reviter &cmp) const
+            {
+                return iter >= cmp.iter;
+            }
+            my_Reviter operator+(difference_type x) const
+            {
+                return my_Reviter(iter - x);
+            }
+            my_Reviter operator-(difference_type x) const
+            {
+                return my_Reviter(iter + x);
+            }
+            void operator+=(difference_type x)
+            {
+                iter -= x;
+            }
+            void operator-=(difference_type x)
+            {
+                iter += x;
+            }
+            reference operator[](difference_type x) const
+            {
+                return *(iter + x);
+            }
     };
 }

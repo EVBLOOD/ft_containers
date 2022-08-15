@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 17:02:04 by sakllam           #+#    #+#             */
-/*   Updated: 2022/08/14 23:43:38 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/08/15 12:39:08 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -443,21 +443,22 @@ namespace ft
 		{
 			return const_iterator(my_vec + _currSize);
 		}
+        
         reverse_iterator rbegin()
-		{
-			return reverse_iterator(my_vec);
-		}
-        reverse_iterator rend()
 		{
 			return reverse_iterator(my_vec + _currSize);
 		}
+        reverse_iterator rend()
+		{
+			return reverse_iterator(my_vec);
+		}
         const_reverse_iterator rbegin() const
 		{
-			return const_reverse_iterator(my_vec);
+			return const_reverse_iterator(my_vec + _currSize);
 		}
 		const_reverse_iterator rend() const
 		{
-			return const_reverse_iterator(my_vec + _currSize);
+			return const_reverse_iterator(my_vec);
 		}
     };
 }
