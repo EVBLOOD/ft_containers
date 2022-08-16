@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 16:41:42 by sakllam           #+#    #+#             */
-/*   Updated: 2022/08/15 12:58:17 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/08/16 12:43:39 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@ namespace ft
     class My_Iter
     {
         private:
-            My_Iter(const long x) {};
+            My_Iter(const long x) {
+                (void)x;
+            };
             T *data;
 
         public:
@@ -147,7 +149,9 @@ namespace ft
         private:
 
             I iter;
-            my_Reviter(const long x) {};
+            my_Reviter(const long x) {
+                (void)x;
+            };
 
         public:
 

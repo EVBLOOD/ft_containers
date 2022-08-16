@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 18:39:12 by sakllam           #+#    #+#             */
-/*   Updated: 2022/08/15 19:03:42 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/08/16 12:43:53 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ namespace ft
     {
         while (first1 != last1)
         {
-            if (*first2 == *last2 || cmp(*first2, *first1))
+            if (*first2 == *last2 || comp(*first2, *first1))
                 return false;
-            else if (cmp(*first1 < *first2))
+            else if (comp(*first1 < *first2))
                 return true;
             ++first1; ++first2;
         }

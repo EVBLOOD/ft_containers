@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 17:02:04 by sakllam           #+#    #+#             */
-/*   Updated: 2022/08/16 11:03:41 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/08/16 12:49:22 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ namespace ft
         size_type      _capacity;
         size_type      _currSize;
         allocator_type  _alloc;
-        explicit vector (const allocator_type& _alloc = allocator_type()) : my_vec(NULL), _currSize(0), _capacity(0) {}
+        explicit vector (const allocator_type& _alloc = allocator_type()) : _alloc(_alloc), my_vec(NULL), _currSize(0), _capacity(0) {}
         explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& ac = allocator_type()) : _alloc(ac), _capacity(n), _currSize(n)
         {
             try
@@ -64,11 +64,11 @@ namespace ft
                 throw std::length_error(": vector");
             }
         }
-        vector (const vector& x) : _capacity(x._capacity()), _currSize(x._currSize), _alloc(x._alloc)
+        vector (const vector& x) : _capacity(x._capacity), _currSize(x._currSize), _alloc(x._alloc)
         {
             try
             {
-                my_vec = allocator_type::allocator(x.capacity());
+                my_vec = _alloc.allocate(x._capacity);
                 int i = 0;
                 while (i < _currSize)
                 {
@@ -146,7 +146,7 @@ namespace ft
         }
         bool empty() const
         {
-            return (_currSize);
+            return (_currSize == 0);
         }
         void reserve (size_type n)
         {
@@ -303,7 +303,7 @@ namespace ft
             _currSize--;
             if (my_vec == NULL)
                 return;
-            _alloc.destroy(&(my_vec[_currSize - 1]));
+            _alloc.destroy(&(my_vec[_currSize]));
         }
         iterator insert (iterator position, const value_type& val)
         {
