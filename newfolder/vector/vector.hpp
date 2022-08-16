@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 17:02:04 by sakllam           #+#    #+#             */
-/*   Updated: 2022/08/15 19:32:58 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/08/16 11:03:41 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 #include "../additional/enable_if.hpp"
 #include "../additional/my_vector_iters.hpp"
 #include "../additional/lexicographical_compare.hpp"
+#include "../additional/is_integral.hpp"
 
 namespace ft
 {
@@ -40,7 +41,7 @@ namespace ft
         typedef typename ft::my_Reviter<value_type> reverse_iterator;
         typedef typename ft::my_Reviter<const value_type> const_reverse_iterator;
 
-        static_assert((std::is_same<typename allocator_type::value_type, value_type>::value), "Error in types: the allocater and the value");
+        static_assert((ft::is_same<typename allocator_type::value_type, value_type>::value), "Error in types: the allocater and the value");
         value_type   *my_vec;
         size_type      _capacity;
         size_type      _currSize;
@@ -131,7 +132,7 @@ namespace ft
         }
         size_type max_size() const
         {
-            if (std::is_same<value_type, char>::value)
+            if (ft::is_same<value_type, char>::value)
                 return _alloc.max_size() / 2;
             return _alloc.max_size();
         }
