@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 17:02:04 by sakllam           #+#    #+#             */
-/*   Updated: 2022/08/16 12:49:22 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/08/27 12:14:14 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ namespace ft
 		public:
         typedef     alloc       allocator_type;
         typedef     T           value_type;
-        typedef     ptrdiff_t       size_type;
+        typedef     size_t       size_type;
         typedef const value_type& const_reference;
         typedef value_type& reference;
 		typedef ft::My_Iter<value_type> iterator;
