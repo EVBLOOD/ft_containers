@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 18:06:02 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/16 17:27:03 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/20 18:45:45 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,15 @@ namespace ft
         typedef Compare cmpfun;
         typedef size_t  size_amount;
 
+        public:
         alloc                   ac;
         RedBlackTree<type_name> *head;
         cmpfun                  cmpr;
         size_amount             size;
-        RedBlackTree<type_name> *ROOT;
         
+        private:        
         
-
+        R_B_T (const cmpfun& comp = cmpfun(), const alloc& ac = alloc()) :  cmpr(comp), ac(ac) { }
         void swaping(RedBlackTree<type_name> *one, RedBlackTree<type_name> *two)
         {
             type_name   tmp = one->value;
@@ -151,8 +152,6 @@ namespace ft
         {
             if ((*head) == NULL)
             {
-                if (position == rt)
-                     ROOT = nv;
                 *head = nv;
                 nv->position = position;
                 if (position == rt)
@@ -313,7 +312,6 @@ namespace ft
                 left_rotation(&((*head)->left), false);
             return right_rotation(head, false);
         }
-
         RedBlackTree<type_name> *nephew(RedBlackTree<type_name> *node, int position)
         {
             if (position == l)
@@ -379,6 +377,42 @@ namespace ft
             ac.destroy(head);
             ac.deallocate(head, 1);            
         }
+        RedBlackTree<type_name> *begin_helper(RedBlackTree<type_name> *head)
+        {
+            if (head->left == NULL)
+                return head;
+            return begin_helper(head->left);
+        }
+          RedBlackTree<type_name> *thedeepest_left(RedBlackTree<type_name> *head)
+        {
+            if (head->left == NULL)
+                return head;
+            return thedeepest_left(head->left);
+        }
+        RedBlackTree<type_name> *next(RedBlackTree<type_name> *x, RedBlackTree<type_name> *old)
+        {
+            if (x == NULL)
+                return (NULL);
+            if (x->right && old != x->right)
+                return thedeepest_left(x->right);
+            if (x->position == l)
+                    return x->parent;
+            return next(x->parent, x);
+        }
+        RedBlackTree<type_name> *thedeepest_right(RedBlackTree<type_name> *head)
+        {
+            if (head->right == NULL)
+                return head;
+            return thedeepest_right(head->right);
+        }
+        RedBlackTree<type_name> *prev(RedBlackTree<type_name> *x, RedBlackTree<type_name> *old)
+        {
+            if (x->left && old != x->left)
+                return thedeepest_right(x->left);
+            if (x->position == r)
+                return x->parent;
+            return prev(x->parent, x);
+        }
         public:
             R_B_T() : head(NULL), size(0) {}
             ~R_B_T()
@@ -406,6 +440,24 @@ namespace ft
                 if (!head)
                     return;
                 return remove_helper(&head, element);
+            }
+            RedBlackTree<type_name> *begin()
+            {
+                return begin_helper(head);
+            }
+            RedBlackTree<type_name> *_prev(RedBlackTree<type_name> *x)
+            {
+                if (x == NULL)
+                    return thedeepest_right(head);
+                return prev(x, x);
+            }
+            RedBlackTree<type_name> *_next(RedBlackTree<type_name> *x)
+            {
+                return next(x, x);
+            }
+            RedBlackTree<type_name> *end()
+            {
+                return NULL;
             }
     };
 }
