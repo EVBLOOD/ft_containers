@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 14:41:06 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/17 10:47:50 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/20 21:50:05 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 #include "../additional/pair.hpp"
 #include "../additional/is_integral.hpp"
 #include "../additional/Red-Black-Tree/Tree_implemeted.hpp"
-#include <iterator>
-
+// #include <iterator>
+#include "../additional/my_map_iters.hpp"
 namespace ft
 {
         template < class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<ft::pair<const Key,T> > >
@@ -40,13 +40,13 @@ namespace ft
 
 				public:
             		explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : my_tree(comp, alloc) {}
-          //       	template <class InputIterator>
-          //       		map (InputIterator first, InputIterator last,
-          //       	    	const key_compare& comp = key_compare(),
-          //       	    	const allocator_type& alloc = allocator_type())
-					// {
-						
-					// }
+                	template <class InputIterator>
+                		map (InputIterator first, InputIterator last,
+                	    	const key_compare& comp = key_compare(),
+                	    	const allocator_type& alloc = allocator_type())
+					{
+            // check if input iterators	
+					}
           map (const map& x) : my_tree(x.my_tree.cmpr , x.my_tree.alloc)
 					{
             // coppy ellemneys
@@ -60,39 +60,63 @@ namespace ft
             this->my_tree.~R_B_T();
             my_tree(x);
 					}
-              //   iterator begin();
-              //   const_iterator begin() const;
-              //   iterator end();
-              //   const_iterator end() const;
-              //   reverse_iterator rbegin();
-              //   const_reverse_iterator rbegin() const;
-              //   reverse_iterator rend();
-              //   const_reverse_iterator rend() const;
-                bool empty() const
-                {
-                  return my_tree.size <= 0;
-                }
-                size_type size() const
-                {
-                  return my_tree.size();
-                }
-                size_type max_size() const
-                {
-                  return my_tree.ac.max_size();
-                }
-                mapped_type& operator[] (const key_type& k)
-                {
-                  // I need iterators for this
-                }
+          iterator begin()
+          {
+            return iterator(my_tree.begin());
+          }
+          const_iterator begin() const
+          {
+            return const_iterator(my_tree.begin());
+          }
+          iterator end()
+          {
+            return iterator(my_tree.end());
+          }
+          const_iterator end() const
+          {
+            return const_iterator(my_tree.end());
+          }
+          reverse_iterator rbegin()
+          {
+            return reverse_iterator(my_tree.end());
+          }
+          const_reverse_iterator rbegin() const
+          {
+            return const_reverse_iterator(my_tree.end());
+          }
+          reverse_iterator rend()
+          {
+            return reverse_iterator(my_tree.begin);
+          }
+          const_reverse_iterator rend() const
+          {
+            return const_reverse_iterator(my_tree.begin);
+          }
+          bool empty() const
+          {
+            return my_tree.size <= 0;
+          }
+          size_type size() const
+          {
+            return my_tree.size();
+          }
+          size_type max_size() const
+          {
+            return my_tree.ac.max_size();
+          }
+          mapped_type& operator[] (const key_type& k)
+          {
+            // I need iterators for this
+          }
                 // pair<iterator,bool> insert (const value_type& val);
               //   iterator insert (iterator position, const value_type& val);
               //   template <class InputIterator>
               //     void insert (InputIterator first, InputIterator last);
               //   void erase (iterator position);
-                size_type erase (const key_type& k)
-                {
-                  my_tree.remove(k);
-                }
+          size_type erase (const key_type& k)
+          {
+            my_tree.remove(k);
+          }
               //   void erase (iterator first, iterator last);
                 void swap (map& x)
                 {

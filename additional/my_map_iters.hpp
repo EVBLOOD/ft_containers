@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 14:29:37 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/20 18:55:47 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/20 21:41:41 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,12 @@ namespace ft
             }
             reference operator*() const
             {
-                return *data;
+                return data->value;
             }
             
             reference operator->() const
             {
-                return *data;
+                return data->value;
             }
             
             My_Iter_map &operator++()
@@ -89,12 +89,12 @@ namespace ft
 
             bool operator==(const pointer cmp) const
             {
-                return data->value->first == cmp->value->first;
+                return data->value == cmp->value;
             }
 
             bool operator!=(const pointer cmp) const
             {
-                return data->value->first != cmp->value->first;
+                return data->value != cmp->value;
             }
             
     };
@@ -135,12 +135,12 @@ namespace ft
             }
             reference operator*() const
             {
-                return *data;
+                return data->value;
             }
             
             reference operator->() const
             {
-                return *data;
+                return data->value;
             }
             
             MyRev_Iter_map &operator++()
@@ -171,12 +171,12 @@ namespace ft
 
             bool operator==(const pointer cmp) const
             {
-                return data->value->first == cmp->value->first;
+                return data->value == cmp->value;
             }
 
             bool operator!=(const pointer cmp) const
             {
-                return data->value->first != cmp->value->first;
+                return data->value != cmp->value;
             }
             
     };
