@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 18:06:02 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/21 12:32:14 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/21 17:32:12 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,10 @@
 #include <cstdlib>
 #include <memory>
 #include <iostream>
+#include <utility>
+#include "../pair.hpp"
+#include "../make_pair.hpp"
+
 namespace ft
 {
     #define red true
@@ -166,6 +170,53 @@ namespace ft
             else
                 return;
             if ((*head)->left && (*head)->left->value == nv->value)
+                (*head)->left->parent = *head;
+            else
+                (*head)->right->parent = *head;
+            if ((*head)->color == black ||
+                    (((*head)->left == NULL || (*head)->left->color == black) && ((*head)->right == NULL || (*head)->right->color == black)))
+                return;
+            if ((*head)->position == r)
+            {
+                if ((*head)->parent->left && (*head)->parent->left->color == red)
+                {
+                    (*head)->parent->left->color = black;
+                    if ((*head)->parent->position != rt)
+                        (*head)->parent->color = red;
+                    (*head)->color = black;
+                    return;
+                }
+                return balancing(&((*head)->parent), r);
+            }
+            if ((*head)->parent->right && (*head)->parent->right->color == red)
+            {
+                (*head)->parent->right->color = black;
+                if ((*head)->parent->position != rt)
+                    (*head)->parent->color = red;
+                (*head)->color = black;
+                return;
+            }
+            return balancing(&((*head)->parent), l);
+        }
+        void    insert_helper(RedBlackTree<type_name> **head, type_name value_nv, int position, ft::pair<bool, RedBlackTree<type_name>* > *x)
+        {
+            if ((*head) == NULL)
+            {
+                *head = newnode(value_nv);
+                (*head)->position = position;
+                if (position == rt)
+                    (*head)->color = black;
+                size = size + 1;
+                *x = ft::make_pair(true, *head);
+                return;
+            }
+            if (cmpr(value_nv, (*head)->value))
+                return insert_helper(&((*head)->left), value_nv, l, x);
+            else if (cmpr((*head)->value, value_nv))
+                return insert_helper(&((*head)->right), value_nv, r, x);
+            else
+                return (void)(*x = std::make_pair(false, *head));
+            if ((*head)->left && (*head)->left->value == value_nv)
                 (*head)->left->parent = *head;
             else
                 (*head)->right->parent = *head;
@@ -379,15 +430,6 @@ namespace ft
             else
                 return true;
         }
-        void free_helper(RedBlackTree<type_name> *head)
-        {
-            if (head == NULL)
-                return ;
-            free_helper(head->right);
-            free_helper(head->left);
-            ac.destroy(head);
-            ac.deallocate(head, 1);            
-        }
         RedBlackTree<type_name> *begin_helper(RedBlackTree<type_name> *head)
         {
             if (head->left == NULL)
@@ -434,6 +476,10 @@ namespace ft
             {
                 return insert(&head, newnode(value), rt);
             }
+            void _insert(type_name value, ft::pair<bool, RedBlackTree<type_name>* > *x)
+            {
+                return    insert_helper(&head, value, rt, x);
+            }
             void  printing()
             {
                 printing(this->head, 0);
@@ -473,6 +519,15 @@ namespace ft
             RedBlackTree<type_name> *end()
             {
                 return NULL;
+            }
+            void free_helper(RedBlackTree<type_name> *head)
+            {
+                if (head == NULL)
+                    return ;
+                free_helper(head->right);
+                free_helper(head->left);
+                ac.destroy(head);
+                ac.deallocate(head, 1);            
             }
     };
 }

@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 14:41:06 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/21 12:29:02 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/21 20:02:55 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <functional>
 #include <iterator>
 #include <memory>
+#include <utility>
 #include "../additional/pair.hpp"
 #include "../additional/is_integral.hpp"
 #include "../additional/Red-Black-Tree/Tree_implemeted.hpp"
@@ -28,7 +29,18 @@ namespace ft
             	typedef Key key_type;
             	typedef T mapped_type;
             	typedef Compare key_compare;
-            	typedef typename key_compare::value_comp value_compare;
+              struct value_compare
+                  : public std::binary_function<value_type, value_type, bool>
+              {
+                  private:
+                    key_compare cmp;
+                  public:
+                  value_compare(key_compare &x) : cmp(x){};
+                  bool operator()(const value_type &a, const value_type &b)
+                  {
+                    return cmp(a.first, b.first);
+                  }
+              };
             	typedef Alloc allocator_type;
             	typedef typename allocator_type::reference reference;
             	typedef typename allocator_type::const_reference	const_reference;
@@ -119,46 +131,103 @@ namespace ft
           }
           mapped_type& operator[] (const key_type& k)
           {
-            my_tree.find(k);
-            // I need iterators for this
+            RedBlackTree<value_type> *f = my_tree.find(k);
+            if (f)
+             return f->value->second;
+            retrun (*((this->insert(make_pair(k,mapped_type()))).first));
           }
-                // pair<iterator,bool> insert (const value_type& val);
-              //   iterator insert (iterator position, const value_type& val);
-              //   template <class InputIterator>
-              //     void insert (InputIterator first, InputIterator last);
-              //   void erase (iterator position);
+          pair<iterator,bool> insert (const value_type& val)
+          {
+            ft::pair<bool, RedBlackTree<value_type>*> x;
+            my_tree._insert(val, &x);
+            return (ft::make_pair(MyRev_Iter_map<value_type>(x.second), x.first));
+          }
+          iterator insert (iterator position, const value_type& val)
+          {
+            (void)position;
+            my_treeinsert(val);
+          }
+          template <class InputIterator>
+            void insert (ft::enable_if<ft::is_same<typename InputIterator::iterator_category, std::input_iterator_tag>::value, InputIterator> first, InputIterator last)
+          {
+            while (first != last)
+            {
+              my_tree.insert(*first);
+              first++;
+            }
+          }
+          void erase (iterator position)
+          {
+            my_tree.remove(*position);
+          }
           size_type erase (const key_type& k)
           {
             my_tree.remove(k);
           }
-              //   void erase (iterator first, iterator last);
-                void swap (map& x)
-                {
-                  map name(x);
-                  
-                  x = *this;
-                  *this = name;
-                }
-                void clear()
-                {
-                  my_tree.~R_B_T();
-                }
-                key_compare key_comp() const
-                {
-                  return my_tree.cmpr;
-                }
-                // value_compare value_comp() const
-                // {
-                //   return my_tree.cmpr.value_compare();
-                // }
-              //   iterator find (const key_type& k);
-              //   const_iterator find (const key_type& k) const;
-                size_type count (const key_type& k) const;
-              //   iterator lower_bound (const key_type& k);
-              //   const_iterator lower_bound (const key_type& k) const;
-              //   iterator upper_bound (const key_type& k);
-              //   const_iterator upper_bound (const key_type& k) const;
-              //   pair<const_iterator,const_iterator> equal_range (const key_type& k) const;
+          void erase (iterator first, iterator last)
+          {
+            // I think I'll sort them
+            while (first != last)
+            {
+              my_tree.insert(*first);
+              first++;
+            }
+          }
+          void swap (map& x)
+          {
+            map name(x);
+            
+            x = *this;
+            *this = name;
+          }
+          void clear()
+          {
+            my_tree.free_helper();
+          }
+          key_compare key_comp() const
+          {
+            return my_tree.cmpr;
+          }
+          value_compare value_comp() const
+          {
+            return value_compare(my_tree.cmpr);
+          }
+          iterator find (const key_type& k)
+          {
+            return iterator(my_tree.find(k));
+          }
+          const_iterator find (const key_type& k) const
+          {
+            return const_iterator(my_tree.find(k));
+          }
+          size_type count (const key_type& k) const
+          {
+            return static_cast<size_type>(my_tree.exists(k));
+          }
+          iterator lower_bound (const key_type& k)
+          {
+            iterator x(my_tree.find(k));
+            return (++x);
+          }
+          const_iterator lower_bound (const key_type& k) const
+          {
+            const_iterator x(my_tree.find(k));
+            return (++x);
+          }
+          iterator upper_bound (const key_type& k)
+          {
+            iterator x(my_tree.find(k));
+            return (--x);
+          }
+          const_iterator upper_bound (const key_type& k) const
+          {
+            const_iterator x(my_tree.find(k));
+            return (--x);
+          }
+          pair<const_iterator,const_iterator> equal_range (const key_type& k) const
+          {
+            pair<const_iterator,const_iterator> x;
+          }
               //   pair<iterator,iterator>             equal_range (const key_type& k);
               //   allocator_type get_allocator() const;
         
