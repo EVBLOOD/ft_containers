@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 18:06:02 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/20 18:45:45 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/21 12:32:14 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -357,14 +357,25 @@ namespace ft
             else
                 return fix_case(&((*leaf_parent)->right), l);
         }
-        bool find_helper(RedBlackTree<type_name> *head, type_name value)
+        RedBlackTree<type_name> *find_helper(RedBlackTree<type_name> *head, type_name value)
         {
             if (head == NULL)
-                return false;
+                return NULL;
             if (cmpr(value, head->value))
                 return find_helper(head->left, value);
             else if (cmpr(head->value, value))
                 return find_helper(head->right, value);
+            else
+                return head;
+        }
+        bool exists_helper(RedBlackTree<type_name> *head, type_name value)
+        {
+            if (head == NULL)
+                return false;
+            if (cmpr(value, head->value))
+                return exists_helper(head->left, value);
+            else if (cmpr(head->value, value))
+                return exists_helper(head->right, value);
             else
                 return true;
         }
@@ -431,7 +442,11 @@ namespace ft
             {
                 return size;
             }
-            bool find(type_name value)
+            bool exists(type_name value)
+            {
+                return exists_helper(head, value);
+            }
+            RedBlackTree<type_name> *find(type_name value)
             {
                 return find_helper(head, value);
             }

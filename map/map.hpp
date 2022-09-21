@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 14:41:06 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/21 12:27:56 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/21 12:29:02 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ namespace ft
           }
           mapped_type& operator[] (const key_type& k)
           {
+            my_tree.find(k);
             // I need iterators for this
           }
                 // pair<iterator,bool> insert (const value_type& val);
