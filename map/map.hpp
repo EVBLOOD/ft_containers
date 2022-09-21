@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 14:41:06 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/21 20:02:55 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/21 20:09:44 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,7 +226,7 @@ namespace ft
           }
           pair<const_iterator,const_iterator> equal_range (const key_type& k) const
           {
-            pair<const_iterator,const_iterator> x;
+            return make_pair(const_iterator(my_tree.find(k)), const_iterator(my_tree.find(k)));
           }
               //   pair<iterator,iterator>             equal_range (const key_type& k);
               //   allocator_type get_allocator() const;
