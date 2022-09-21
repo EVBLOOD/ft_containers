@@ -6,14 +6,13 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 14:29:37 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/20 21:41:41 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/21 12:18:02 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 #include "iterators_traits.hpp"
 #include "Red-Black-Tree/Tree_implemeted.hpp"
-
 namespace ft
 {
     template<class T>
@@ -135,37 +134,37 @@ namespace ft
             }
             reference operator*() const
             {
-                return data->value;
+                return RedBlackTree<T>::prev(data);
             }
             
             reference operator->() const
             {
-                return data->value;
+                return RedBlackTree<T>::prev(data);
             }
             
             MyRev_Iter_map &operator++()
             {
-                data = RedBlackTree<T>::next(data);
+                data = RedBlackTree<T>::prev(data);
                 return *this;
             }
             
             MyRev_Iter_map operator++(int)
             {
                 MyRev_Iter_map temp(data);
-                data = RedBlackTree<T>::next(data);
+                data = RedBlackTree<T>::prev(data);
                 return temp;
             }
 
             MyRev_Iter_map &operator--()
             {
-                data = RedBlackTree<T>::prev(data);
+                data = RedBlackTree<T>::next(data);
                 return *this;
             }
             
             MyRev_Iter_map operator--(int)
             {
                 MyRev_Iter_map temp(data);
-                data = RedBlackTree<T>::prev(data);
+                data = RedBlackTree<T>::next(data);
                 return temp;
             }
 
@@ -177,7 +176,6 @@ namespace ft
             bool operator!=(const pointer cmp) const
             {
                 return data->value != cmp->value;
-            }
-            
+            }            
     };
 }

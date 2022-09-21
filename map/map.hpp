@@ -6,18 +6,19 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 14:41:06 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/20 21:50:05 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/21 12:23:24 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 #include <functional>
+#include <iterator>
 #include <memory>
 #include "../additional/pair.hpp"
 #include "../additional/is_integral.hpp"
 #include "../additional/Red-Black-Tree/Tree_implemeted.hpp"
-// #include <iterator>
 #include "../additional/my_map_iters.hpp"
+#include "../additional/enable_if.hpp"
 namespace ft
 {
         template < class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<ft::pair<const Key,T> > >
@@ -33,24 +34,30 @@ namespace ft
             	typedef typename allocator_type::const_reference	const_reference;
             	typedef typename allocator_type::pointer	 pointer;
             	typedef typename allocator_type::const_pointer	const_pointer;
+              typedef typename ft::My_Iter_map<value_type> iterator;
+              typedef typename ft::My_Iter_map<const value_type> const_iterator;
+              typedef typename ft::MyRev_Iter_map<value_type> reverse_iterator;
+              typedef typename ft::MyRev_Iter_map<const value_type> const_reverse_iterator;
             	typedef size_t size_type;       
             	static_assert((ft::is_same<typename allocator_type::value_type, value_type>::value), "Error in types: the allocater and the value");
             	private:
 			  		R_B_T<Alloc, value_type> my_tree; 
 
-				public:
+			    public:
             		explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : my_tree(comp, alloc) {}
-                	template <class InputIterator>
-                		map (InputIterator first, InputIterator last,
-                	    	const key_compare& comp = key_compare(),
-                	    	const allocator_type& alloc = allocator_type())
-					{
-            // check if input iterators	
-					}
-          map (const map& x) : my_tree(x.my_tree.cmpr , x.my_tree.alloc)
-					{
-            // coppy ellemneys
-					}
+                template <class InputIterator>
+                  map (ft::enable_if<ft::is_same<typename InputIterator::iterator_category, std::input_iterator_tag>::value, InputIterator> first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : my_tree(comp, alloc)
+					      {
+                  while (first != last)
+                  {
+                    my_tree.insert(*first);
+                    first++;
+                  }
+					      }
+                map (const map& x) : my_tree(x.my_tree.cmpr , x.my_tree.alloc)
+					      {
+                  *this = x;
+					      }
           ~map()
 					{
               my_tree.~R_B_T();
