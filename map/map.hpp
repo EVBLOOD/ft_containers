@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 14:41:06 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/21 12:23:24 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/21 12:27:56 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,14 @@ namespace ft
 					}
           map& operator= (const map& x)
 					{
+            My_Iter_map<value_type> b = x.begin();
+            My_Iter_map<value_type> e = x.end();
             this->my_tree.~R_B_T();
-            my_tree(x);
+            while (b != e)
+            {
+              my_tree.insert(*b);
+              b++;
+            }
 					}
           iterator begin()
           {
