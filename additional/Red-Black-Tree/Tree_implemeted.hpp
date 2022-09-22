@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 18:06:02 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/22 12:02:53 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/22 21:43:04 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ namespace ft
         int           position;
         bool          color;
         RedBlackTree(type_name value) : value(value), left(NULL), right(NULL), parent(NULL), color(red) {}
+        RedBlackTree(RedBlackTree &src) : value(src.value), left(src.left), right(src.right), parent(src.parent), color(src.color) {}
     };
 
     template <class T, class Compare, class Alloc = std::allocator<RedBlackTree<T> > >
@@ -54,18 +55,14 @@ namespace ft
         RedBlackTree<type_name> *head;
         cmpfun                  cmpr;
         size_amount             size;
-        
+        typedef typename alloc::template rebind<type_name>::other pair_alloc;
         private:        
         
-        R_B_T (const cmpfun& comp = cmpfun(), const alloc& ac = alloc()) :  cmpr(comp), ac(ac) { }
         void swaping(RedBlackTree<type_name> *one, RedBlackTree<type_name> *two)
         {
-            type_name   tmp = one->value;
-            int         color = one->color;
-            one->value = two->value;
-            one->color = two->color;
-            two->value = tmp;
-            two->color = color;
+            RedBlackTree<type_name>*   tmp = one;
+            ac.construct(one, *two);
+            ac.construct(two, *tmp);
         }
         void    right_rotation(RedBlackTree<type_name> **root, bool coloring = true)
         {
@@ -198,7 +195,7 @@ namespace ft
             }
             return balancing(&((*head)->parent), l);
         }
-        void    insert_helper(RedBlackTree<type_name> **head, type_name value_nv, int position, ft::pair<bool, RedBlackTree<type_name>* > *x)
+        void    insert_helper(RedBlackTree<type_name> **head, type_name value_nv, int position, std::pair<bool, RedBlackTree<type_name>* > &x)
         {
             if ((*head) == NULL)
             {
@@ -207,7 +204,7 @@ namespace ft
                 if (position == rt)
                     (*head)->color = black;
                 size = size + 1;
-                *x = ft::make_pair(true, *head);
+                x = std::make_pair(true, *head);
                 return;
             }
             if (cmpr(value_nv, (*head)->value))
@@ -215,7 +212,7 @@ namespace ft
             else if (cmpr((*head)->value, value_nv))
                 return insert_helper(&((*head)->right), value_nv, r, x);
             else
-                return (void)(*x = ft::make_pair(false, *head));
+                return (void)(x = std::make_pair(false, *head));
             if ((*head)->left && (*head)->left->value == value_nv)
                 (*head)->left->parent = *head;
             else
@@ -467,16 +464,17 @@ namespace ft
             return prev(x->parent, x);
         }
         public:
-            R_B_T() : head(NULL), size(0) {}
+            R_B_T () : head(NULL), ac(Alloc()), cmpr(Compare()), size(0) { }
+            R_B_T (Alloc a, Compare cmp) : head(NULL), ac(a), cmpr(cmp), size(0) { }
             ~R_B_T()
             {
-                return free_helper(head);
+                free_helper(head);
             }
             void insert(type_name value)
             {
                 return insert(&head, newnode(value), rt);
             }
-            void _insert(type_name value, ft::pair<bool, RedBlackTree<type_name>* > *x)
+            void _insert(type_name value, std::pair<bool, RedBlackTree<type_name>* > &x)
             {
                 return    insert_helper(&head, value, rt, x);
             }
