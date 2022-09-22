@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 18:06:02 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/21 17:32:12 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/22 12:02:53 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ namespace ft
         RedBlackTree(type_name value) : value(value), left(NULL), right(NULL), parent(NULL), color(red) {}
     };
 
-    template <class T, class Compare = std::less<T>, class Alloc = std::allocator<RedBlackTree<T> > >
+    template <class T, class Compare, class Alloc = std::allocator<RedBlackTree<T> > >
         class R_B_T
     {
         typedef Alloc   alloc;
@@ -215,7 +215,7 @@ namespace ft
             else if (cmpr((*head)->value, value_nv))
                 return insert_helper(&((*head)->right), value_nv, r, x);
             else
-                return (void)(*x = std::make_pair(false, *head));
+                return (void)(*x = ft::make_pair(false, *head));
             if ((*head)->left && (*head)->left->value == value_nv)
                 (*head)->left->parent = *head;
             else

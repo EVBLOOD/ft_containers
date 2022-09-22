@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 14:41:06 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/21 20:09:44 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/22 11:34:48 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ namespace ft
             	typedef size_t size_type;       
             	static_assert((ft::is_same<typename allocator_type::value_type, value_type>::value), "Error in types: the allocater and the value");
             	private:
-			  		R_B_T<Alloc, value_type> my_tree; 
+			  		R_B_T<value_compare, value_type, typename allocator_type::template rebind<RedBlackTree<value_type> >::other> my_tree; 
 
 			    public:
             		explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : my_tree(comp, alloc) {}
