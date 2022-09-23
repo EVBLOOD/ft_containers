@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 14:41:06 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/22 18:12:15 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/23 12:17:08 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ namespace ft
             	typedef typename allocator_type::const_reference	const_reference;
             	typedef typename allocator_type::pointer	 pointer;
             	typedef typename allocator_type::const_pointer	const_pointer;
-              typedef typename ft::My_Iter_map<RedBlackTree<value_type>* > iterator;
-              typedef typename ft::My_Iter_map<RedBlackTree<const value_type>* > const_iterator;
-              typedef typename ft::MyRev_Iter_map<RedBlackTree<value_type>* > reverse_iterator;
-              typedef typename ft::MyRev_Iter_map<RedBlackTree<const value_type>* > const_reverse_iterator;
+              typedef typename ft::My_Iter_map<RedBlackTree<value_type> > iterator;
+              typedef typename ft::My_Iter_map<RedBlackTree<const value_type> > const_iterator;
+              typedef typename ft::My_Iter_map<RedBlackTree<value_type> > reverse_iterator;
+              typedef typename ft::My_Iter_map<RedBlackTree<const value_type> > const_reverse_iterator;
             	typedef size_t size_type;       
             	static_assert((ft::is_same<typename allocator_type::value_type, value_type>::value), "Error in types: the allocater and the value");
             	private:
@@ -110,11 +110,11 @@ namespace ft
           }
           reverse_iterator rend()
           {
-            return reverse_iterator(my_tree.begin);
+            return reverse_iterator(my_tree.begin());
           }
           const_reverse_iterator rend() const
           {
-            return const_reverse_iterator(my_tree.begin);
+            return const_reverse_iterator(my_tree.begin());
           }
           bool empty() const
           {
@@ -130,7 +130,7 @@ namespace ft
           }
           std::pair<iterator,bool> insert (const value_type& val)
           {
-            std::pair<bool, RedBlackTree<value_type>*> x;
+            std::pair<bool, RedBlackTree<value_type>* > x;
             my_tree._insert(val, x);
             return (std::make_pair(iterator(x.second), x.first));
           }
@@ -139,13 +139,13 @@ namespace ft
             RedBlackTree<value_type> *f = my_tree.find(std::make_pair(k, mapped_type()));
             if (f)
              return f->value.second;
-            std::pair<iterator,bool> x = insert(std::make_pair(k, mapped_type()));
-            return x.first->value.second;
+            std::pair<iterator, bool> x = insert(std::make_pair(k, mapped_type()));
+            return (*x.first).value.second;
           }
           iterator insert (iterator position, const value_type& val)
           {
             (void)position;
-            my_treeinsert(val);
+            my_tree.insert(val);
           }
           template <class InputIterator>
             void insert (ft::enable_if<ft::is_same<typename InputIterator::iterator_category, std::input_iterator_tag>::value, InputIterator> first, InputIterator last)
