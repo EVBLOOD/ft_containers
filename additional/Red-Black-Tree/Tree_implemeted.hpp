@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 18:06:02 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/24 12:59:56 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/24 20:32:37 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,20 +48,19 @@ namespace ft
     };
 
     template <class T, class Compare, class Alloc = std::allocator<RedBlackTree<T> > >
-        class R_B_T
+        struct R_B_T
     {
+
+        public:
         typedef Alloc   alloc;
         typedef T       type_name;
         typedef Compare cmpfun;
         typedef size_t  size_amount;
-
-        public:
         alloc                   ac;
         RedBlackTree<type_name> *head;
         cmpfun                  cmpr;
         size_amount             size;
-        typedef typename alloc::template rebind<type_name>::other pair_alloc;
-        private:        
+        typedef typename alloc::template rebind<type_name>::other pair_alloc;      
         
         void swaping(RedBlackTree<type_name> *one, RedBlackTree<type_name> *two)
         {
@@ -432,13 +431,13 @@ namespace ft
             else
                 return true;
         }
-        RedBlackTree<type_name> *begin_helper(RedBlackTree<type_name> *head)
+        RedBlackTree<type_name> *begin_helper(RedBlackTree<type_name> *head) const
         {
             if (head->left == NULL)
                 return head;
             return begin_helper(head->left);
         }
-          RedBlackTree<type_name> *thedeepest_left(RedBlackTree<type_name> *head)
+        RedBlackTree<type_name> *thedeepest_left(RedBlackTree<type_name> *head)
         {
             if (head->left == NULL)
                 return head;
@@ -522,6 +521,10 @@ namespace ft
             {
                 return begin_helper(head);
             }
+            const RedBlackTree<type_name> *cbegin() const
+            {
+                return begin_helper(head);
+            }
             RedBlackTree<type_name> *_prev(RedBlackTree<type_name> *x)
             {
                 if (x == NULL)
@@ -533,6 +536,10 @@ namespace ft
                 return next(x, x);
             }
             RedBlackTree<type_name> *end()
+            {
+                return NULL;
+            }
+            const RedBlackTree<type_name> *cend() const
             {
                 return NULL;
             }

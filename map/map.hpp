@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 14:41:06 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/24 13:33:07 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/24 20:26:22 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,11 @@ namespace ft
             	typedef typename allocator_type::const_reference	const_reference;
             	typedef typename allocator_type::pointer	 pointer;
             	typedef typename allocator_type::const_pointer	const_pointer;
-              typedef typename ft::map_iterators<RedBlackTree<value_type> > iterator;
-              typedef typename ft::map_iterators<RedBlackTree<const value_type> > const_iterator;
-              typedef typename ft::map_iterators<RedBlackTree<value_type> > reverse_iterator;
-              typedef typename ft::map_iterators<RedBlackTree<const value_type> > const_reverse_iterator;
-            	typedef size_t size_type;       
+              typedef typename ft::map_iterators<RedBlackTree<value_type>, value_compare > iterator;
+              typedef typename ft::map_iterators<const RedBlackTree<value_type>, value_compare > const_iterator;
+              typedef typename ft::revmap_iterators<RedBlackTree<value_type> > reverse_iterator;
+              typedef typename ft::revmap_iterators<const RedBlackTree<value_type> > const_reverse_iterator;
+            	typedef size_t size_type;
             	static_assert((ft::is_same<typename allocator_type::value_type, value_type>::value), "Error in types: the allocater and the value");
             	private:
 			  		R_B_T<value_type, value_compare, typename allocator_type::template rebind<RedBlackTree<value_type> >::other> my_tree; 
@@ -67,7 +67,7 @@ namespace ft
                     first++;
                   }
 					      }
-                map (const map& x) : my_tree(x.my_tree.cmpr , x.my_tree.alloc)
+                map (const map& x) : my_tree(x.my_tree.ac, x.my_tree.cmpr)
 					      {
                   *this = x;
 					      }
@@ -76,14 +76,15 @@ namespace ft
 					}
           map& operator= (const map& x)
 					{
-            map_iterators<value_type> b = x.begin();
-            map_iterators<value_type> e = x.end();
-            this->my_tree.~R_B_T();
+            const_iterator b = x.begin();
+            const_iterator e = x.end();
+            this->my_tree.free();
             while (b != e)
             {
-              my_tree.insert(*b);
+            //   my_tree.insert(*b);
               b++;
             }
+            return *this;
 					}
           iterator begin()
           {
@@ -91,7 +92,7 @@ namespace ft
           }
           const_iterator begin() const
           {
-            return const_iterator(my_tree.begin());
+            return const_iterator(my_tree.cbegin());
           }
           iterator end()
           {
@@ -99,7 +100,7 @@ namespace ft
           }
           const_iterator end() const
           {
-            return const_iterator(my_tree.end());
+            return const_iterator(my_tree.cend());
           }
           reverse_iterator rbegin()
           {
@@ -119,11 +120,11 @@ namespace ft
           }
           bool empty() const
           {
-            return my_tree.size <= 0;
+            return my_tree.size == 0;
           }
           size_type size() const
           {
-            return my_tree.size();
+            return my_tree.size;
           }
           size_type max_size() const
           {

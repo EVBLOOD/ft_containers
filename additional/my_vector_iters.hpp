@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 16:41:42 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/17 11:52:34 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/24 20:11:27 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,9 @@ namespace ft
                 return *data;
             }
             
-            reference operator->() const
+            pointer operator->() const
             {
-                return *data;
+                return &(*data);
             }
             
             My_Iter &operator++()

@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 14:29:37 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/24 12:10:10 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/24 20:33:50 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,26 +16,28 @@
 
 namespace ft
 {
-    template <class T>
-       class map_iterators
-    {
-        private:
-            map_iterators(const long x) {
-                (void)x;
-            };
-            T *data;
+    template <class T, class cmp>
+       class map_iterators    
+{
         public:
             typedef typename ft::iterator_traits<T *>::value_type           value_type;
             typedef typename ft::iterator_traits<T *>::difference_type      difference_type;
             typedef typename ft::iterator_traits<T *>::pointer              pointer;
             typedef typename ft::iterator_traits<T *>::reference            reference;
             typedef typename ft::iterator_traits<T *>::iterator_category    iterator_category;
-            typedef typename T::type_name&                                  pair_ref;
-
+            typedef typename T::type_name                                   reference_pair;
+            typedef const typename T::type_name                                   const_reference_pair;
+        private:
+            map_iterators(const long x) {
+                (void)x;
+            };
+            T *data;
+        public:
+            pointer base() const {return data; }
+            map_iterators(pointer ptr) : data(&*ptr) {};
             template<class iter>
-                map_iterators(const iter &x) : data(&*x) {};
+                map_iterators(iter &x) : data(*(x.base())) {};
 
-            map_iterators(T *ptr) : data(ptr) {};
 
             ~map_iterators() {};
             
@@ -52,38 +54,126 @@ namespace ft
                     return *this;
             }
 
-            pair_ref operator*() const
+            reference_pair *operator-> ()
             {
-                return data->value;
+                return &(data->value);
             }
-            
-            pair_ref operator->() const
+            const_reference_pair *operator-> () const
             {
-                return data->value;
+                return &(data->value);
             }
-            
+            reference_pair &operator*()
+            {
+                return (*data).value;
+            }
+            const_reference_pair &operator*() const
+            {
+                return (*data).value;
+            }
             map_iterators &operator++()
             {
-                data = RedBlackTree<T>::next(data);
+                data =  R_B_T<T, cmp>::_next(data);
                 return *this;
             }
             
             map_iterators operator++(int)
             {
                 map_iterators temp(data);
-                data = RedBlackTree<T>::next(data);
+                data = R_B_T<T, cmp>::_next(data);
                 return temp;
             }
 
             map_iterators &operator--()
             {
-                data = RedBlackTree<T>::prev(data);
+                data =  R_B_T<T, cmp>::_prev(data);
                 return *this;
             }
             
             map_iterators operator--(int)
             {
                 map_iterators temp(data);
+                data =  R_B_T<T, cmp>::_prev(data);
+                return temp;
+            }
+            
+    };
+
+        template <class T>
+       class revmap_iterators
+    {
+        public:
+            typedef typename ft::iterator_traits<T *>::value_type           value_type;
+            typedef typename ft::iterator_traits<T *>::difference_type      difference_type;
+            typedef typename ft::iterator_traits<T *>::pointer              pointer;
+            typedef typename ft::iterator_traits<T *>::reference            reference;
+            typedef typename ft::iterator_traits<T *>::iterator_category    iterator_category;
+            typedef typename T::type_name&                                   reference_pair;
+            typedef const typename T::type_name                              const_reference_pair;
+        private:
+            revmap_iterators(const long x) {
+                (void)x;
+            };
+            pointer data;
+        public:
+            revmap_iterators(const pointer ptr) : data(ptr) {};
+            template<class iter>
+                revmap_iterators(const iter &x) : data(&(*x)) {};
+
+
+            ~revmap_iterators() {};
+            
+            revmap_iterators() : data(NULL) {};
+            
+            bool operator==(const revmap_iterators &in) const { return in.data->value == data->value; };
+            bool operator!=(const revmap_iterators &in) const { return !(in.data->value == data->value); };
+
+                        template<class itr>
+                itr &operator=(const itr &x)
+            {
+                    if (&x != this)
+                        data = x.data;
+                    return *this;
+            }
+
+            reference_pair &operator*()
+            {
+                return ((*data).value);
+            }
+            
+            const_reference_pair operator*() const
+            {
+                return ((*data).value);
+            }
+            reference_pair &operator->()
+            {
+                return ((*data).value);
+            }
+            const_reference_pair &operator->() const
+            {
+                return ((*data).value);
+            }
+            revmap_iterators &operator++()
+            {
+                data = RedBlackTree<T>::next(data);
+                return *this;
+            }
+            
+            revmap_iterators operator++(int)
+            {
+                revmap_iterators temp(data);
+                data = RedBlackTree<T>::next(data);
+                return temp;
+            }
+
+            revmap_iterators &operator--()
+            {
+                data = RedBlackTree<T>::prev(data);
+                return *this;
+            }
+            
+            revmap_iterators operator--(int)
+            {
+                revmap_iterators temp(data);
                 data = RedBlackTree<T>::prev(data);
                 return temp;
             }
