@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 14:41:06 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/23 12:17:08 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/24 13:33:07 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ namespace ft
         template < class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<std::pair<const Key,T> > >
         		class map
         {
+          public:
             	typedef std::pair<const Key, T> value_type;
             	typedef Key key_type;
             	typedef T mapped_type;
@@ -46,10 +47,10 @@ namespace ft
             	typedef typename allocator_type::const_reference	const_reference;
             	typedef typename allocator_type::pointer	 pointer;
             	typedef typename allocator_type::const_pointer	const_pointer;
-              typedef typename ft::My_Iter_map<RedBlackTree<value_type> > iterator;
-              typedef typename ft::My_Iter_map<RedBlackTree<const value_type> > const_iterator;
-              typedef typename ft::My_Iter_map<RedBlackTree<value_type> > reverse_iterator;
-              typedef typename ft::My_Iter_map<RedBlackTree<const value_type> > const_reverse_iterator;
+              typedef typename ft::map_iterators<RedBlackTree<value_type> > iterator;
+              typedef typename ft::map_iterators<RedBlackTree<const value_type> > const_iterator;
+              typedef typename ft::map_iterators<RedBlackTree<value_type> > reverse_iterator;
+              typedef typename ft::map_iterators<RedBlackTree<const value_type> > const_reverse_iterator;
             	typedef size_t size_type;       
             	static_assert((ft::is_same<typename allocator_type::value_type, value_type>::value), "Error in types: the allocater and the value");
             	private:
@@ -75,8 +76,8 @@ namespace ft
 					}
           map& operator= (const map& x)
 					{
-            My_Iter_map<value_type> b = x.begin();
-            My_Iter_map<value_type> e = x.end();
+            map_iterators<value_type> b = x.begin();
+            map_iterators<value_type> e = x.end();
             this->my_tree.~R_B_T();
             while (b != e)
             {
@@ -140,7 +141,7 @@ namespace ft
             if (f)
              return f->value.second;
             std::pair<iterator, bool> x = insert(std::make_pair(k, mapped_type()));
-            return (*x.first).value.second;
+            return (*x.first).second;
           }
           iterator insert (iterator position, const value_type& val)
           {
@@ -162,7 +163,8 @@ namespace ft
           }
           size_type erase (const key_type& k)
           {
-            my_tree.remove(k);
+            my_tree.remove(std::make_pair(k, 0));
+            return my_tree.size;
           }
           void erase (iterator first, iterator last)
           {
@@ -182,7 +184,7 @@ namespace ft
           }
           void clear()
           {
-            my_tree.free_helper();
+            my_tree.free();
           }
           key_compare key_comp()
           {
@@ -194,7 +196,7 @@ namespace ft
           }
           iterator find (const key_type& k)
           {
-            return iterator(my_tree.find(k));
+            return iterator(my_tree.find(std::make_pair(k, 0)));
           }
           const_iterator find (const key_type& k) const
           {

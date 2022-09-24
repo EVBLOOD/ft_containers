@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 18:06:02 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/22 21:43:04 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/24 12:59:56 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 #include <utility>
 #include "../pair.hpp"
 #include "../make_pair.hpp"
+#include "../enable_if.hpp"
+#include "../is_integral.hpp"
 
 namespace ft
 {
@@ -38,8 +40,11 @@ namespace ft
         RedBlackTree *parent;
         int           position;
         bool          color;
-        RedBlackTree(type_name value) : value(value), left(NULL), right(NULL), parent(NULL), color(red) {}
-        RedBlackTree(RedBlackTree &src) : value(src.value), left(src.left), right(src.right), parent(src.parent), color(src.color) {}
+        RedBlackTree(const typename ft::enable_if<ft::is_same<type_name, type_name>::value, type_name>::type &value) : value(value), left(NULL), right(NULL), parent(NULL), color(red) {}
+        
+        RedBlackTree(const typename ft::enable_if<ft::is_same<std::pair<type_name, RedBlackTree<type_name> >, std::pair<type_name, RedBlackTree<type_name> > >::value, std::pair<type_name, RedBlackTree<type_name> > >::type &src) : value(std::make_pair(src.first.first, src.first.second)), left(src.second.left), right(src.second.right), parent(src.second.parent), color(src.second.color) {}
+        RedBlackTree(const RedBlackTree &src) : value(src.value), left(src.left), right(src.right), parent(src.parent), color(src.color) {}
+
     };
 
     template <class T, class Compare, class Alloc = std::allocator<RedBlackTree<T> > >
@@ -294,19 +299,19 @@ namespace ft
                 if (target->left == NULL)
                 {
                     type_name value = target->right->value;
-                    (*head)->value = value;
+                    ac.construct(*head,std::pair<type_name, RedBlackTree<type_name> >(value, **head));
                     remove_helper(&((*head)->right), value);
                     return;
                 }
                 if (target->right == NULL)
                 {
                     type_name value = target->left->value;
-                    (*head)->value = value;
+                    ac.construct(*head, std::pair<type_name, RedBlackTree<type_name> >(value, **head));
                     remove_helper(&((*head)->left), value);
                     return;
                 }
                 type_name value = thedeepest(target->left);
-                (*head)->value = value;
+                ac.construct(*head, std::pair<type_name, RedBlackTree<type_name> >(value, **head));
                 remove_helper(&((*head)->left), value);
             }
         }
@@ -463,12 +468,25 @@ namespace ft
                 return x->parent;
             return prev(x->parent, x);
         }
+            void free_helper(RedBlackTree<type_name> *head)
+            {
+                if (head == NULL)
+                    return ;
+                free_helper(head->right);
+                free_helper(head->left);
+                ac.destroy(head);
+                ac.deallocate(head, 1);            
+            }
         public:
             R_B_T () : head(NULL), ac(Alloc()), cmpr(Compare()), size(0) { }
             R_B_T (Alloc a, Compare cmp) : head(NULL), ac(a), cmpr(cmp), size(0) { }
             ~R_B_T()
             {
                 free_helper(head);
+            }
+            void free()
+            {
+                return free_helper(head);
             }
             void insert(type_name value)
             {
@@ -517,15 +535,6 @@ namespace ft
             RedBlackTree<type_name> *end()
             {
                 return NULL;
-            }
-            void free_helper(RedBlackTree<type_name> *head)
-            {
-                if (head == NULL)
-                    return ;
-                free_helper(head->right);
-                free_helper(head->left);
-                ac.destroy(head);
-                ac.deallocate(head, 1);            
             }
     };
 }
