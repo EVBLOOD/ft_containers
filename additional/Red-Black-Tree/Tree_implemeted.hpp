@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 18:06:02 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/24 20:32:37 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/25 19:11:16 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,16 @@ namespace ft
         RedBlackTree(const RedBlackTree &src) : value(src.value), left(src.left), right(src.right), parent(src.parent), color(src.color) {}
 
     };
-
+    template<class T>
+        struct itermap
+    {
+        typedef T                           value_type;
+        typedef RedBlackTree<value_type>    type_name;
+        
+        type_name *corr;
+        type_name *root;
+        itermap(const type_name *root, const type_name *corr) : root(root), corr(corr)  {}
+    };
     template <class T, class Compare, class Alloc = std::allocator<RedBlackTree<T> > >
         struct R_B_T
     {
@@ -437,13 +446,13 @@ namespace ft
                 return head;
             return begin_helper(head->left);
         }
-        RedBlackTree<type_name> *thedeepest_left(RedBlackTree<type_name> *head)
+        static RedBlackTree<type_name> *thedeepest_left(RedBlackTree<type_name> *head)
         {
             if (head->left == NULL)
                 return head;
             return thedeepest_left(head->left);
         }
-        RedBlackTree<type_name> *next(RedBlackTree<type_name> *x, RedBlackTree<type_name> *old)
+        static RedBlackTree<type_name> *next(RedBlackTree<type_name> *x, RedBlackTree<type_name> *old)
         {
             if (x == NULL)
                 return (NULL);
@@ -453,13 +462,13 @@ namespace ft
                     return x->parent;
             return next(x->parent, x);
         }
-        RedBlackTree<type_name> *thedeepest_right(RedBlackTree<type_name> *head)
+        static RedBlackTree<type_name> *thedeepest_right(RedBlackTree<type_name> *head)
         {
             if (head->right == NULL)
                 return head;
             return thedeepest_right(head->right);
         }
-        RedBlackTree<type_name> *prev(RedBlackTree<type_name> *x, RedBlackTree<type_name> *old)
+        static RedBlackTree<type_name> *prev(RedBlackTree<type_name> *x, RedBlackTree<type_name> *old)
         {
             if (x->left && old != x->left)
                 return thedeepest_right(x->left);
@@ -517,31 +526,31 @@ namespace ft
                     return;
                 return remove_helper(&head, element);
             }
-            RedBlackTree<type_name> *begin()
+            itermap<type_name> *begin()
             {
-                return begin_helper(head);
+                return itermap<type_name>(head, begin_helper(head));
             }
-            const RedBlackTree<type_name> *cbegin() const
+            const itermap<type_name> *cbegin() const
             {
-                return begin_helper(head);
+                return itermap<type_name>(head, begin_helper(head));
             }
-            RedBlackTree<type_name> *_prev(RedBlackTree<type_name> *x)
+            static itermap<type_name> *_prev(itermap<type_name> *x)
             {
                 if (x == NULL)
-                    return thedeepest_right(head);
-                return prev(x, x);
+                    return itermap<type_name>(x->corr, thedeepest_right(x->root));
+                return itermap<type_name>(x->corr, prev(x->corr, x->corr));
             }
-            RedBlackTree<type_name> *_next(RedBlackTree<type_name> *x)
+            static itermap<type_name> *_next(itermap<type_name> *x)
             {
-                return next(x, x);
+                return itermap<type_name>(x->corr, next(x->corr, x->corr));
             }
-            RedBlackTree<type_name> *end()
+            itermap<type_name> *end()
             {
-                return NULL;
+                return itermap<type_name>(head, NULL);
             }
-            const RedBlackTree<type_name> *cend() const
+            const itermap<type_name> *cend() const
             {
-                return NULL;
+                return itermap<type_name>(head, NULL);
             }
     };
 }

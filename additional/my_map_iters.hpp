@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 14:29:37 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/24 20:33:50 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/25 19:22:19 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ namespace ft
         public:
             pointer base() const {return data; }
             map_iterators(pointer ptr) : data(&*ptr) {};
-            template<class iter>
-                map_iterators(iter &x) : data(*(x.base())) {};
+            // template<class iter>
+            //     map_iterators(iter &x) : data(*(x.base())) {};
 
 
             ~map_iterators() {};
@@ -56,26 +56,25 @@ namespace ft
 
             reference_pair *operator-> ()
             {
-                return &(data->value);
+                return &(data->corr->value);
             }
             const_reference_pair *operator-> () const
             {
-                return &(data->value);
+                return &(data->corr->value);
             }
             reference_pair &operator*()
             {
-                return (*data).value;
+                return data->corr->value;
             }
             const_reference_pair &operator*() const
             {
-                return (*data).value;
+                return data->corr->value;
             }
             map_iterators &operator++()
             {
                 data =  R_B_T<T, cmp>::_next(data);
                 return *this;
-            }
-            
+            } 
             map_iterators operator++(int)
             {
                 map_iterators temp(data);

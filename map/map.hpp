@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 14:41:06 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/24 20:26:22 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/25 19:23:21 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,10 @@ namespace ft
             	typedef typename allocator_type::const_reference	const_reference;
             	typedef typename allocator_type::pointer	 pointer;
             	typedef typename allocator_type::const_pointer	const_pointer;
-              typedef typename ft::map_iterators<RedBlackTree<value_type>, value_compare > iterator;
-              typedef typename ft::map_iterators<const RedBlackTree<value_type>, value_compare > const_iterator;
-              typedef typename ft::revmap_iterators<RedBlackTree<value_type> > reverse_iterator;
-              typedef typename ft::revmap_iterators<const RedBlackTree<value_type> > const_reverse_iterator;
+              typedef typename ft::map_iterators<itermap<value_type>, value_compare > iterator;
+              typedef typename ft::map_iterators<const itermap<value_type>, value_compare > const_iterator;
+              typedef typename ft::revmap_iterators<itermap<value_type> > reverse_iterator;
+              typedef typename ft::revmap_iterators<const itermap<value_type> > const_reverse_iterator;
             	typedef size_t size_type;
             	static_assert((ft::is_same<typename allocator_type::value_type, value_type>::value), "Error in types: the allocater and the value");
             	private:
@@ -142,7 +142,7 @@ namespace ft
             if (f)
              return f->value.second;
             std::pair<iterator, bool> x = insert(std::make_pair(k, mapped_type()));
-            return (*x.first).second;
+            return x.first->second;
           }
           iterator insert (iterator position, const value_type& val)
           {

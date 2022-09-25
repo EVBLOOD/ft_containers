@@ -3,7 +3,7 @@
 // #include <iterator>
 // using namespace ft;
 // #include "vector/vector.hpp"
-// #include <map>
+#include <map>
 #include <vector>
 int main()
 {
@@ -11,7 +11,6 @@ int main()
   ft::map<int, int> n;
   // ft::vector<int> jk;
   m[1] = 0;
-  std::vector<int>::iterator c;
   ft::map<int, int>::iterator b = m.begin();
   // int x = b->second;
   // ft::map<int, int> x;
