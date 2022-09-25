@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 18:06:02 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/25 19:11:16 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/25 21:46:30 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ namespace ft
         
         type_name *corr;
         type_name *root;
-        itermap(const type_name *root, const type_name *corr) : root(root), corr(corr)  {}
+        itermap(const type_name &root, const type_name &corr) : root(&root), corr(&corr)  {}
     };
     template <class T, class Compare, class Alloc = std::allocator<RedBlackTree<T> > >
         struct R_B_T
