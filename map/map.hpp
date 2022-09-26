@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 14:41:06 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/26 17:31:27 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/26 17:59:28 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ namespace ft
             this->my_tree.free();
             while (b != e)
             {
-            //   my_tree.insert(*b);
+              my_tree.insert(*b);
               b++;
             }
             return *this;

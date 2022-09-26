@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 14:29:37 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/26 17:33:51 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/26 17:45:21 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ namespace ft
             
             map_iterators() : data(NULL) {};
             
-            bool operator==(const map_iterators &in) const { return in.data->corr->value == data->corr->value; };
-            bool operator!=(const map_iterators &in) const { return !(in.data->corr->value == data->corr->value); };
+            bool operator==(const map_iterators &in) const { return in.data->corr == data->corr; };
+            bool operator!=(const map_iterators &in) const { return !(in.data->corr == data->corr); };
 
                         template<class itr>
                 itr &operator=(const itr &x)

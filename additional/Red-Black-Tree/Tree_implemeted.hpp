@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 18:06:02 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/26 17:27:48 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/26 17:57:49 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -445,13 +445,13 @@ namespace ft
         }
         RedBlackTree<type_name> *begin_helper(RedBlackTree<type_name> *head) const
         {
-            if (head->left == NULL)
+            if (!head || head->left == NULL)
                 return head;
             return begin_helper(head->left);
         }
         static RedBlackTree<type_name> *thedeepest_left(RedBlackTree<type_name> *head)
         {
-            if (head->left == NULL)
+            if (!head || head->left == NULL)
                 return head;
             return thedeepest_left(head->left);
         }
@@ -467,7 +467,7 @@ namespace ft
         }
         static RedBlackTree<type_name> *thedeepest_right(RedBlackTree<type_name> *head)
         {
-            if (head->right == NULL)
+            if (!head || head->right == NULL)
                 return head;
             return thedeepest_right(head->right);
         }
@@ -486,18 +486,19 @@ namespace ft
                 free_helper(head->right);
                 free_helper(head->left);
                 ac.destroy(head);
-                ac.deallocate(head, 1);            
+                ac.deallocate(head, 1);         
             }
         public:
             R_B_T () : head(NULL), ac(Alloc()), cmpr(Compare()), size(0) { }
-            R_B_T (Alloc a, Compare cmp) : head(NULL), ac(a), cmpr(cmp), size(0) { }
+            R_B_T (Alloc a, Compare cmp) : head(NULL), ac(a), cmpr(cmp), size(0) {}
             ~R_B_T()
             {
                 free_helper(head);
             }
             void free()
             {
-                return free_helper(head);
+                free_helper(head);
+                head = NULL;
             }
             void insert(type_name value)
             {
