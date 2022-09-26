@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 14:29:37 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/26 17:32:48 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/26 17:33:51 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,18 +60,18 @@ namespace ft
             {
                 return &(data->corr->value);
             }
-            // const_reference_pair *operator-> () const
-            // {
-            //     return &(data->corr->value);
-            // }
+            const_reference_pair *operator-> () const
+            {
+                return &(data->corr->value);
+            }
             reference_pair &operator*()
             {
                 return data->corr->value;
             }
-            // const_reference_pair &operator*() const
-            // {
-            //     return data->corr->value;
-            // }
+            const_reference_pair &operator*() const
+            {
+                return data->corr->value;
+            }
             map_iterators &operator++() const
             {
                 *data =  R_B_T<typename T::value_type, cmp>::_next(data);
