@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 14:41:06 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/26 17:21:04 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/26 17:31:27 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ namespace ft
             	typedef typename allocator_type::pointer	 pointer;
             	typedef typename allocator_type::const_pointer	const_pointer;
               typedef typename ft::map_iterators<iterwrp, value_compare> iterator;
-              typedef typename ft::map_iterators<const iterwrp, value_compare> const_iterator;
+              typedef const typename ft::map_iterators<iterwrp, value_compare> const_iterator;
               typedef typename ft::revmap_iterators<iterwrp> reverse_iterator;
-              typedef typename ft::revmap_iterators<const iterwrp> const_reverse_iterator;
+              typedef const typename ft::revmap_iterators<iterwrp> const_reverse_iterator;
             	typedef size_t   size_type;
             	static_assert((ft::is_same<typename allocator_type::value_type, value_type>::value), "Error in types: the allocater and the value");
             	private:
