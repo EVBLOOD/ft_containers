@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 18:06:02 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/25 21:46:30 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/26 17:27:48 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ namespace ft
         RedBlackTree(const typename ft::enable_if<ft::is_same<type_name, type_name>::value, type_name>::type &value) : value(value), left(NULL), right(NULL), parent(NULL), color(red) {}
         
         RedBlackTree(const typename ft::enable_if<ft::is_same<std::pair<type_name, RedBlackTree<type_name> >, std::pair<type_name, RedBlackTree<type_name> > >::value, std::pair<type_name, RedBlackTree<type_name> > >::type &src) : value(std::make_pair(src.first.first, src.first.second)), left(src.second.left), right(src.second.right), parent(src.second.parent), color(src.second.color) {}
-        RedBlackTree(const RedBlackTree &src) : value(src.value), left(src.left), right(src.right), parent(src.parent), color(src.color) {}
+        RedBlackTree(const RedBlackTree<type_name> &src) : value(src.value), left(src.left), right(src.right), parent(src.parent), color(src.color) {}
+        RedBlackTree(const RedBlackTree<type_name> *src) : value(src->value), left(src->left), right(src->right), parent(src->parent), color(src->color) {}
 
     };
     template<class T>
@@ -52,9 +53,11 @@ namespace ft
         typedef T                           value_type;
         typedef RedBlackTree<value_type>    type_name;
         
-        type_name *corr;
         type_name *root;
+        type_name *corr;
         itermap(const type_name &root, const type_name &corr) : root(&root), corr(&corr)  {}
+        itermap(const type_name *root, const type_name *corr) : root(root), corr(corr)  {}
+        itermap(type_name *root, type_name *corr) : root(root), corr(corr)  {}
     };
     template <class T, class Compare, class Alloc = std::allocator<RedBlackTree<T> > >
         struct R_B_T
@@ -526,29 +529,29 @@ namespace ft
                     return;
                 return remove_helper(&head, element);
             }
-            itermap<type_name> *begin()
+            itermap<type_name> begin()
             {
                 return itermap<type_name>(head, begin_helper(head));
             }
-            const itermap<type_name> *cbegin() const
+            const itermap<type_name> cbegin() const
             {
                 return itermap<type_name>(head, begin_helper(head));
             }
-            static itermap<type_name> *_prev(itermap<type_name> *x)
+            static itermap<type_name> _prev(itermap<type_name> *x)
             {
                 if (x == NULL)
                     return itermap<type_name>(x->corr, thedeepest_right(x->root));
                 return itermap<type_name>(x->corr, prev(x->corr, x->corr));
             }
-            static itermap<type_name> *_next(itermap<type_name> *x)
+            static itermap<type_name> _next(itermap<type_name> *x)
             {
                 return itermap<type_name>(x->corr, next(x->corr, x->corr));
             }
-            itermap<type_name> *end()
+            itermap<type_name> end()
             {
                 return itermap<type_name>(head, NULL);
             }
-            const itermap<type_name> *cend() const
+            const itermap<type_name> cend() const
             {
                 return itermap<type_name>(head, NULL);
             }

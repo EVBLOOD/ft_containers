@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 14:29:37 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/26 15:54:20 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/26 17:27:07 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,26 +25,28 @@ namespace ft
             typedef typename ft::iterator_traits<T *>::pointer              pointer;
             typedef typename ft::iterator_traits<T *>::reference            reference;
             typedef typename ft::iterator_traits<T *>::iterator_category    iterator_category;
-            typedef typename T::type_name                                   reference_pair;
-            typedef const typename T::type_name                                   const_reference_pair;
+            typedef typename T::value_type                                  reference_pair;
+            typedef const typename T::value_type                             const_reference_pair;
         private:
             map_iterators(const long x) {
                 (void)x;
             };
-            T *data;
+            pointer data;
         public:
             pointer base() const {return data; }
+            map_iterators(value_type ptr) : data(&ptr) {};
             map_iterators(pointer ptr) : data(&*ptr) {};
-            template<class iter>
-                map_iterators(iter &x) : data(*(x.base())) {};
+            map_iterators(const map_iterators &iter) : data(iter.base()) {};
+            // template<class iter>
+            //     map_iterators(iter &x) : data(x.base()) {};
 
 
             ~map_iterators() {};
             
             map_iterators() : data(NULL) {};
             
-            bool operator==(const map_iterators &in) const { return in.data->value == data->value; };
-            bool operator!=(const map_iterators &in) const { return !(in.data->value == data->value); };
+            bool operator==(const map_iterators &in) const { return in.data->corr->value == data->corr->value; };
+            bool operator!=(const map_iterators &in) const { return !(in.data->corr->value == data->corr->value); };
 
                         template<class itr>
                 itr &operator=(const itr &x)
@@ -72,26 +74,26 @@ namespace ft
             }
             map_iterators &operator++()
             {
-                data =  R_B_T<T, cmp>::_next(data);
+                *data =  R_B_T<typename T::value_type, cmp>::_next(data);
                 return *this;
             } 
             map_iterators operator++(int)
             {
                 map_iterators temp(data);
-                data = R_B_T<T, cmp>::_next(data);
+                *data = R_B_T<typename T::value_type, cmp>::_next(data);
                 return temp;
             }
 
             map_iterators &operator--()
             {
-                data =  R_B_T<T, cmp>::_prev(data);
+                data =  R_B_T<typename T::value_type, cmp>::_prev(data);
                 return *this;
             }
             
             map_iterators operator--(int)
             {
                 map_iterators temp(data);
-                data =  R_B_T<T, cmp>::_prev(data);
+                data =  R_B_T<typename T::value_type, cmp>::_prev(data);
                 return temp;
             }
             

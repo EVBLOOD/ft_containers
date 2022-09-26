@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 14:41:06 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/26 16:11:56 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/26 17:21:04 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,35 +89,35 @@ namespace ft
 					}
           iterator begin()
           {
-            return iterator(iterwrp(my_tree.head, my_tree.begin()));
+            return iterator(my_tree.begin());
           }
           const_iterator begin() const
           {
-            return const_iterator(iterwrp(my_tree.head, my_tree.cbegin()));
+            return const_iterator(my_tree.cbegin());
           }
           iterator end()
           {
-            return iterator(iterwrp(my_tree.head, my_tree.end()));
+            return iterator(my_tree.end());
           }
           const_iterator end() const
           {
-            return const_iterator(iterwrp(my_tree.head, my_tree.cend()));
+            return const_iterator(my_tree.cend());
           }
           reverse_iterator rbegin()
           {
-            return reverse_iterator(iterwrp(my_tree.head, my_tree.end()));
+            return reverse_iterator(my_tree.end());
           }
           const_reverse_iterator rbegin() const
           {
-            return const_reverse_iterator(iterwrp(my_tree.head, my_tree.end()));
+            return const_reverse_iterator(my_tree.end());
           }
           reverse_iterator rend()
           {
-            return reverse_iterator(iterwrp(my_tree.head, my_tree.begin()));
+            return reverse_iterator(my_tree.begin());
           }
           const_reverse_iterator rend() const
           {
-            return const_reverse_iterator(iterwrp(my_tree.head, my_tree.begin()));
+            return const_reverse_iterator(my_tree.begin());
           }
           bool empty() const
           {
