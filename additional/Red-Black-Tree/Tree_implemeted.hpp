@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 18:06:02 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/27 22:59:09 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/28 00:07:30 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,6 +233,55 @@ namespace ft
             }
             return balancing(&((*head)->parent), l);
         }
+        
+        void    helper_insert(RedBlackTree<type_name> **head, type_name nv, int position, std::pair<bool, RedBlackTree<type_name>* > &x)
+        {
+            if ((*head) == NULL)
+            {
+                *head = newnode(nv);
+                (*head)->position = position;
+                if (position == rt)
+                    (*head)->color = black;
+                size = size + 1;
+                x = std::make_pair(true, *head);
+                return;
+            }
+            if (cmpr(nv, (*head)->value))
+                helper_insert(&((*head)->left), nv, l, x);
+            else if (cmpr((*head)->value, nv))
+                helper_insert(&((*head)->right), nv, r, x);
+            else
+                return (void)(x = std::make_pair(false, *head));
+            if ((*head)->left)
+                (*head)->left->parent = *head;
+            if ((*head)->right)
+                (*head)->right->parent = *head;
+            if ((*head)->color == black ||
+                    (((*head)->left == NULL || (*head)->left->color == black) && ((*head)->right == NULL || (*head)->right->color == black)))
+                return;
+            if ((*head)->position == r)
+            {
+                if ((*head)->parent->left && (*head)->parent->left->color == red)
+                {
+                    (*head)->parent->left->color = black;
+                    if ((*head)->parent->position != rt)
+                        (*head)->parent->color = red;
+                    (*head)->color = black;
+                    return;
+                }
+                return balancing(&((*head)->parent), r);
+            }
+            if ((*head)->parent->right && (*head)->parent->right->color == red)
+            {
+                (*head)->parent->right->color = black;
+                if ((*head)->parent->position != rt)
+                    (*head)->parent->color = red;
+                (*head)->color = black;
+                return;
+            }
+            return balancing(&((*head)->parent), l);
+        }
+        
         void    insert_helper(RedBlackTree<type_name> **head, type_name value_nv, int position, std::pair<bool, RedBlackTree<type_name>* > &x)
         {
             if ((*head) == NULL)
@@ -242,7 +291,7 @@ namespace ft
                 if (position == rt)
                     (*head)->color = black;
                 size = size + 1;
-                x = std::make_pair(true, *head);
+                // x = std::make_pair(true, *head);
                 return;
             }
             if (cmpr(value_nv, (*head)->value))
@@ -250,8 +299,8 @@ namespace ft
             else if (cmpr((*head)->value, value_nv))
                 return insert_helper(&((*head)->right), value_nv, r, x);
             else
-                return (void)(x = std::make_pair(false, *head));
-            if ((*head)->left/* && (*head)->left->value == value_nv*/)
+                return /*(void)(x = std::make_pair(false, *head))*/;
+            if ((*head)->left)
                 (*head)->left->parent = *head;
             if ((*head)->right)
                 (*head)->right->parent = *head;
@@ -529,8 +578,9 @@ namespace ft
             void _insert(type_name value, std::pair<bool, RedBlackTree<type_name>* > &x)
             {
                 // return insert(value);
-                return insert(&head, newnode(value), rt);
-                return    insert_helper(&head, value, rt, x);
+                // return insert(&head, newnode(value), rt);
+                return    helper_insert(&head, value, rt, x);
+                // return    insert_helper(&head, value, rt, x);
             }
             void  _printing()
             {
