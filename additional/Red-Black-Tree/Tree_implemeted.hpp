@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 18:06:02 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/27 17:02:24 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/27 22:59:09 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,21 +78,29 @@ namespace ft
         
         void swaping(RedBlackTree<type_name> *one, RedBlackTree<type_name> *two)
         {
-            RedBlackTree<type_name>   tmp = *one;
-            ac.construct(one, *two);
-            one->position = tmp.position;
-            one->parent = tmp.parent;
-            one->right = tmp.right;
-            one->left = tmp.left;
-            RedBlackTree<type_name>* tmpl = two->left;
-            RedBlackTree<type_name>* tmpr = two->right;
-            RedBlackTree<type_name>* tmpp = two->parent;
-            int tmpps = two->position;
-            ac.construct(two, tmp);
-            two->left = tmpl;
-            two->right = tmpr;
-            two->parent = tmpp;
-            two->position = tmpps;
+            puts("start");
+            type_name   tmp = one->value;
+            int         color = one->color;
+            one->value = two->value;
+            one->color = two->color;
+            two->value = tmp;
+            two->color = color;
+            puts("end");
+            // RedBlackTree<type_name>   tmp = *one;
+            // ac.construct(one, *two);
+            // one->position = tmp.position;
+            // one->parent = tmp.parent;
+            // one->right = tmp.right;
+            // one->left = tmp.left;
+            // RedBlackTree<type_name>* tmpl = two->left;
+            // RedBlackTree<type_name>* tmpr = two->right;
+            // RedBlackTree<type_name>* tmpp = two->parent;
+            // int tmpps = two->position;
+            // ac.construct(two, tmp);
+            // two->left = tmpl;
+            // two->right = tmpr;
+            // two->parent = tmpp;
+            // two->position = tmpps;
         }
         void    right_rotation(RedBlackTree<type_name> **root, bool coloring = true)
         {
@@ -196,9 +204,9 @@ namespace ft
                 insert(&((*head)->right), nv, r);
             else
                 return;
-            if ((*head)->left/* && (*head)->left->value == nv->value*/)
+            if ((*head)->left)
                 (*head)->left->parent = *head;
-            else
+            if ((*head)->right)
                 (*head)->right->parent = *head;
             if ((*head)->color == black ||
                     (((*head)->left == NULL || (*head)->left->color == black) && ((*head)->right == NULL || (*head)->right->color == black)))
@@ -520,6 +528,7 @@ namespace ft
             }
             void _insert(type_name value, std::pair<bool, RedBlackTree<type_name>* > &x)
             {
+                // return insert(value);
                 return insert(&head, newnode(value), rt);
                 return    insert_helper(&head, value, rt, x);
             }
