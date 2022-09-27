@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 18:06:02 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/27 16:41:53 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/27 16:59:41 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ namespace ft
         
         RedBlackTree(const typename ft::enable_if<ft::is_same<std::pair<type_name, RedBlackTree<type_name> >, std::pair<type_name, RedBlackTree<type_name> > >::value, std::pair<type_name, RedBlackTree<type_name> > >::type &src)
             : value(std::make_pair(src.first.first, src.first.second)), left(src.second.left), right(src.second.right), parent(src.second.parent), color(src.second.color) {}
-        RedBlackTree(const RedBlackTree<type_name> &src) : value(src.value), color(src.color) {}
-        RedBlackTree(const RedBlackTree<type_name> *src) : value(src->value), color(src->color) {}
+        RedBlackTree(const RedBlackTree<type_name> &src) : value(src.value), left(src.left), right(src.right), parent(src.parent), color(src.color) {}
+        RedBlackTree(const RedBlackTree<type_name> *src) : value(src->value), left(src->left), right(src->right), parent(src->parent), color(src->color) {}
 
     };
     template<class T>
@@ -86,23 +86,22 @@ namespace ft
                     // one->color = two->color;
                     // two->value = tmp;
                     // two->color = color;
-            
-            RedBlackTree<type_name>*   tmp = one;
+            RedBlackTree<type_name>   tmp = *one;
             ac.construct(one, *two);
-            // one->position = tmp->position;
-            // one->parent = tmp->parent;
-            // one->right = tmp->right;
-            // one->left = tmp->right;
-            // // hehe
-            // RedBlackTree<type_name>* tmpl = two->left;
-            // RedBlackTree<type_name>* tmpr = two->right;
-            // RedBlackTree<type_name>* tmpp = two->parent;
+            one->position = tmp.position;
+            one->parent = tmp.parent;
+            one->right = tmp.right;
+            one->left = tmp.left;
+            // hehe
+            RedBlackTree<type_name>* tmpl = two->left;
+            RedBlackTree<type_name>* tmpr = two->right;
+            RedBlackTree<type_name>* tmpp = two->parent;
             int tmpps = two->position;
-            ac.construct(two, *tmp);
-            // two->left = tmpl;
-            // two->right = tmpr;
-            // two->parent = tmpp;
-            // two->position = tmpps;
+            ac.construct(two, tmp);
+            two->left = tmpl;
+            two->right = tmpr;
+            two->parent = tmpp;
+            two->position = tmpps;
         }
         void    right_rotation(RedBlackTree<type_name> **root, bool coloring = true)
         {

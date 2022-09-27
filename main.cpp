@@ -16,12 +16,12 @@ int main()
   // m[3] = 50;
   // m[3] = 10;
   // m[1] = 100;
-  m.insert({10,2});
-  m.insert({9,2});
-  m.insert({8,2});
   m.insert({5,2});
-  m.insert({13,2});
+  m.insert({8,2});
+  m.insert({9,2});
+  m.insert({10,2});
   m.insert({11,2});
+  m.insert({13,2});
   ft::map<int, int>::iterator a = m.begin();
   ft::map<int, int>::iterator b = m.end();
   // a++;
@@ -57,5 +57,7 @@ int main()
   // m.swap(n);
   // n.my_tree._printing();
   n.my_tree._printing();
+  puts("----------------------------------------------------------");
+  m.my_tree._printing();
 
 }
