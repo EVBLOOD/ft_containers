@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 14:41:06 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/27 16:35:27 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/28 00:09:30 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@
 #include "../additional/enable_if.hpp"
 namespace ft
 {
-        template < class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<std::pair</*const*/ Key,T> > >
+        template < class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<std::pair<const Key,T> > >
         		class map
         {
           public:
-            	typedef std::pair</*const*/ Key, T> value_type;
+            	typedef std::pair<const Key, T> value_type;
             	typedef Key key_type;
             	typedef T mapped_type;
             	typedef Compare key_compare;
