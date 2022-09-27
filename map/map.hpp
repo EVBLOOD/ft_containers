@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 14:41:06 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/28 00:09:30 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/28 00:12:17 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ namespace ft
             while (first != last)
             {
               my_tree.insert(*first);
-              ++first;
+              first++;
             }
           }
           void erase (iterator position)
