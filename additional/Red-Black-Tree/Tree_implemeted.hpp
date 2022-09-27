@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 18:06:02 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/27 16:59:41 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/27 17:02:24 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,21 +78,12 @@ namespace ft
         
         void swaping(RedBlackTree<type_name> *one, RedBlackTree<type_name> *two)
         {
-
-            
-                    // type_name   tmp = one->value;
-                    // int         color = one->color;
-                    // one->value = two->value;
-                    // one->color = two->color;
-                    // two->value = tmp;
-                    // two->color = color;
             RedBlackTree<type_name>   tmp = *one;
             ac.construct(one, *two);
             one->position = tmp.position;
             one->parent = tmp.parent;
             one->right = tmp.right;
             one->left = tmp.left;
-            // hehe
             RedBlackTree<type_name>* tmpl = two->left;
             RedBlackTree<type_name>* tmpr = two->right;
             RedBlackTree<type_name>* tmpp = two->parent;
