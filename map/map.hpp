@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 14:41:06 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/27 11:32:18 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/27 16:35:27 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@
 #include "../additional/enable_if.hpp"
 namespace ft
 {
-        template < class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<std::pair<const Key,T> > >
+        template < class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<std::pair</*const*/ Key,T> > >
         		class map
         {
           public:
-            	typedef std::pair<const Key, T> value_type;
+            	typedef std::pair</*const*/ Key, T> value_type;
             	typedef Key key_type;
             	typedef T mapped_type;
             	typedef Compare key_compare;
@@ -54,7 +54,7 @@ namespace ft
               typedef const typename ft::revmap_iterators<iterwrp> const_reverse_iterator;
             	typedef size_t   size_type;
             	static_assert((ft::is_same<typename allocator_type::value_type, value_type>::value), "Error in types: the allocater and the value");
-            	private:
+            	// private:
 			  		R_B_T<value_type, value_compare, typename allocator_type::template rebind<RedBlackTree<value_type> >::other> my_tree; 
 
 			    public:
@@ -150,13 +150,22 @@ namespace ft
             (void)position;
             return iterwrp(my_tree.head, my_tree.insert(val).first);
           }
+          // template <class InputIterator>
+          //   void insert (ft::enable_if<ft::is_same<typename InputIterator::iterator_category, std::random_access_iterator_tag>::value, InputIterator> first, InputIterator last)
+          // {
+          //   while (first != last)
+          //   {
+          //     my_tree.insert(*first);
+          //     first++;
+          //   }
+          // }
           template <class InputIterator>
-            void insert (ft::enable_if<ft::is_same<typename InputIterator::iterator_category, std::input_iterator_tag>::value, InputIterator> first, InputIterator last)
+            void insert (InputIterator first, InputIterator last)
           {
             while (first != last)
             {
               my_tree.insert(*first);
-              first++;
+              ++first;
             }
           }
           void erase (iterator position)

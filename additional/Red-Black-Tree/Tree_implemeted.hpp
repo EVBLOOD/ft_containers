@@ -6,12 +6,13 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 18:06:02 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/26 17:57:49 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/27 16:41:53 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
+#include <cstddef>
 #include <cstdio>
 #include <cstdlib>
 #include <memory>
@@ -42,9 +43,10 @@ namespace ft
         bool          color;
         RedBlackTree(const typename ft::enable_if<ft::is_same<type_name, type_name>::value, type_name>::type &value) : value(value), left(NULL), right(NULL), parent(NULL), color(red) {}
         
-        RedBlackTree(const typename ft::enable_if<ft::is_same<std::pair<type_name, RedBlackTree<type_name> >, std::pair<type_name, RedBlackTree<type_name> > >::value, std::pair<type_name, RedBlackTree<type_name> > >::type &src) : value(std::make_pair(src.first.first, src.first.second)), left(src.second.left), right(src.second.right), parent(src.second.parent), color(src.second.color) {}
-        RedBlackTree(const RedBlackTree<type_name> &src) : value(src.value), left(src.left), right(src.right), parent(src.parent), color(src.color) {}
-        RedBlackTree(const RedBlackTree<type_name> *src) : value(src->value), left(src->left), right(src->right), parent(src->parent), color(src->color) {}
+        RedBlackTree(const typename ft::enable_if<ft::is_same<std::pair<type_name, RedBlackTree<type_name> >, std::pair<type_name, RedBlackTree<type_name> > >::value, std::pair<type_name, RedBlackTree<type_name> > >::type &src)
+            : value(std::make_pair(src.first.first, src.first.second)), left(src.second.left), right(src.second.right), parent(src.second.parent), color(src.second.color) {}
+        RedBlackTree(const RedBlackTree<type_name> &src) : value(src.value), color(src.color) {}
+        RedBlackTree(const RedBlackTree<type_name> *src) : value(src->value), color(src->color) {}
 
     };
     template<class T>
@@ -76,9 +78,31 @@ namespace ft
         
         void swaping(RedBlackTree<type_name> *one, RedBlackTree<type_name> *two)
         {
+
+            
+                    // type_name   tmp = one->value;
+                    // int         color = one->color;
+                    // one->value = two->value;
+                    // one->color = two->color;
+                    // two->value = tmp;
+                    // two->color = color;
+            
             RedBlackTree<type_name>*   tmp = one;
             ac.construct(one, *two);
+            // one->position = tmp->position;
+            // one->parent = tmp->parent;
+            // one->right = tmp->right;
+            // one->left = tmp->right;
+            // // hehe
+            // RedBlackTree<type_name>* tmpl = two->left;
+            // RedBlackTree<type_name>* tmpr = two->right;
+            // RedBlackTree<type_name>* tmpp = two->parent;
+            int tmpps = two->position;
             ac.construct(two, *tmp);
+            // two->left = tmpl;
+            // two->right = tmpr;
+            // two->parent = tmpp;
+            // two->position = tmpps;
         }
         void    right_rotation(RedBlackTree<type_name> **root, bool coloring = true)
         {
@@ -182,7 +206,7 @@ namespace ft
                 insert(&((*head)->right), nv, r);
             else
                 return;
-            if ((*head)->left && (*head)->left->value == nv->value)
+            if ((*head)->left/* && (*head)->left->value == nv->value*/)
                 (*head)->left->parent = *head;
             else
                 (*head)->right->parent = *head;
@@ -229,9 +253,9 @@ namespace ft
                 return insert_helper(&((*head)->right), value_nv, r, x);
             else
                 return (void)(x = std::make_pair(false, *head));
-            if ((*head)->left && (*head)->left->value == value_nv)
+            if ((*head)->left/* && (*head)->left->value == value_nv*/)
                 (*head)->left->parent = *head;
-            else
+            if ((*head)->right)
                 (*head)->right->parent = *head;
             if ((*head)->color == black ||
                     (((*head)->left == NULL || (*head)->left->color == black) && ((*head)->right == NULL || (*head)->right->color == black)))
@@ -275,7 +299,7 @@ namespace ft
                 std::cout << "color: red ";
             else
                 std::cout << "color: black ";
-            std::cout << " | the number: " << root->value << "\n";
+            std::cout << " | the key: " << root->value.first << " | the value: " << root->value.second << "\n";
         }
         type_name thedeepest(RedBlackTree<type_name> *head)
         {
@@ -462,7 +486,7 @@ namespace ft
             if (x->right && old != x->right)
                 return thedeepest_left(x->right);
             if (x->position == l)
-                    return x->parent;
+                return x->parent;
             return next(x->parent, x);
         }
         static RedBlackTree<type_name> *thedeepest_right(RedBlackTree<type_name> *head)
@@ -506,9 +530,10 @@ namespace ft
             }
             void _insert(type_name value, std::pair<bool, RedBlackTree<type_name>* > &x)
             {
+                return insert(&head, newnode(value), rt);
                 return    insert_helper(&head, value, rt, x);
             }
-            void  printing()
+            void  _printing()
             {
                 printing(this->head, 0);
             }
@@ -540,7 +565,7 @@ namespace ft
             }
             static itermap<type_name> _prev(itermap<type_name> *x)
             {
-                if (x == NULL)
+                if (x->corr == NULL)
                     return itermap<type_name>(x->corr, thedeepest_right(x->root));
                 return itermap<type_name>(x->corr, prev(x->corr, x->corr));
             }

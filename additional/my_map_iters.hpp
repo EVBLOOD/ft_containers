@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 14:29:37 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/27 11:40:03 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/27 15:57:39 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,28 +74,50 @@ namespace ft
             {
                 return data->corr->value;
             }
-            map_iterators &operator++() const
+            map_iterators &operator++()
+            {
+                puts("li");
+                *data =  R_B_T<typename T::value_type, cmp>::_next(data);
+                return *this;
+            }
+            const map_iterators &operator++() const
             {
                 *data =  R_B_T<typename T::value_type, cmp>::_next(data);
                 return *this;
             } 
-            map_iterators operator++(int) const
+            map_iterators operator++(int)
+            {
+                puts("li 1");
+                map_iterators temp(data);
+                *data = R_B_T<typename T::value_type, cmp>::_next(data);
+                return temp;
+            }
+            const map_iterators operator++(int) const
             {
                 map_iterators temp(data);
                 *data = R_B_T<typename T::value_type, cmp>::_next(data);
                 return temp;
             }
-
-            map_iterators &operator--() const
+            map_iterators &operator--()
             {
-                data =  R_B_T<typename T::value_type, cmp>::_prev(data);
+                *data =  R_B_T<typename T::value_type, cmp>::_prev(data);
                 return *this;
             }
-            
-            map_iterators operator--(int) const
+            const map_iterators &operator--() const
+            {
+                *data =  R_B_T<typename T::value_type, cmp>::_prev(data);
+                return *this;
+            }
+            const map_iterators operator--(int) const
             {
                 map_iterators temp(data);
-                data =  R_B_T<typename T::value_type, cmp>::_prev(data);
+                *data =  R_B_T<typename T::value_type, cmp>::_prev(data);
+                return temp;
+            }
+            map_iterators operator--(int)
+            {
+                map_iterators temp(data);
+                *data =  R_B_T<typename T::value_type, cmp>::_prev(data);
                 return temp;
             }
             
@@ -157,12 +179,16 @@ namespace ft
             }
             revmap_iterators &operator++()
             {
+                puts("here");
                 data = RedBlackTree<T>::next(data);
+                if (data.corr == NULL)
+                    puts("ahah");
                 return *this;
             }
             
             revmap_iterators operator++(int)
             {
+                 puts("here +");
                 revmap_iterators temp(data);
                 data = RedBlackTree<T>::next(data);
                 return temp;
