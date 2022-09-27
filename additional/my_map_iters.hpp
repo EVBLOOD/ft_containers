@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 14:29:37 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/26 17:45:21 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/27 11:40:03 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,16 @@ namespace ft
             pointer data;
         public:
             pointer base() const {return data; }
-            map_iterators(value_type ptr) : data(&ptr) {};
-            map_iterators(pointer ptr) : data(&*ptr) {};
-            map_iterators(const map_iterators &iter) : data(iter.base()) {};
+            map_iterators(value_type ptr) : data(new value_type(ptr)) {};
+            map_iterators(pointer ptr) : data(new value_type(*ptr)) {};
+            map_iterators(const map_iterators &iter) : data(new value_type(*(iter.base()))) {};
             // template<class iter>
             //     map_iterators(iter &x) : data(x.base()) {};
 
 
-            ~map_iterators() {};
+            ~map_iterators() {
+                delete data;
+            };
             
             map_iterators() : data(NULL) {};
             
