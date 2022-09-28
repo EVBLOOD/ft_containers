@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 18:06:02 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/28 00:09:10 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/28 11:31:23 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -586,9 +586,9 @@ namespace ft
             {
                 return exists_helper(head, value);
             }
-            RedBlackTree<type_name> *find(type_name value)
+            itermap<type_name> find(type_name value)
             {
-                return find_helper(head, value);
+                return itermap<type_name>(head, find_helper(head, value));
             }
             void remove(type_name element)
             {

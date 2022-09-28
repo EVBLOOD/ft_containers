@@ -38,7 +38,7 @@ int main()
   // ++a;
   // std::cout << a->first << "\n";
   n.insert(a, b);
-  std::cout << b->first << "\n";
+  // std::cout << b->first << "\n";
   // m.erase(1);
   // ft::map<int, int>::iterator b = m.begin();
   // ft::map<int, int> x;

@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 14:41:06 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/28 00:12:17 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/28 11:31:42 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,10 +239,23 @@ namespace ft
           }
           std::pair<const_iterator,const_iterator> equal_range (const key_type& k) const
           {
-            return std::make_pair(const_iterator(my_tree.find(k)), const_iterator(my_tree.find(k)));
+            const_iterator a = const_iterator(my_tree.find(std::make_pair(k, mapped_type())));
+            if (a == this->end())
+              return std::make_pair(a, a);
+            else
+              return std::make_pair(a, ++a);
           }
-              //   pair<iterator,iterator>             equal_range (const key_type& k);
-              //   allocator_type get_allocator() const;
-        
+          pair<iterator,iterator>             equal_range (const key_type& k)
+          {
+            iterator a = iterator(my_tree.find(std::make_pair(k, mapped_type())));
+            if (a == this->end())
+              return std::make_pair(a, a);
+            else
+              return std::make_pair(a, ++a);
+          }
+          allocator_type get_allocator() const
+          {
+            return my_tree.ac.get_allocator();
+          }
         };
 }
