@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 14:41:06 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/28 11:31:42 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/28 13:31:23 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ namespace ft
             	typedef typename allocator_type::const_pointer	const_pointer;
               typedef typename ft::map_iterators<iterwrp, value_compare> iterator;
               typedef const typename ft::map_iterators<iterwrp, value_compare> const_iterator;
-              typedef typename ft::revmap_iterators<iterwrp> reverse_iterator;
-              typedef const typename ft::revmap_iterators<iterwrp> const_reverse_iterator;
+              typedef typename ft::revmap_iterators<iterwrp, value_compare> reverse_iterator;
+              typedef const typename ft::revmap_iterators<iterwrp, value_compare> const_reverse_iterator;
             	typedef size_t   size_type;
             	static_assert((ft::is_same<typename allocator_type::value_type, value_type>::value), "Error in types: the allocater and the value");
             	// private:
@@ -60,7 +60,7 @@ namespace ft
 			    public:
             		explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : my_tree(typename allocator_type::template rebind<RedBlackTree<value_type> >::other(), value_compare(comp)) {}
                 template <class InputIterator>
-                  map (ft::enable_if<ft::is_same<typename InputIterator::iterator_category, std::input_iterator_tag>::value, InputIterator> first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : my_tree(comp, alloc)
+                  map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : my_tree(alloc, comp)
 					      {
                   while (first != last)
                   {
@@ -74,6 +74,7 @@ namespace ft
 					      }
           ~map()
 					{
+            my_tree.free();
 					}
           map& operator= (const map& x)
 					{
@@ -139,9 +140,9 @@ namespace ft
           }
           mapped_type& operator[] (const key_type& k)
           {
-            RedBlackTree<value_type> *f = my_tree.find(std::make_pair(k, mapped_type()));
-            if (f)
-             return f->value.second;
+            iterator f = my_tree.find(std::make_pair(k, mapped_type()));
+            if (f != end())
+             return f->second;
             std::pair<iterator, bool> x = insert(std::make_pair(k, mapped_type()));
             return x.first->second;
           }
@@ -150,15 +151,6 @@ namespace ft
             (void)position;
             return iterwrp(my_tree.head, my_tree.insert(val).first);
           }
-          // template <class InputIterator>
-          //   void insert (ft::enable_if<ft::is_same<typename InputIterator::iterator_category, std::random_access_iterator_tag>::value, InputIterator> first, InputIterator last)
-          // {
-          //   while (first != last)
-          //   {
-          //     my_tree.insert(*first);
-          //     first++;
-          //   }
-          // }
           template <class InputIterator>
             void insert (InputIterator first, InputIterator last)
           {
@@ -174,12 +166,11 @@ namespace ft
           }
           size_type erase (const key_type& k)
           {
-            my_tree.remove(std::make_pair(k, 0));
+            my_tree.remove(std::make_pair(k, mapped_type()));
             return my_tree.size;
           }
           void erase (iterator first, iterator last)
           {
-            // I think I'll sort them
             while (first != last)
             {
               my_tree.insert(*first);
@@ -207,35 +198,43 @@ namespace ft
           }
           iterator find (const key_type& k)
           {
-            return iterator(iterwrp(my_tree.head,my_tree.find(std::make_pair(k, 0))));
+            return iterator(my_tree.find(std::make_pair(k, mapped_type())));
           }
           const_iterator find (const key_type& k) const
           {
-            return const_iterator(iterwrp(my_tree.head, my_tree.find(k)));
+            return const_iterator(my_tree.find(std::make_pair(k, mapped_type())));
           }
           size_type count (const key_type& k) const
           {
-            return static_cast<size_type>(my_tree.exists(k));
+            return static_cast<size_type>(my_tree.exists(std::make_pair(k, mapped_type())));
           }
           iterator lower_bound (const key_type& k)
           {
-            iterator x = my_tree.find(k);
-            return (++x);
+            iterator x = my_tree.find(std::make_pair(k, mapped_type()));
+            if (x != this->end())
+              return (++x);
+            return (x);
           }
           const_iterator lower_bound (const key_type& k) const
           {
-            const_iterator x = my_tree.find(k);
-            return (++x);
+            const_iterator x = my_tree.find(std::make_pair(k, mapped_type()));
+            if (x != this->end())
+              return (++x);
+            return (x);
           }
           iterator upper_bound (const key_type& k)
           {
-            iterator x = my_tree.find(k);
-            return (--x);
+            iterator x = my_tree.find(std::make_pair(k, mapped_type()));
+            if (x != this->end())
+              return (--x);
+            return (x);
           }
           const_iterator upper_bound (const key_type& k) const
           {
-            const_iterator x = my_tree.find(k);
-            return (--x);
+            const_iterator x = my_tree.find(std::make_pair(k, mapped_type()));
+            if (x != this->end())
+              return (--x);
+            return (x);
           }
           std::pair<const_iterator,const_iterator> equal_range (const key_type& k) const
           {
@@ -255,7 +254,7 @@ namespace ft
           }
           allocator_type get_allocator() const
           {
-            return my_tree.ac.get_allocator();
+            return Alloc();
           }
         };
 }

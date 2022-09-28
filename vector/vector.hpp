@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 17:02:04 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/23 12:00:07 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/28 12:59:09 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ namespace ft
                 int i = 0;
                 while (i < n)
                 {
-                    my_vec[i] = val;
+                    // my_vec[i] = val;
+                    _alloc.construct(&(my_vec[i]), val);
                     i++;
                 }
             }

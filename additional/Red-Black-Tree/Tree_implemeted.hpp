@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 18:06:02 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/28 11:31:23 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/28 13:25:52 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -556,10 +556,12 @@ namespace ft
             R_B_T (Alloc a, Compare cmp) : head(NULL), ac(a), cmpr(cmp), size(0) {}
             ~R_B_T()
             {
+                size = 0;
                 free_helper(head);
             }
             void free()
             {
+                size = 0;
                 free_helper(head);
                 head = NULL;
             }

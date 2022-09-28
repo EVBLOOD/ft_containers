@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 14:29:37 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/27 15:57:39 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/28 13:35:11 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ namespace ft
             }
             map_iterators &operator++()
             {
-                puts("li");
                 *data =  R_B_T<typename T::value_type, cmp>::_next(data);
                 return *this;
             }
@@ -87,7 +86,6 @@ namespace ft
             } 
             map_iterators operator++(int)
             {
-                puts("li 1");
                 map_iterators temp(data);
                 *data = R_B_T<typename T::value_type, cmp>::_next(data);
                 return temp;
@@ -122,35 +120,39 @@ namespace ft
             }
             
     };
-
-        template <class T>
-       class revmap_iterators
-    {
+        template <class T, class cmp>
+       class revmap_iterators    
+{
         public:
             typedef typename ft::iterator_traits<T *>::value_type           value_type;
             typedef typename ft::iterator_traits<T *>::difference_type      difference_type;
             typedef typename ft::iterator_traits<T *>::pointer              pointer;
             typedef typename ft::iterator_traits<T *>::reference            reference;
             typedef typename ft::iterator_traits<T *>::iterator_category    iterator_category;
-            typedef typename T::type_name&                                   reference_pair;
-            typedef const typename T::type_name                              const_reference_pair;
+            typedef typename T::value_type                                  reference_pair;
+            typedef const typename T::value_type                             const_reference_pair;
         private:
             revmap_iterators(const long x) {
                 (void)x;
             };
             pointer data;
         public:
-            revmap_iterators(const pointer ptr) : data(ptr) {};
-            template<class iter>
-                revmap_iterators(const iter &x) : data(&(*x)) {};
+            pointer base() const {return data; }
+            revmap_iterators(value_type ptr) : data(new value_type(ptr)) {};
+            revmap_iterators(pointer ptr) : data(new value_type(*ptr)) {};
+            revmap_iterators(const revmap_iterators &iter) : data(new value_type(*(iter.base()))) {};
+            // template<class iter>
+            //     revmap_iterators(iter &x) : data(x.base()) {};
 
 
-            ~revmap_iterators() {};
+            ~revmap_iterators() {
+                delete data;
+            };
             
             revmap_iterators() : data(NULL) {};
             
-            bool operator==(const revmap_iterators &in) const { return in.data->value == data->value; };
-            bool operator!=(const revmap_iterators &in) const { return !(in.data->value == data->value); };
+            bool operator==(const revmap_iterators &in) const { return in.data->corr == data->corr; };
+            bool operator!=(const revmap_iterators &in) const { return !(in.data->corr == data->corr); };
 
                         template<class itr>
                 itr &operator=(const itr &x)
@@ -160,50 +162,64 @@ namespace ft
                     return *this;
             }
 
+            reference_pair *operator-> ()
+            {
+                return &(R_B_T<typename T::value_type, cmp>::_prev(data).corr->value);
+            }
+            const_reference_pair *operator-> () const
+            {
+                return &(R_B_T<typename T::value_type, cmp>::_prev(data).corr->value);
+            }
             reference_pair &operator*()
             {
-                return ((*data).value);
+                return (R_B_T<typename T::value_type, cmp>::_prev(data).corr->value);
             }
-            
-            const_reference_pair operator*() const
+            const_reference_pair &operator*() const
             {
-                return ((*data).value);
+                return (R_B_T<typename T::value_type, cmp>::_prev(data).corr->value);
             }
-            reference_pair &operator->()
-            {
-                return ((*data).value);
-            }
-            const_reference_pair &operator->() const
-            {
-                return ((*data).value);
-            }
-            revmap_iterators &operator++()
-            {
-                puts("here");
-                data = RedBlackTree<T>::next(data);
-                if (data.corr == NULL)
-                    puts("ahah");
-                return *this;
-            }
-            
-            revmap_iterators operator++(int)
-            {
-                 puts("here +");
-                revmap_iterators temp(data);
-                data = RedBlackTree<T>::next(data);
-                return temp;
-            }
-
             revmap_iterators &operator--()
             {
-                data = RedBlackTree<T>::prev(data);
+                *data =  R_B_T<typename T::value_type, cmp>::_next(data);
                 return *this;
             }
-            
+            const revmap_iterators &operator--() const
+            {
+                *data =  R_B_T<typename T::value_type, cmp>::_next(data);
+                return *this;
+            } 
             revmap_iterators operator--(int)
             {
                 revmap_iterators temp(data);
-                data = RedBlackTree<T>::prev(data);
+                *data = R_B_T<typename T::value_type, cmp>::_next(data);
+                return temp;
+            }
+            const revmap_iterators operator--(int) const
+            {
+                revmap_iterators temp(data);
+                *data = R_B_T<typename T::value_type, cmp>::_next(data);
+                return temp;
+            }
+            revmap_iterators &operator++()
+            {
+                *data =  R_B_T<typename T::value_type, cmp>::_prev(data);
+                return *this;
+            }
+            const revmap_iterators &operator++() const
+            {
+                *data =  R_B_T<typename T::value_type, cmp>::_prev(data);
+                return *this;
+            }
+            const revmap_iterators operator++(int) const
+            {
+                revmap_iterators temp(data);
+                *data =  R_B_T<typename T::value_type, cmp>::_prev(data);
+                return temp;
+            }
+            revmap_iterators operator++(int)
+            {
+                revmap_iterators temp(data);
+                *data =  R_B_T<typename T::value_type, cmp>::_prev(data);
                 return temp;
             }
             
