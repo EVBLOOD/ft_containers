@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 14:41:06 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/28 17:41:00 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/28 19:31:31 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,13 +169,19 @@ namespace ft
             my_tree.remove(std::make_pair(k, mapped_type()));
             return my_tree.size;
           }
-          void erase (iterator first, iterator last)
+          void erase (iterator first, iterator last) // problems
           {
+            if (first == last)
+              return;
+            last--;
+            iterator tmp = last;
             while (first != last)
             {
-              my_tree.insert(*first);
-              first++;
+              last--;
+              my_tree.remove(*tmp);
+              tmp = last;
             }
+            my_tree.remove(*tmp);
           }
           void swap (map& x)
           {
