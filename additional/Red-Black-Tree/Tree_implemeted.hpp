@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 18:06:02 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/28 13:25:52 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/28 16:39:46 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,7 +243,10 @@ namespace ft
             else if (cmpr((*head)->value, nv))
                 helper_insert(&((*head)->right), nv, r, x);
             else
-                return (void)(x = std::make_pair(false, *head));
+            {
+                x = std::make_pair(false, *head);
+                return;
+            }
             if ((*head)->left)
                 (*head)->left->parent = *head;
             if ((*head)->right)
@@ -571,10 +574,7 @@ namespace ft
             }
             void _insert(type_name value, std::pair<bool, RedBlackTree<type_name>* > &x)
             {
-                // return insert(value);
-                // return insert(&head, newnode(value), rt);
                 return    helper_insert(&head, value, rt, x);
-                // return    insert_helper(&head, value, rt, x);
             }
             void  _printing()
             {

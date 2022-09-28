@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 14:41:06 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/28 13:31:23 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/28 17:41:00 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ namespace ft
           {
             std::pair<bool, RedBlackTree<value_type>* > x;
             my_tree._insert(val, x);
-            return (std::make_pair(iterator(iterwrp(my_tree.head, x.second)), x.first));
+            return (std::make_pair(iterwrp(my_tree.head, x.second), x.first));
           }
           mapped_type& operator[] (const key_type& k)
           {
@@ -149,7 +149,7 @@ namespace ft
           iterator insert (iterator position, const value_type& val)
           {
             (void)position;
-            return iterwrp(my_tree.head, my_tree.insert(val).first);
+            return this->insert(val).first;
           }
           template <class InputIterator>
             void insert (InputIterator first, InputIterator last)

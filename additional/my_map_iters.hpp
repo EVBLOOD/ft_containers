@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 14:29:37 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/28 13:35:11 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/28 17:45:29 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,29 +34,28 @@ namespace ft
             pointer data;
         public:
             pointer base() const {return data; }
-            map_iterators(value_type ptr) : data(new value_type(ptr)) {};
-            map_iterators(pointer ptr) : data(new value_type(*ptr)) {};
+            map_iterators() : data(NULL) {};
+            map_iterators(const value_type ptr) : data(new value_type(ptr)) {};
+            map_iterators(const pointer ptr) : data(new value_type(*ptr)) {};
             map_iterators(const map_iterators &iter) : data(new value_type(*(iter.base()))) {};
-            // template<class iter>
-            //     map_iterators(iter &x) : data(x.base()) {};
+            template<class iter>
+                map_iterators(iter &x) : data(new value_type(*(x.base()))) {};
 
 
             ~map_iterators() {
-                delete data;
+                if (data)
+                    delete data;
+                data = NULL;
             };
-            
-            map_iterators() : data(NULL) {};
-            
+            map_iterators &operator=(const map_iterators &x)
+            {
+                if (&x != this)
+                    data = new value_type(*(x.base()));
+                return *this;
+            }
             bool operator==(const map_iterators &in) const { return in.data->corr == data->corr; };
             bool operator!=(const map_iterators &in) const { return !(in.data->corr == data->corr); };
 
-                        template<class itr>
-                itr &operator=(const itr &x)
-            {
-                    if (&x != this)
-                        data = x.data;
-                    return *this;
-            }
 
             reference_pair *operator-> ()
             {
@@ -154,12 +153,11 @@ namespace ft
             bool operator==(const revmap_iterators &in) const { return in.data->corr == data->corr; };
             bool operator!=(const revmap_iterators &in) const { return !(in.data->corr == data->corr); };
 
-                        template<class itr>
-                itr &operator=(const itr &x)
+            revmap_iterators &operator=(const revmap_iterators &x)
             {
-                    if (&x != this)
-                        data = x.data;
-                    return *this;
+                if (&x != this)
+                    data = new value_type(*(x.base()));
+                return *this;
             }
 
             reference_pair *operator-> ()

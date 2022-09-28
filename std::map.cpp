@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 13:06:39 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/28 13:38:52 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/28 17:46:19 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,5 +107,45 @@ int main ()
     std::cout << "size after " << mymap.size() << "\n";
   }
   std::cout << "=============================================================\n";
+  { // max_size()
+    int i;
+    std::map<int,int> mymap;
+  
+    if (mymap.max_size() > 1000)
+    {
+      for (i = 0; i < 1000; i++) mymap[i] = 0;
+      std::cout << "The map contains 1000 elements.\n";
+    }
+    else std::cout << "The map could not hold 1000 elements.\n";
+  }
+  std::cout << "=============================================================\n";
+  { // insert
+    ft::map<char,int> mymap;
+    mymap.insert (std::pair<char,int>('a',100));
+    mymap.insert (std::pair<char,int>('z',200));
+  
+    std::pair<ft::map<char,int>::iterator,bool> ret;
+    ret = mymap.insert (std::pair<char,int>('z',500));
+    if (ret.second==false) {
+      std::cout << "element 'z' already existed\n";
+      std::cout << " with a value of " << ret.first->second << '\n';
+    }
+  
+    ft::map<char,int>::iterator it = mymap.begin();
+    mymap.insert (it, std::pair<char,int>('b',300));
+    mymap.insert (it, std::pair<char,int>('c',400));
+  
+    ft::map<char,int> anothermap;
+    anothermap.insert(mymap.begin(),mymap.find('c'));
+  
+    std::cout << "mymap contains:\n";
+    for (it=mymap.begin(); it!=mymap.end(); ++it)
+      std::cout << it->first << " => " << it->second << '\n';
+  
+    std::cout << "anothermap contains:\n";
+    for (it=anothermap.begin(); it!=anothermap.end(); ++it)
+      std::cout << it->first << " => " << it->second << '\n'; 
+  }
+ 
   return 0;
 }
