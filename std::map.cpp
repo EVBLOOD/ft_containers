@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 13:06:39 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/28 19:31:19 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/28 19:52:50 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,6 +167,70 @@ int main ()
     for (it=mymap.begin(); it!=mymap.end(); ++it)
       std::cout << it->first << " => " << it->second << '\n';
     mymap.my_tree._printing();
+  }
+  std::cout << "=============================================================\n";
+  { // swap
+    ft::map<char,int> foo,bar;
+    foo['x']=100;
+    foo['y']=200;
+    bar['a']=11;
+    bar['b']=22;
+    bar['c']=33;
+    foo.swap(bar);
+    std::cout << "foo contains:\n";
+    for (ft::map<char,int>::iterator it=foo.begin(); it!=foo.end(); ++it)
+      std::cout << it->first << " => " << it->second << '\n';
+    std::cout << "bar contains:\n";
+    for (ft::map<char,int>::iterator it=bar.begin(); it!=bar.end(); ++it)
+      std::cout << it->first << " => " << it->second << '\n';
+  }
+  std::cout << "=============================================================\n";
+  { // clear();
+    ft::map<char,int> mymap;
+    mymap['x']=100;
+    mymap['y']=200;
+    mymap['z']=300;
+    std::cout << "mymap contains:\n";
+    for (ft::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
+      std::cout << it->first << " => " << it->second << '\n';
+    mymap.clear();
+    mymap['a']=1101;
+    mymap['b']=2202;
+    std::cout << "mymap contains:\n";
+    for (ft::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
+      std::cout << it->first << " => " << it->second << '\n';
+     mymap.my_tree._printing();
+  }
+  std::cout << "=============================================================\n";
+  { // key_comp
+    ft::map<char,int> mymap;
+    
+    ft::map<char,int>::key_compare mycomp = mymap.key_comp();
+    
+    mymap['a']=100;
+    mymap['b']=200;
+    mymap['c']=300;
+    
+    std::cout << "mymap contains:\n";
+    
+    char highest = mymap.rbegin()->first;
+    ft::map<char,int>::iterator it = mymap.begin();
+    do {
+      std::cout << it->first << " => " << it->second << '\n';
+    } while ( mycomp((*it++).first, highest) );
+  }
+  std::cout << "=============================================================\n";
+  { // value_comp
+    ft::map<char,int> mymap;
+    mymap['x']=1001;
+    mymap['y']=2002;
+    mymap['z']=3003;
+    std::cout << "mymap contains:\n";
+    std::pair<char,int> highest = *mymap.rbegin();
+    ft::map<char,int>::iterator it = mymap.begin();
+    do {
+      std::cout << it->first << " => " << it->second << '\n';
+    } while ( mymap.value_comp()(*it++, highest) );
   }
   return 0;
 }
