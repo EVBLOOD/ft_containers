@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 14:41:06 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/28 19:49:55 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/28 22:48:56 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ namespace ft
                     key_compare cmp;
                   public:
                   value_compare(const key_compare &x) : cmp(x){};
-                  bool operator()(const value_type &a, const value_type &b)
+                  bool operator()(const value_type &a, const value_type &b) const
                   {
                     return cmp(a.first, b.first);
                   }
@@ -177,7 +177,10 @@ namespace ft
             iterator tmp = last;
             while (first != last)
             {
+              std::cout << tmp->first << "\n";
               last--;
+              if (value_compare(key_compare())(*first, *last))
+                break;
               my_tree.remove(*tmp);
               tmp = last;
             }
@@ -206,19 +209,21 @@ namespace ft
           {
             return iterator(my_tree.find(std::make_pair(k, mapped_type())));
           }
+          size_type count (const key_type& k) const
+          {
+            if (my_tree.exist(std::make_pair(k, mapped_type())) == true)
+              return 1;
+            return 0;
+          }
           const_iterator find (const key_type& k) const
           {
             return const_iterator(my_tree.find(std::make_pair(k, mapped_type())));
           }
-          size_type count (const key_type& k) const
-          {
-            return static_cast<size_type>(my_tree.exists(std::make_pair(k, mapped_type())));
-          }
           iterator lower_bound (const key_type& k)
           {
             iterator x = my_tree.find(std::make_pair(k, mapped_type()));
-            if (x != this->end())
-              return (++x);
+            // if (x != this->end())
+            //   return (++x);
             return (x);
           }
           const_iterator lower_bound (const key_type& k) const
@@ -232,7 +237,7 @@ namespace ft
           {
             iterator x = my_tree.find(std::make_pair(k, mapped_type()));
             if (x != this->end())
-              return (--x);
+              return (++x);
             return (x);
           }
           const_iterator upper_bound (const key_type& k) const
@@ -250,13 +255,13 @@ namespace ft
             else
               return std::make_pair(a, ++a);
           }
-          pair<iterator,iterator>             equal_range (const key_type& k)
+          std::pair<iterator,iterator> equal_range (const key_type& k)
           {
             iterator a = iterator(my_tree.find(std::make_pair(k, mapped_type())));
             if (a == this->end())
               return std::make_pair(a, a);
             else
-              return std::make_pair(a, ++a);
+              return std::make_pair(a++, a);
           }
           allocator_type get_allocator() const
           {

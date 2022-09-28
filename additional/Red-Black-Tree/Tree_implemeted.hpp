@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 18:06:02 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/28 16:39:46 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/28 22:04:12 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -498,17 +498,18 @@ namespace ft
             else
                 return head;
         }
-        bool exists_helper(RedBlackTree<type_name> *head, type_name value)
+        bool exist_helper(RedBlackTree<type_name> *head, type_name element) const
         {
             if (head == NULL)
                 return false;
-            if (cmpr(value, head->value))
-                return exists_helper(head->left, value);
-            else if (cmpr(head->value, value))
-                return exists_helper(head->right, value);
+            if (cmpr(element, head->value))
+                return exist_helper(head->left, element);
+            else if (cmpr(head->value, element))
+                return exist_helper(head->right, element);
             else
                 return true;
         }
+
         RedBlackTree<type_name> *begin_helper(RedBlackTree<type_name> *head) const
         {
             if (!head || head->left == NULL)
@@ -584,9 +585,9 @@ namespace ft
             {
                 return size;
             }
-            bool exists(type_name value)
+            bool exist(type_name element) const
             {
-                return exists_helper(head, value);
+                return exist_helper(head, element);
             }
             itermap<type_name> find(type_name value)
             {
