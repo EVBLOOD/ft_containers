@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 16:23:09 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/29 18:20:37 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/29 18:39:25 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ namespace ft
 			  		R_B_T<value_type, value_compare, typename allocator_type::template rebind<RedBlackTree<value_type> >::other> my_tree; 
 
 			    public:
-            		explicit set (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : my_tree(typename allocator_type::template rebind<RedBlackTree<value_type> >::other(), value_compare(comp)) {}
+            		explicit set (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : my_tree(typename allocator_type::template rebind<RedBlackTree<value_type> >::other(), value_compare(comp)) {(void)alloc;}
                 template <class InputIterator>
                   set (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : my_tree(alloc, comp)
 					      {

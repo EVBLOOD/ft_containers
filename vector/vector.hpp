@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 17:02:04 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/28 12:59:09 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/29 18:38:53 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ namespace ft
         {
             if (my_vec)
             {
-                int i = 0;
+                size_type i = 0;
                 while (i < _currSize)
                 {
                     _alloc.destroy(&(my_vec[i]));
@@ -285,7 +285,7 @@ namespace ft
                 if (my_vec)
                 {
                     memcpy(nv, my_vec, _currSize  * sizeof(value_type));
-                    int i = 0;
+                    size_type i = 0;
                     while (i < _currSize)
                     {
                         _alloc.destroy(&(my_vec[i]));
