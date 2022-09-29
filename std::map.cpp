@@ -6,13 +6,13 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 13:06:39 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/28 22:52:51 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/29 14:55:45 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
 #include <map>
 #include "map/map.hpp"
+#include "vector/vector.hpp"
 
 bool fncomp (char lhs, char rhs) {return lhs<rhs;}
 
@@ -275,16 +275,16 @@ int main ()
   mymap['d']=80;
   mymap['e']=100;
 
-  itlow=mymap.lower_bound ('b');  // itlow points to b
-  itup=mymap.upper_bound ('d');   // itup points to e (not d!)
+  itlow=mymap.lower_bound ('b');
+  itup=mymap.upper_bound ('d');
 
   std::cout << itlow->first << "\n";
   std::cout << itup->first << "\n";
-  // mymap.erase(itlow,itup);        // erases [itlow,itup)
-
+  mymap.erase(itlow,itup);
+  mymap.my_tree._printing();
   // print content:
-  // for (ft::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
-  //   std::cout << it->first << " => " << it->second << '\n';
+  for (ft::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
+    std::cout << it->first << " => " << it->second << '\n';
   }
   std::cout << "=============================================================\n";
   {

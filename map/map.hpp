@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 14:41:06 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/28 22:48:56 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/29 15:00:52 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 #include "../additional/Red-Black-Tree/Tree_implemeted.hpp"
 #include "../additional/my_map_iters.hpp"
 #include "../additional/enable_if.hpp"
+#include "../vector/vector.hpp"
+
 namespace ft
 {
         template < class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<std::pair<const Key,T> > >
@@ -169,22 +171,21 @@ namespace ft
             my_tree.remove(std::make_pair(k, mapped_type()));
             return my_tree.size;
           }
-          void erase (iterator first, iterator last) // problems
+          void erase (iterator first, iterator last)
           {
-            if (first == last)
-              return;
-            last--;
-            iterator tmp = last;
+            ft::vector<Key> n;
             while (first != last)
             {
-              std::cout << tmp->first << "\n";
-              last--;
-              if (value_compare(key_compare())(*first, *last))
-                break;
-              my_tree.remove(*tmp);
-              tmp = last;
+              n.push_back(first->first);
+              first++;
             }
-            my_tree.remove(*tmp);
+            typename ft::vector<key_type>::iterator b = n.begin();
+            typename ft::vector<key_type>::iterator e = n.end();
+            while (b != e)
+            {
+              my_tree.remove(std::make_pair(*b, mapped_type()));
+              b++;
+            }
           }
           void swap (map& x)
           {

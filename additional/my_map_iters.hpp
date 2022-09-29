@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 14:29:37 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/28 17:45:29 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/29 11:35:27 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,10 @@ namespace ft
             map_iterators &operator=(const map_iterators &x)
             {
                 if (&x != this)
+                {
+                    delete data;
                     data = new value_type(*(x.base()));
+                }
                 return *this;
             }
             bool operator==(const map_iterators &in) const { return in.data->corr == data->corr; };
