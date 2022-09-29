@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 18:06:02 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/29 18:17:23 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/29 18:28:15 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -275,54 +275,7 @@ namespace ft
             }
             return balancing(&((*head)->parent), l);
         }
-        
-        void    insert_helper(RedBlackTree<type_name> **head, type_name value_nv, int position, ft::pair<bool, RedBlackTree<type_name>* > &x)
-        {
-            if ((*head) == NULL)
-            {
-                *head = newnode(value_nv);
-                (*head)->position = position;
-                if (position == rt)
-                    (*head)->color = black;
-                size = size + 1;
-                // x = ft::make_pair(true, *head);
-                return;
-            }
-            if (cmpr(value_nv, (*head)->value))
-                return insert_helper(&((*head)->left), value_nv, l, x);
-            else if (cmpr((*head)->value, value_nv))
-                return insert_helper(&((*head)->right), value_nv, r, x);
-            else
-                return /*(void)(x = ft::make_pair(false, *head))*/;
-            if ((*head)->left)
-                (*head)->left->parent = *head;
-            if ((*head)->right)
-                (*head)->right->parent = *head;
-            if ((*head)->color == black ||
-                    (((*head)->left == NULL || (*head)->left->color == black) && ((*head)->right == NULL || (*head)->right->color == black)))
-                return;
-            if ((*head)->position == r)
-            {
-                if ((*head)->parent->left && (*head)->parent->left->color == red)
-                {
-                    (*head)->parent->left->color = black;
-                    if ((*head)->parent->position != rt)
-                        (*head)->parent->color = red;
-                    (*head)->color = black;
-                    return;
-                }
-                return balancing(&((*head)->parent), r);
-            }
-            if ((*head)->parent->right && (*head)->parent->right->color == red)
-            {
-                (*head)->parent->right->color = black;
-                if ((*head)->parent->position != rt)
-                    (*head)->parent->color = red;
-                (*head)->color = black;
-                return;
-            }
-            return balancing(&((*head)->parent), l);
-        }
+
         void    printing(RedBlackTree<type_name> *root, int level)
         {
             if (!root)
