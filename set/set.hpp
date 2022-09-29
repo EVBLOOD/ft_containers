@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 16:23:09 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/29 17:23:29 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/29 18:20:37 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,11 +122,11 @@ namespace ft
           {
             return my_tree.ac.max_size();
           }
-          std::pair<iterator,bool> insert (const value_type& val)
+          ft::pair<iterator,bool> insert (const value_type& val)
           {
-            std::pair<bool, RedBlackTree<value_type>* > x;
+            ft::pair<bool, RedBlackTree<value_type>* > x;
             my_tree._insert(val, x);
-            return (std::make_pair(iterwrp(my_tree.head, x.second), x.first));
+            return (ft::make_pair(iterwrp(my_tree.head, x.second), x.first));
           }
           iterator insert (iterator position, const value_type& val)
           {
@@ -226,21 +226,21 @@ namespace ft
               return (--x);
             return (x);
           }
-          std::pair<const_iterator,const_iterator> equal_range (const key_type& k) const
+          ft::pair<const_iterator,const_iterator> equal_range (const key_type& k) const
           {
             const_iterator a = const_iterator(my_tree.find(k));
             if (a == this->end())
-              return std::make_pair(a, a);
+              return ft::make_pair(a, a);
             else
-              return std::make_pair(a, ++a);
+              return ft::make_pair(a, ++a);
           }
-          std::pair<iterator,iterator> equal_range (const key_type& k)
+          ft::pair<iterator,iterator> equal_range (const key_type& k)
           {
             iterator a = iterator(my_tree.find(k));
             if (a == this->end())
-              return std::make_pair(a, a);
+              return ft::make_pair(a, a);
             else
-              return std::make_pair(a++, a);
+              return ft::make_pair(a++, a);
           }
           allocator_type get_allocator() const
           {

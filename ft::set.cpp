@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 17:26:18 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/29 17:45:39 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/29 18:19:57 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ int main ()
     mymap.insert ('a');
     mymap.insert ('z');
   
-    std::pair<ft::set<char>::iterator,bool> ret;
+    ft::pair<ft::set<char>::iterator,bool> ret;
     ret = mymap.insert ('z');
     if (ret.second==false) {
       std::cout << "element 'z' already existed\n";
@@ -292,7 +292,7 @@ int main ()
     mymap.insert('b');
     mymap.insert('c');
 
-    std::pair<ft::set<char>::iterator,ft::set<char>::iterator> ret;
+    ft::pair<ft::set<char>::iterator,ft::set<char>::iterator> ret;
     ret = mymap.equal_range('b');
     std::cout << "lower bound points to: ";
     std::cout << *ret.first << '\n';
