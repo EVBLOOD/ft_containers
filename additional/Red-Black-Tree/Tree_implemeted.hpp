@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 18:06:02 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/28 22:04:12 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/29 17:51:02 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,8 @@ namespace ft
         int           position;
         bool          color;
         RedBlackTree(const typename ft::enable_if<ft::is_same<type_name, type_name>::value, type_name>::type &value) : value(value), left(NULL), right(NULL), parent(NULL), color(red) {}
-        
         RedBlackTree(const typename ft::enable_if<ft::is_same<std::pair<type_name, RedBlackTree<type_name> >, std::pair<type_name, RedBlackTree<type_name> > >::value, std::pair<type_name, RedBlackTree<type_name> > >::type &src)
-            : value(std::make_pair(src.first.first, src.first.second)), left(src.second.left), right(src.second.right), parent(src.second.parent), color(src.second.color) {}
+            : value(src.first), left(src.second.left), right(src.second.right), parent(src.second.parent), color(src.second.color) {}
         RedBlackTree(const RedBlackTree<type_name> &src) : value(src.value), left(src.left), right(src.right), parent(src.parent), color(src.color) {}
         RedBlackTree(const RedBlackTree<type_name> *src) : value(src->value), left(src->left), right(src->right), parent(src->parent), color(src->color) {}
 
