@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 14:41:06 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/29 15:00:52 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/29 15:01:36 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,8 +223,6 @@ namespace ft
           iterator lower_bound (const key_type& k)
           {
             iterator x = my_tree.find(std::make_pair(k, mapped_type()));
-            // if (x != this->end())
-            //   return (++x);
             return (x);
           }
           const_iterator lower_bound (const key_type& k) const
