@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 13:06:39 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/29 15:07:49 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/29 18:17:49 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,19 +120,19 @@ int main ()
   std::cout << "=============================================================\n";
   { // insert
     ft::map<char,int> mymap;
-    mymap.insert (std::pair<char,int>('a',100));
-    mymap.insert (std::pair<char,int>('z',200));
+    mymap.insert (ft::pair<char,int>('a',100));
+    mymap.insert (ft::pair<char,int>('z',200));
   
-    std::pair<ft::map<char,int>::iterator,bool> ret;
-    ret = mymap.insert (std::pair<char,int>('z',500));
+    ft::pair<ft::map<char,int>::iterator,bool> ret;
+    ret = mymap.insert (ft::pair<char,int>('z',500));
     if (ret.second==false) {
       std::cout << "element 'z' already existed\n";
       std::cout << " with a value of " << ret.first->second << '\n';
     }
   
     ft::map<char,int>::iterator it = mymap.begin();
-    mymap.insert (it, std::pair<char,int>('b',300));
-    mymap.insert (it, std::pair<char,int>('c',400));
+    mymap.insert (it, ft::pair<char,int>('b',300));
+    mymap.insert (it, ft::pair<char,int>('c',400));
   
     ft::map<char,int> anothermap;
     anothermap.insert(mymap.begin(),mymap.find('c'));
@@ -225,7 +225,7 @@ int main ()
     mymap['y']=2002;
     mymap['z']=3003;
     std::cout << "mymap contains:\n";
-    std::pair<char,int> highest = *mymap.rbegin();
+    ft::pair<char,int> highest = *mymap.rbegin();
     ft::map<char,int>::iterator it = mymap.begin();
     do {
       std::cout << it->first << " => " << it->second << '\n';
@@ -292,7 +292,7 @@ int main ()
     mymap['b']=20;
     mymap['c']=30;
 
-    std::pair<ft::map<char,int>::iterator,ft::map<char,int>::iterator> ret;
+    ft::pair<ft::map<char,int>::iterator,ft::map<char,int>::iterator> ret;
     ret = mymap.equal_range('b');
     std::cout << "lower bound points to: ";
     std::cout << ret.first->first << " => " << ret.first->second << '\n';

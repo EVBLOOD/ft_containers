@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 14:41:06 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/29 15:01:36 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/29 18:16:50 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@
 
 namespace ft
 {
-        template < class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<std::pair<const Key,T> > >
+        template < class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<ft::pair<const Key,T> > >
         		class map
         {
           public:
-            	typedef std::pair<const Key, T> value_type;
+            	typedef ft::pair<const Key, T> value_type;
             	typedef Key key_type;
             	typedef T mapped_type;
             	typedef Compare key_compare;
@@ -134,18 +134,18 @@ namespace ft
           {
             return my_tree.ac.max_size();
           }
-          std::pair<iterator,bool> insert (const value_type& val)
+          ft::pair<iterator,bool> insert (const value_type& val)
           {
-            std::pair<bool, RedBlackTree<value_type>* > x;
+            ft::pair<bool, RedBlackTree<value_type>* > x;
             my_tree._insert(val, x);
-            return (std::make_pair(iterwrp(my_tree.head, x.second), x.first));
+            return (ft::make_pair(iterwrp(my_tree.head, x.second), x.first));
           }
           mapped_type& operator[] (const key_type& k)
           {
-            iterator f = my_tree.find(std::make_pair(k, mapped_type()));
+            iterator f = my_tree.find(ft::make_pair(k, mapped_type()));
             if (f != end())
              return f->second;
-            std::pair<iterator, bool> x = insert(std::make_pair(k, mapped_type()));
+            ft::pair<iterator, bool> x = insert(ft::make_pair(k, mapped_type()));
             return x.first->second;
           }
           iterator insert (iterator position, const value_type& val)
@@ -168,7 +168,7 @@ namespace ft
           }
           size_type erase (const key_type& k)
           {
-            my_tree.remove(std::make_pair(k, mapped_type()));
+            my_tree.remove(ft::make_pair(k, mapped_type()));
             return my_tree.size;
           }
           void erase (iterator first, iterator last)
@@ -183,7 +183,7 @@ namespace ft
             typename ft::vector<key_type>::iterator e = n.end();
             while (b != e)
             {
-              my_tree.remove(std::make_pair(*b, mapped_type()));
+              my_tree.remove(ft::make_pair(*b, mapped_type()));
               b++;
             }
           }
@@ -208,59 +208,59 @@ namespace ft
           }
           iterator find (const key_type& k)
           {
-            return iterator(my_tree.find(std::make_pair(k, mapped_type())));
+            return iterator(my_tree.find(ft::make_pair(k, mapped_type())));
           }
           size_type count (const key_type& k) const
           {
-            if (my_tree.exist(std::make_pair(k, mapped_type())) == true)
+            if (my_tree.exist(ft::make_pair(k, mapped_type())) == true)
               return 1;
             return 0;
           }
           const_iterator find (const key_type& k) const
           {
-            return const_iterator(my_tree.find(std::make_pair(k, mapped_type())));
+            return const_iterator(my_tree.find(ft::make_pair(k, mapped_type())));
           }
           iterator lower_bound (const key_type& k)
           {
-            iterator x = my_tree.find(std::make_pair(k, mapped_type()));
+            iterator x = my_tree.find(ft::make_pair(k, mapped_type()));
             return (x);
           }
           const_iterator lower_bound (const key_type& k) const
           {
-            const_iterator x = my_tree.find(std::make_pair(k, mapped_type()));
+            const_iterator x = my_tree.find(ft::make_pair(k, mapped_type()));
             if (x != this->end())
               return (++x);
             return (x);
           }
           iterator upper_bound (const key_type& k)
           {
-            iterator x = my_tree.find(std::make_pair(k, mapped_type()));
+            iterator x = my_tree.find(ft::make_pair(k, mapped_type()));
             if (x != this->end())
               return (++x);
             return (x);
           }
           const_iterator upper_bound (const key_type& k) const
           {
-            const_iterator x = my_tree.find(std::make_pair(k, mapped_type()));
+            const_iterator x = my_tree.find(ft::make_pair(k, mapped_type()));
             if (x != this->end())
               return (--x);
             return (x);
           }
-          std::pair<const_iterator,const_iterator> equal_range (const key_type& k) const
+          ft::pair<const_iterator,const_iterator> equal_range (const key_type& k) const
           {
-            const_iterator a = const_iterator(my_tree.find(std::make_pair(k, mapped_type())));
+            const_iterator a = const_iterator(my_tree.find(ft::make_pair(k, mapped_type())));
             if (a == this->end())
-              return std::make_pair(a, a);
+              return ft::make_pair(a, a);
             else
-              return std::make_pair(a, ++a);
+              return ft::make_pair(a, ++a);
           }
-          std::pair<iterator,iterator> equal_range (const key_type& k)
+          ft::pair<iterator,iterator> equal_range (const key_type& k)
           {
-            iterator a = iterator(my_tree.find(std::make_pair(k, mapped_type())));
+            iterator a = iterator(my_tree.find(ft::make_pair(k, mapped_type())));
             if (a == this->end())
-              return std::make_pair(a, a);
+              return ft::make_pair(a, a);
             else
-              return std::make_pair(a++, a);
+              return ft::make_pair(a++, a);
           }
           allocator_type get_allocator() const
           {

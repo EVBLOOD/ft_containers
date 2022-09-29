@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 18:06:02 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/29 17:51:02 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/29 18:17:23 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ namespace ft
         int           position;
         bool          color;
         RedBlackTree(const typename ft::enable_if<ft::is_same<type_name, type_name>::value, type_name>::type &value) : value(value), left(NULL), right(NULL), parent(NULL), color(red) {}
-        RedBlackTree(const typename ft::enable_if<ft::is_same<std::pair<type_name, RedBlackTree<type_name> >, std::pair<type_name, RedBlackTree<type_name> > >::value, std::pair<type_name, RedBlackTree<type_name> > >::type &src)
+        RedBlackTree(const typename ft::enable_if<ft::is_same<ft::pair<type_name, RedBlackTree<type_name> >, ft::pair<type_name, RedBlackTree<type_name> > >::value, ft::pair<type_name, RedBlackTree<type_name> > >::type &src)
             : value(src.first), left(src.second.left), right(src.second.right), parent(src.second.parent), color(src.second.color) {}
         RedBlackTree(const RedBlackTree<type_name> &src) : value(src.value), left(src.left), right(src.right), parent(src.parent), color(src.color) {}
         RedBlackTree(const RedBlackTree<type_name> *src) : value(src->value), left(src->left), right(src->right), parent(src->parent), color(src->color) {}
@@ -225,7 +225,7 @@ namespace ft
             return balancing(&((*head)->parent), l);
         }
         
-        void    helper_insert(RedBlackTree<type_name> **head, type_name nv, int position, std::pair<bool, RedBlackTree<type_name>* > &x)
+        void    helper_insert(RedBlackTree<type_name> **head, type_name nv, int position, ft::pair<bool, RedBlackTree<type_name>* > &x)
         {
             if ((*head) == NULL)
             {
@@ -234,7 +234,7 @@ namespace ft
                 if (position == rt)
                     (*head)->color = black;
                 size = size + 1;
-                x = std::make_pair(true, *head);
+                x = ft::make_pair(true, *head);
                 return;
             }
             if (cmpr(nv, (*head)->value))
@@ -243,7 +243,7 @@ namespace ft
                 helper_insert(&((*head)->right), nv, r, x);
             else
             {
-                x = std::make_pair(false, *head);
+                x = ft::make_pair(false, *head);
                 return;
             }
             if ((*head)->left)
@@ -276,7 +276,7 @@ namespace ft
             return balancing(&((*head)->parent), l);
         }
         
-        void    insert_helper(RedBlackTree<type_name> **head, type_name value_nv, int position, std::pair<bool, RedBlackTree<type_name>* > &x)
+        void    insert_helper(RedBlackTree<type_name> **head, type_name value_nv, int position, ft::pair<bool, RedBlackTree<type_name>* > &x)
         {
             if ((*head) == NULL)
             {
@@ -285,7 +285,7 @@ namespace ft
                 if (position == rt)
                     (*head)->color = black;
                 size = size + 1;
-                // x = std::make_pair(true, *head);
+                // x = ft::make_pair(true, *head);
                 return;
             }
             if (cmpr(value_nv, (*head)->value))
@@ -293,7 +293,7 @@ namespace ft
             else if (cmpr((*head)->value, value_nv))
                 return insert_helper(&((*head)->right), value_nv, r, x);
             else
-                return /*(void)(x = std::make_pair(false, *head))*/;
+                return /*(void)(x = ft::make_pair(false, *head))*/;
             if ((*head)->left)
                 (*head)->left->parent = *head;
             if ((*head)->right)
@@ -375,19 +375,19 @@ namespace ft
                 if (target->left == NULL)
                 {
                     type_name value = target->right->value;
-                    ac.construct(*head,std::pair<type_name, RedBlackTree<type_name> >(value, **head));
+                    ac.construct(*head,ft::pair<type_name, RedBlackTree<type_name> >(value, **head));
                     remove_helper(&((*head)->right), value);
                     return;
                 }
                 if (target->right == NULL)
                 {
                     type_name value = target->left->value;
-                    ac.construct(*head, std::pair<type_name, RedBlackTree<type_name> >(value, **head));
+                    ac.construct(*head, ft::pair<type_name, RedBlackTree<type_name> >(value, **head));
                     remove_helper(&((*head)->left), value);
                     return;
                 }
                 type_name value = thedeepest(target->left);
-                ac.construct(*head, std::pair<type_name, RedBlackTree<type_name> >(value, **head));
+                ac.construct(*head, ft::pair<type_name, RedBlackTree<type_name> >(value, **head));
                 remove_helper(&((*head)->left), value);
             }
         }
@@ -572,7 +572,7 @@ namespace ft
             {
                 return insert(&head, newnode(value), rt);
             }
-            void _insert(type_name value, std::pair<bool, RedBlackTree<type_name>* > &x)
+            void _insert(type_name value, ft::pair<bool, RedBlackTree<type_name>* > &x)
             {
                 return    helper_insert(&head, value, rt, x);
             }
