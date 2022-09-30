@@ -6,10 +6,11 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 19:10:04 by sakllam           #+#    #+#             */
-/*   Updated: 2022/08/15 19:16:05 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/30 15:40:10 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#pragma once
 namespace ft
 {	
     template <class InputIterator1, class InputIterator2>

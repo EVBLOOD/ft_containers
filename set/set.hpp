@@ -6,22 +6,18 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 16:23:09 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/29 18:39:25 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/30 15:40:50 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-// #include <functional>
-// #include <iterator>
+
 #include <memory>
-// #include <utility>
-// #include "../additional/pair.hpp"
-// #include "../additional/is_integral.hpp"
 #include "../additional/Red-Black-Tree/Tree_implemeted.hpp"
 #include "../additional/my_map_iters.hpp"
-// #include "../additional/enable_if.hpp"
 #include "../vector/vector.hpp"
+
 namespace ft
 {
     template < class T, class Compare = std::less<T>, class Alloc = std::allocator<T> >

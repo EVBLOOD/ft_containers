@@ -6,10 +6,11 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 19:49:22 by sakllam           #+#    #+#             */
-/*   Updated: 2022/08/15 19:55:19 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/30 15:40:26 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#pragma once
 #include "pair.hpp"
 
 namespace ft
