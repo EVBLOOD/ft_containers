@@ -8,6 +8,22 @@ using std::cout;
 
 int main() {
   {
+    ft::vector<std::string> array;
+    std::string x = "a";
+    for (int i = 0; i < 100; i++)
+    {
+      x = x + "a";
+      std::cout << x << "\n";
+      array.push_back(x);
+    }
+    std::cout << array.size() << "\n";
+    for (int i = 0; i < 100; i++)
+    {
+      std::cout << array[i] << "\n";
+    }
+    puts("-----------------------------------------------------");
+  }
+  {
     ft::vector<int> array;
     cout << "vector() default constructor :: pass\n";
   }
