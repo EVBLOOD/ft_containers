@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 18:06:02 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/30 13:37:59 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/30 16:39:03 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <cstdlib>
 #include <memory>
 #include <iostream>
+#include <type_traits>
 #include <utility>
 #include "../pair.hpp"
 #include "../make_pair.hpp"
@@ -172,6 +173,110 @@ namespace ft
             left_rotation(&((*head)->left), false);
             return right_rotation(head);
         }
+        /// custom
+        void new_swaping(RedBlackTree<type_name> *one, RedBlackTree<type_name> *two, ft::pair<bool, RedBlackTree<type_name>* > &x, type_name nv)
+        {
+            RedBlackTree<type_name>   tmp = *one;
+            ac.construct(one, *two);
+            one->position = tmp.position;
+            one->parent = tmp.parent;
+            one->right = tmp.right;
+            one->left = tmp.left;
+            RedBlackTree<type_name>* tmpl = two->left;
+            RedBlackTree<type_name>* tmpr = two->right;
+            RedBlackTree<type_name>* tmpp = two->parent;
+            int tmpps = two->position;
+            ac.construct(two, tmp);
+            two->left = tmpl;
+            two->right = tmpr;
+            two->parent = tmpp;
+            two->position = tmpps;
+            if (x.second == NULL)
+                return;
+            if (cmpr(nv, one->value) == false && cmpr(one->value, nv) == false)
+                x.second = one;
+            if (cmpr(nv, two->value) == false && cmpr(two->value, nv) == false)
+                x.second = two;
+        }
+        void    new_right_rotation(RedBlackTree<type_name> **root, bool coloring, ft::pair<bool, RedBlackTree<type_name>* > &x, type_name nv)
+        {
+            new_swaping((*root)->left, *root, x, nv);
+            RedBlackTree<type_name> *tmpA = (*root)->left;
+            (*root)->left = (*root)->left->left;
+            if ((*root)->left)
+            {
+                (*root)->left->parent = *root;
+                if (coloring)
+                    (*root)->left->color = red;
+            }
+            tmpA->left = tmpA->right;
+            if (tmpA->left)
+            {
+                tmpA->left->parent = tmpA;
+                tmpA->left->position = l;
+            }
+            tmpA->right = (*root)->right;
+            if (tmpA->right)
+            {
+                tmpA->right->position = r;
+                tmpA->right->parent = tmpA;
+            }
+            (*root)->right = tmpA;
+            tmpA->position = r;
+            tmpA->parent = *root;
+            if (coloring)
+            {
+                (*root)->color = black;
+                tmpA->color = red;
+            }
+        }
+        void    new_left_rotation(RedBlackTree<type_name> **root, bool coloring, ft::pair<bool, RedBlackTree<type_name>* > &x, type_name nv)
+        {
+            new_swaping((*root)->right, *root, x, nv);
+            RedBlackTree<type_name> *tmpA = (*root)->right;
+            (*root)->right = (*root)->right->right;
+            if ((*root)->right)
+            {
+                (*root)->right->parent = *root;
+                (*root)->right->position = r;
+                if (coloring)
+                    (*root)->right->color = red;
+            }
+            tmpA->right = tmpA->left;
+            if (tmpA->right)
+            {
+                tmpA->right->parent = tmpA;
+                tmpA->right->position = r;
+            }
+            tmpA->left = (*root)->left;
+            if (tmpA->left)
+            {
+                tmpA->left->position = l;
+                tmpA->left->parent = tmpA;
+            }
+            (*root)->left = tmpA;
+            tmpA->position = l;
+            tmpA->parent = *root;
+            if (coloring)
+            {
+                (*root)->color = black;
+                tmpA->color = red;
+            }
+        }
+        void    new_balancing(RedBlackTree<type_name> **head, int position, ft::pair<bool, RedBlackTree<type_name>* > &x, type_name nv)
+        {
+            if (position == r)
+            {
+                if ((*head)->right->right && (*head)->right->right->color == red)
+                    return new_left_rotation(head, true, x, nv);
+                new_right_rotation(&((*head)->right), false, x, nv);
+                return new_left_rotation(head, true, x, nv);
+            }
+            if ((*head)->left->left && (*head)->left->left->color == red)
+                return new_right_rotation(head, true, x, nv);
+            new_left_rotation(&((*head)->left), false, x, nv);
+            return new_right_rotation(head, true, x, nv);
+        }
         RedBlackTree<type_name> *newnode(type_name value)
         {
             RedBlackTree<type_name> *newnode = ac.allocate(1);
@@ -263,7 +368,7 @@ namespace ft
                     (*head)->color = black;
                     return;
                 }
-                return balancing(&((*head)->parent), r);
+                return new_balancing(&((*head)->parent), r, x, nv);
             }
             if ((*head)->parent->right && (*head)->parent->right->color == red)
             {
@@ -273,7 +378,7 @@ namespace ft
                 (*head)->color = black;
                 return;
             }
-            return balancing(&((*head)->parent), l);
+            return new_balancing(&((*head)->parent), l, x, nv);
         }
 
         void    printing(RedBlackTree<type_name> *root, int level)

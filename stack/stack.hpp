@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 11:58:27 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/30 13:10:13 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/30 16:41:33 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,42 +18,40 @@ namespace ft
     template <class T, class Container = ft::vector<T> >
         class stack
     {
+        public:
         typedef T           value_type;
         typedef Container   container_type;
         typedef size_t      size_type;
 
-        container_type my_stack;
+        protected:
+        container_type c;
 
         public:
-        explicit stack (const container_type& ctnr = container_type()) : my_stack(ctnr) {}
+        explicit stack (const container_type& ctnr = container_type()) : c(ctnr) {}
         bool empty() const
         {
-            return my_stack.empty();
+            return c.empty();
         }
         size_type size() const
         {
-            return my_stack.size();
+            return c.size();
         }
         value_type& top()
         {
-            return my_stack.back();
+            return c.back();
         }
         const value_type& top() const
         {
-            return my_stack.back();
+            return c.back();
         }
         void push (const value_type& val)
         {
-            return my_stack.push_back(val);
+            return c.push_back(val);
         }
         void pop()
         {
-            my_stack.pop_back();
+            c.pop_back();
         }
-
-
-            
-
     };
     template <class T, class Alloc>
         bool operator==(const stack<T,Alloc>& lhs, const stack<T,Alloc>& rhs)
