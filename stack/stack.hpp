@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 11:58:27 by sakllam           #+#    #+#             */
-/*   Updated: 2022/08/16 12:38:32 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/30 13:10:13 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,22 +55,43 @@ namespace ft
             
 
     };
-    // (1)	
-// template <class T, class Container>
-//   bool operator== (const stack<T,Container>& lhs, const stack<T,Container>& rhs);
-// (2)	
-// template <class T, class Container>
-//   bool operator!= (const stack<T,Container>& lhs, const stack<T,Container>& rhs);
-// (3)	
-// template <class T, class Container>
-//   bool operator<  (const stack<T,Container>& lhs, const stack<T,Container>& rhs);
-// (4)	
-// template <class T, class Container>
-//   bool operator<= (const stack<T,Container>& lhs, const stack<T,Container>& rhs);
-// (5)	
-// template <class T, class Container>
-//   bool operator>  (const stack<T,Container>& lhs, const stack<T,Container>& rhs);
-// (6)	
-// template <class T, class Container>
-//   bool operator>= (const stack<T,Container>& lhs, const stack<T,Container>& rhs);
+    template <class T, class Alloc>
+        bool operator==(const stack<T,Alloc>& lhs, const stack<T,Alloc>& rhs)
+    {
+        if (lhs.size() != rhs.size())
+            return false;
+        int i = 0;
+        while (lhs.size() > i)
+        {
+            if (lhs[i] != rhs[i])
+                return false;
+            i++;
+        }
+        return true;
+    }
+    template <class T, class Alloc>
+      bool operator!=(const stack<T,Alloc>& lhs, const stack<T,Alloc>& rhs)
+    {
+        return !(lhs == rhs);
+    }
+    template <class T, class Alloc>
+      bool operator<(const stack<T,Alloc>& lhs, const stack<T,Alloc>& rhs)
+    {
+        return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+    }
+    template <class T, class Alloc>
+      bool operator>(const stack<T,Alloc>& rhs, const stack<T,Alloc>& lhs)
+    {
+        return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+    }
+    template <class T, class Alloc>
+      bool operator<=(const stack<T,Alloc>& lhs, const stack<T,Alloc>& rhs)
+    {
+        return !(rhs < lhs);
+    }
+    template <class T, class Alloc>
+      bool operator>=(const stack<T,Alloc>& lhs, const stack<T,Alloc>& rhs)
+    {
+        return !(lhs < rhs);
+    }
 }
