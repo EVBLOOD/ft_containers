@@ -193,10 +193,6 @@ int main() {
     test.pop_back();
     assert(test.capacity() == 2);
     assert(test.size() == 0);
-    // infinite loop ??
-    // test.pop_back();
-    // assert(test.capacity() == 2);
-    // assert(test.size() == 18446744073709551615ul);
     std::cout << "testing pop_back() method :: pass\n";
   }
   {
@@ -1016,5 +1012,5 @@ int main() {
     std::cout << "pair relational operators :: pass\n";
   }
   std::cerr << "all passed\n";
-  system("leaks a.out");
+  // system("leaks a.out");
 }

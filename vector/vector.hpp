@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 17:02:04 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/30 12:58:33 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/30 14:00:51 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <memory>
 #include <exception>
 #include <iostream>
+#include <sys/_types/_size_t.h>
 #include <type_traits>
 #include "../additional/iterators_traits.hpp"
 #include "../additional/enable_if.hpp"
@@ -60,18 +61,18 @@ namespace ft
                 i++;
             }
         }
+        allocator_type  _alloc;
         value_type   *my_vec;
         size_type      _capacity;
         size_type      _currSize;
-        allocator_type  _alloc;
         public:
-        explicit vector (const allocator_type& _alloc = allocator_type()) : _alloc(_alloc), my_vec(NULL), _currSize(0), _capacity(0) {}
+        explicit vector (const allocator_type& _alloc = allocator_type()) : _alloc(_alloc), my_vec(NULL), _capacity(0) , _currSize(0) {}
         explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& ac = allocator_type()) : _alloc(ac), _capacity(n), _currSize(n)
         {
             try
             {
                 my_vec = _alloc.allocate(n);
-                int i = 0;
+                size_type i = 0;
                 while (i < n)
                 {
                     _alloc.construct(&(my_vec[i]), val);
@@ -83,12 +84,12 @@ namespace ft
                 throw std::length_error(": vector");
             }
         }
-        vector (const vector& x) : _capacity(x._capacity), _currSize(x._currSize), _alloc(x._alloc)
+        vector (const vector& x) :  _alloc(x._alloc), _capacity(x._capacity), _currSize(x._currSize)
         {
             try
             {
                 my_vec = _alloc.allocate(x._capacity);
-                int i = 0;
+                size_type i = 0;
                 while (i < _currSize)
                 {
                     _alloc.construct(&(my_vec[i]), x[i]);
@@ -114,7 +115,7 @@ namespace ft
             }
         }
         template <class InputIterator>
-        	vector (typename ft::enable_if<std::is_class< InputIterator>::value, InputIterator>::type first, InputIterator last, const allocator_type& ac = allocator_type()) : _currSize(0), _capacity(0), my_vec(NULL), _alloc(ac)
+        	vector (typename ft::enable_if<std::is_class< InputIterator>::value, InputIterator>::type first, InputIterator last, const allocator_type& ac = allocator_type()) : _alloc(ac), my_vec(NULL), _capacity(0), _currSize(0)
 		{
 			while (first != last)
 			{
@@ -127,7 +128,7 @@ namespace ft
         {
             if (my_vec)
             {
-                int i = 0;
+                size_type i = 0;
                 while (i < _currSize)
                 {
                     _alloc.destroy(&(my_vec[i]));
@@ -182,7 +183,7 @@ namespace ft
         {
             if (n < _currSize)
             {
-                int i = 0;
+                size_type i = 0;
                 while (i < n)
                 {
                     _alloc.destroy(&(my_vec[i]));
@@ -195,7 +196,7 @@ namespace ft
             {
                 value_type *nv = _alloc.allocate(n);
                 ft_memcpy(nv, my_vec, _currSize);
-                int i = _currSize;
+                size_type i = _currSize;
                 while (i < n)
                 {
                     nv[i] = val;
@@ -209,7 +210,7 @@ namespace ft
             }
             if (n > _currSize)
             {
-                int i = _currSize;
+                size_type i = _currSize;
                 while (i < n)
                 {
                     _alloc.construct(&(my_vec[i]), val);
@@ -251,7 +252,7 @@ namespace ft
             void assign (typename ft::enable_if<std::is_class< InputIterator>::value, InputIterator>::type first, InputIterator last)
         {
                 InputIterator tmp = first;
-                int x = 0;
+                size_type x = 0;
                 while (tmp != last)
                 {
                     x++;
@@ -271,7 +272,7 @@ namespace ft
             value_type *nv = my_vec;
             if (n > _capacity)
                 nv = _alloc.allocate(n);
-            int i = 0;
+            size_type i = 0;
             while (i < n && i < _currSize)
             {
                 _alloc.destroy(&(my_vec[i]));
@@ -326,7 +327,7 @@ namespace ft
         }
         iterator insert (iterator position, const value_type& val)
         {
-            int counter = &*position - my_vec;
+            size_type counter = &*position - my_vec;
             if (_currSize == _capacity)
             {
                 size_type oldcp = _capacity;
@@ -339,7 +340,7 @@ namespace ft
                 if (my_vec)
                 {
                     ft_memcpy(nv, my_vec, _currSize);
-                    int i = 0;
+                    size_type i = 0;
                     while (i < _currSize)
                     {
                         _alloc.destroy(&(my_vec[i]));
@@ -363,13 +364,13 @@ namespace ft
         void insert (iterator position, size_type n, const value_type& val)
         {
             iterator j = this->begin();
-            int counter = 0;
+            size_type counter = 0;
             while (j != position && j != this->end())
             {
                 j++;
                 counter++;
             }
-            int i = 0;
+            size_type i = 0;
             while (i < n)
             {
                 iterator x = this->begin() + counter;
@@ -383,7 +384,7 @@ namespace ft
             void insert (iterator position, typename ft::enable_if<std::is_class< InputIterator>::value, InputIterator>::type first, InputIterator last)
         {
                 iterator j = this->begin();
-                int i = 0;
+                size_type i = 0;
                 while (j != position && j != this->end())
                 {
                     j++;
@@ -438,7 +439,7 @@ namespace ft
         }
         void clear()
         {
-            int i = 0;
+            size_type i = 0;
             while (i < _currSize)
             {
                 _alloc.destroy(&(my_vec[i]));
@@ -489,8 +490,7 @@ namespace ft
     {
         if (lhs.size() != rhs.size())
             return false;
-        int i = 0;
-        // I geuss I can use the equal function! I just don't know how so far
+        size_t i = 0;
         while (lhs.size() > i)
         {
             if (lhs[i] != rhs[i])

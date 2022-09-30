@@ -6,7 +6,7 @@
 /*   By: sakllam <sakllam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 18:06:02 by sakllam           #+#    #+#             */
-/*   Updated: 2022/09/29 18:28:15 by sakllam          ###   ########.fr       */
+/*   Updated: 2022/09/30 13:37:59 by sakllam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -508,8 +508,8 @@ namespace ft
                 ac.deallocate(head, 1);         
             }
         public:
-            R_B_T () : head(NULL), ac(Alloc()), cmpr(Compare()), size(0) { }
-            R_B_T (Alloc a, Compare cmp) : head(NULL), ac(a), cmpr(cmp), size(0) {}
+            R_B_T () : ac(Alloc()), head(NULL), cmpr(Compare()), size(0) { }
+            R_B_T (Alloc a, Compare cmp) : ac(a), head(NULL), cmpr(cmp), size(0) {}
             ~R_B_T()
             {
                 size = 0;
